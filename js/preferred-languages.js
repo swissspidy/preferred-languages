@@ -104,8 +104,6 @@
 
 	changeButtonState( $selectedLocale );
 
-	// Todo: Remove original WPLANG setting using JavaScript.
-
 	// Arrow key handler.
 	$activeLocales.on( 'keydown', function( e ) {
 		// Up.

@@ -126,8 +126,6 @@ function preferred_languages_download_language_packs( $old_value, $value ) {
 	update_option( 'preferred_languages', implode( ',', $installed_languages ) );
 
 	add_filter( 'update_option_preferred_languages', 'preferred_languages_download_language_packs', 10, 2 );
-
-	// Todo: Switch translation in case WPLANG was changed.
 }
 
 add_filter( 'update_option_preferred_languages', 'preferred_languages_download_language_packs', 10, 2 );
@@ -342,8 +340,6 @@ function preferred_languages_display_form( $args = array() ) {
 	<div class="inactive-locales">
 		<div class="inactive-locales-list">
 			<?php
-			// Todo: Only remove languages and translations on JS side as they might need to be added again.
-
 			foreach ( $languages as $key => $locale ) {
 				if ( in_array( $locale, $preferred_locales, true ) ) {
 					unset( $languages[ $key ] );
