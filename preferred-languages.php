@@ -153,7 +153,8 @@ function preferred_languages_sanitize_list( $preferred_languages ) {
  * @return string The modified MO file path.
  */
 function preferred_languages_load_textdomain_mofile( $mofile ) {
-	$preferred_locales = array_filter( explode( ',', get_option( 'preferred_languages', '' ) ) );
+	$preferred_locales = is_admin() ? get_user_meta( get_current_user_id(), 'preferred_languages', true ) : get_option( 'preferred_languages', '' );
+	$preferred_locales = array_filter( explode( ',', $preferred_locales ) );
 
 	if ( empty( $preferred_locales ) ) {
 		return $mofile;
