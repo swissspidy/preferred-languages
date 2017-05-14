@@ -347,8 +347,10 @@ function preferred_languages_display_form( $args = array() ) {
 		<div class="inactive-locales-list">
 			<?php
 			wp_dropdown_languages( array(
-				'languages'    => $languages,
-				'translations' => $translations,
+				'languages'                   => $languages,
+				'translations'                => $translations,
+				'show_available_translations' => $args['show_available_translations'],
+				'show_option_site_default'    => $args['show_option_site_default'],
 			) );
 			?>
 		</div>
