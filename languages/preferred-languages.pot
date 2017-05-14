@@ -5,7 +5,7 @@ msgstr ""
 "Project-Id-Version: Preferred Languages 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/preferred-"
 "languages\n"
-"POT-Creation-Date: 2017-05-14 09:59:49+00:00\n"
+"POT-Creation-Date: 2017-05-14 10:04:27+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -13,35 +13,37 @@ msgstr ""
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 
-#: preferred-languages.php:53
+#: preferred-languages.php:51
 msgid "List of preferred locales."
 msgstr ""
 
-#: preferred-languages.php:140
+#: preferred-languages.php:138
 msgid "Site Language"
 msgstr ""
 
-#: preferred-languages.php:198
+#. #-#-#-#-#  preferred-languages.pot (Preferred Languages 1.0.0)  #-#-#-#-#
+#. Description of the plugin/theme
+#: preferred-languages.php:196
 msgid "Choose languages for displaying WordPress in, in order of preference."
 msgstr ""
 
-#: preferred-languages.php:202
+#: preferred-languages.php:200
 msgid "Order locales in order of preference"
 msgstr ""
 
-#: preferred-languages.php:225
+#: preferred-languages.php:223
 msgid "Move Up"
 msgstr ""
 
-#: preferred-languages.php:234
+#: preferred-languages.php:232
 msgid "Move Down"
 msgstr ""
 
-#: preferred-languages.php:243
+#: preferred-languages.php:241
 msgid "Remove"
 msgstr ""
 
-#: preferred-languages.php:282
+#: preferred-languages.php:280
 msgid "Add"
 msgstr ""
 
@@ -51,10 +53,6 @@ msgstr ""
 
 #. Plugin URI of the plugin/theme
 msgid "https://github.com/swissspidy/preferred-languages/"
-msgstr ""
-
-#. Description of the plugin/theme
-msgid "Set a list of preferred locales in order of preference."
 msgstr ""
 
 #. Author of the plugin/theme
