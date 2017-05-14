@@ -140,12 +140,24 @@
 	// Add new locale to list.
 	$inactiveLocalesControls.find( '.locales-add' ).on( 'click', function() {
 		var $option    = $inactiveLocales.find( 'select option:selected' ),
-		    $newLocale = $( '<li/>', { 'id': $option.val() || 'en_US', text: $option.text(), 'aria-selected': false } );
+		    $newLocale = $( '<li/>', { 'id': $option.val() || 'en_US', text: $option.text(), 'aria-selected': false } ),
+			$successor;
 
-		// 1. Hide from dropdown.
+		$successor = $option.prev(':visible');
+
+		if ( 0 === $successor.length ) {
+			$successor = $option.next(':visible');
+		}
+
+		// 1. Change selected value in dropdown.
+		$successor.attr('selected', true);
+		$inactiveLocalesControls.val( $successor.val() );
+
+		// 2. Hide from dropdown.
+		$option.removeAttr('selected');
 		$option.hide();
 
-		// 2. Add to list.
+		// 3. Add to list.
 		$activeLocales.append( $newLocale );
 
 		toggleLocale( $newLocale );
