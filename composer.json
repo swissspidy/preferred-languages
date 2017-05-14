@@ -1,0 +1,17 @@
+{
+  "name": "swissspidy/preferred-languages",
+  "description": "Choose languages for displaying WordPress in, in order of preference.",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0+",
+  "authors": [
+    {
+      "name": "Pascal Birchler",
+      "email": "swissspidy@chat.wordpress.org",
+      "homepage": "https://pascalbirchler.com",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.2.4"
+  }
+}
