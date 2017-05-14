@@ -142,6 +142,10 @@
 		updateHiddenInput();
 	}
 
+	// Hide original language settings.
+	$( '.user-language-wrap' ).remove();
+	$( '#WPLANG' ).parent().parent().remove();
+
 	// Change initial button state.
 	changeButtonState( $selectedLocale );
 
