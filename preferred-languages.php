@@ -89,6 +89,33 @@ add_action( 'personal_options_update', 'preferred_languages_update_user_option' 
 add_action( 'edit_user_profile_update', 'preferred_languages_update_user_option' );
 
 /**
+ * Returns the list of preferred languages.
+ *
+ * If in the admin area, this returns the data for the current user.
+ * Else the site settings are used.
+ *
+ * @return array Preferred languages.
+ */
+function preferred_languages_get_list() {
+	$preferred_languages = '';
+
+	if ( is_admin() ) {
+		$preferred_languages = get_user_meta( get_current_user_id(), 'preferred_languages', true );
+	}
+
+	// Fall back to site setting.
+	if ( empty( $preferred_languages ) ) {
+		$preferred_languages = get_option( 'preferred_languages', '' );
+	}
+
+	if ( empty( $preferred_languages ) ) {
+		$preferred_languages = array( 'en_US' );
+	}
+
+	return array_filter( explode( ',', $preferred_languages ) );
+}
+
+/**
  * Downloads language packs upon updating the option.
  *
  * @since 1.0.0
@@ -151,8 +178,7 @@ function preferred_languages_sanitize_list( $preferred_languages ) {
  * @return string The modified MO file path.
  */
 function preferred_languages_load_textdomain_mofile( $mofile ) {
-	$preferred_locales = is_admin() ? get_user_meta( get_current_user_id(), 'preferred_languages', true ) : get_option( 'preferred_languages', '' );
-	$preferred_locales = array_filter( explode( ',', $preferred_locales ) );
+	$preferred_locales = preferred_languages_get_list();
 
 	if ( empty( $preferred_locales ) ) {
 		return $mofile;
