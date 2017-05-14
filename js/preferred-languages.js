@@ -104,6 +104,12 @@
 
 	changeButtonState( $selectedLocale );
 
+	// Enabling sorting locales using drag and drop.
+	$activeLocales.sortable( {
+		axis:   'y',
+		cursor: 'move'
+	} );
+
 	// Arrow key handler.
 	$activeLocales.on( 'keydown', function( e ) {
 		// Up.

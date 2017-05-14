@@ -185,7 +185,7 @@ add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofil
 function preferred_languages_register_scripts() {
 	$suffix = SCRIPT_DEBUG ? '' : '.min';
 
-	wp_register_script( 'preferred-languages', plugin_dir_url( __FILE__ ) . 'js/preferred-languages' . $suffix . '.js', array( 'jquery' ), '20170513', true );
+	wp_register_script( 'preferred-languages', plugin_dir_url( __FILE__ ) . 'js/preferred-languages' . $suffix . '.js', array( 'jquery', 'jquery-ui-sortable' ), '20170513', true );
 	wp_enqueue_style( 'preferred-languages', plugin_dir_url( __FILE__ ) . 'css/preferred-languages.css', array(), '20170513', 'screen' );
 }
 
