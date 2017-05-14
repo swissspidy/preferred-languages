@@ -110,13 +110,23 @@
 	$activeLocales.on( 'keydown', function( e ) {
 		// Up.
 		if ( 38 === e.which ) {
-			moveLocaleUp();
+			if ( e.altKey ) {
+				moveLocaleUp();
+			} else {
+				$selectedLocale.prev().length && toggleLocale( $selectedLocale.prev() );
+			}
+
 			e.preventDefault();
 		}
 
 		// Down.
 		if ( 40 === e.which ) {
-			moveLocaleDown();
+			if ( e.altKey ) {
+				moveLocaleDown();
+			} else {
+				$selectedLocale.next().length && toggleLocale( $selectedLocale.next() );
+			}
+
 			e.preventDefault();
 		}
 
