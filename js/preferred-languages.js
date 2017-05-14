@@ -124,7 +124,7 @@
 		option.removeAttr('selected').addClass('hidden');
 
 		// It's already in the list of active locales, stop here.
-		if ( $activeLocales.find( '#' + ( option.val() || 'en_US' ) ) ) {
+		if ( $activeLocales.find( '#' + ( option.val() || 'en_US' ) ).length > 0 ) {
 			return;
 		}
 
