@@ -114,6 +114,39 @@ function preferred_languages_sanitize_list( $preferred_languages ) {
 }
 
 /**
+ *
+ * @param string $mofile Path to the MO file.
+ * @param string $domain Text domain. Unique identifier for retrieving translated strings.
+ *
+ * @return string
+ */
+function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
+	$preferred_locales = explode( ',', get_option( 'preferred_languages', '' ) );
+
+	if ( empty( $preferred_locales ) ) {
+		return $mofile;
+	}
+
+	if ( is_readable( $mofile ) ) {
+		return $mofile;
+	}
+
+	$current_locale = get_locale();
+
+	foreach( $preferred_locales as $locale ) {
+		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
+
+		if ( is_readable( $preferred_mofile ) ) {
+			return $preferred_mofile;
+		}
+	}
+
+	return $mofile;
+}
+
+add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10, 3 );
+
+/**
  * Registers the needed scripts and styles.
  *
  * @since 1.0.0
