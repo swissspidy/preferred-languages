@@ -56,6 +56,39 @@ function preferred_languages_register_setting() {
 add_action( 'init', 'preferred_languages_register_setting' );
 
 /**
+ * Registers the user meta key for the preferred languages.
+ *
+ * @since 1.0.0
+ */
+function preferred_languages_register_meta() {
+	register_meta( 'user', 'preferred_languages', array(
+		'type'              => 'string',
+		'description'       => 'List of preferred languages',
+		'single'            => true,
+		'sanitize_callback' => 'preferred_languages_sanitize_list',
+		'show_in_rest'      => true,
+	) );
+}
+
+add_action( 'init', 'preferred_languages_register_meta' );
+
+/**
+ * Updates the user's set of preferred languages.
+ *
+ * @since 1.0.0
+ *
+ * @param int $user_id The user ID.
+ */
+function preferred_languages_update_user_option( $user_id ) {
+	if ( isset( $_POST['preferred_languages'] ) ) {
+		update_user_meta( $user_id, 'preferred_languages', $_POST['preferred_languages'] );
+	}
+}
+
+add_action( 'personal_options_update', 'preferred_languages_update_user_option' );
+add_action( 'edit_user_profile_update', 'preferred_languages_update_user_option' );
+
+/**
  * Downloads language packs upon updating the option.
  *
  * @since 1.0.0
