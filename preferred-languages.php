@@ -144,6 +144,8 @@ function preferred_languages_download_language_packs( $old_value, $value ) {
 		$language = wp_download_language_pack( $locale );
 		if ( $language ) {
 			$installed_languages[] = $language;
+		} else if ( 'en_US' === $locale ) {
+			$installed_languages[]= $locale;
 		}
 	}
 
