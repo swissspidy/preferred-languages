@@ -1,0 +1,21 @@
+{
+  "name":            "preferred-languages",
+  "version":         "1.0.0",
+  "description":     "Choose languages for displaying WordPress in, in order of preference.",
+  "scripts":         {
+    "build:js": "uglifyjs -o ./js/preferred-languages.min.js ./js/preferred-languages.js"
+  },
+  "repository":      {
+    "type": "git",
+    "url":  "git+https://github.com/wearerequired/preferred-languages.git"
+  },
+  "author":          "required",
+  "license":         "GPL-2.0+",
+  "bugs":            {
+    "url": "https://github.com/wearerequired/preferred-languages/issues"
+  },
+  "homepage":        "https://github.com/wearerequired/preferred-languages#readme",
+  "devDependencies": {
+    "uglify-js": "^3.0.3"
+  }
+}
