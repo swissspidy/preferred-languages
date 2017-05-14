@@ -231,7 +231,7 @@ function preferred_languages_personal_options( $user ) {
 			preferred_languages_display_form( array(
 				'selected'                    => array_filter( explode( ',', get_user_option( 'preferred_languages', $user->ID ) ) ),
 				'show_available_translations' => false,
-				'show_option_site_default'    => true,
+				'show_option_site_default'    => false,
 			) );
 			?>
 		</td>
