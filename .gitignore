@@ -1,0 +1,6 @@
+# Composer
+composer.lock
+vendor/
+
+# npm
+node_modules/
