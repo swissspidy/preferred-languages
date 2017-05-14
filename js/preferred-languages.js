@@ -67,7 +67,7 @@
 		changeButtonState( $selectedLocale );
 	}
 
-	function removeLocale() {
+	function removeActiveLocale() {
 		var locale = $selectedLocale.attr( 'id' ),
 		    $successor;
 
@@ -102,7 +102,55 @@
 		$inactiveLocales.find( 'select option[value="' + locale + '"]' ).removeClass('hidden');
 	}
 
+	function removeInactiveLocale( option ) {
+		var $newLocale = $( '<li/>', { 'id': option.val() || 'en_US', text: option.text(), 'aria-selected': false } ),
+		    $successor;
+
+		$successor = option.prev( ':not(.hidden)' );
+
+		if ( 0 === $successor.length ) {
+			$successor = option.next( ':not(.hidden)' );
+		}
+
+		if ( 0 === $successor.length ) {
+			$successor = $inactiveLocales.find( 'option' ).first();
+		}
+
+		// 1. Change selected value in dropdown.
+		$successor.attr('selected', true);
+		$inactiveLocalesControls.val( $successor.val() );
+
+		// 2. Hide from dropdown.
+		option.removeAttr('selected').addClass('hidden');
+
+		// It's already in the list of active locales, stop here.
+		if ( $activeLocales.find( '#' + ( option.val() || 'en_US' ) ) ) {
+			return;
+		}
+
+		// 3. Add to list.
+		$activeLocales.append( $newLocale );
+
+		toggleLocale( $newLocale );
+
+		// 4. Scroll into view.
+		$activeLocales.animate( {
+			scrollTop: $newLocale.offset().top - $activeLocales.offset().top + $activeLocales.scrollTop()
+		} );
+
+		// 5. Update hidden input field.
+		updateHiddenInput();
+	}
+
+	// Change initial button state.
 	changeButtonState( $selectedLocale );
+
+	// Initially hide already active locales from dropdown.
+	$.each( $inputField.val().split( ',' ), function( index, value ) {
+		value = 'en_US' === value ? '' : value;
+
+		removeInactiveLocale( $inactiveLocales.find( '[value="' + value + '"]') );
+	} );
 
 	// Enabling sorting locales using drag and drop.
 	$activeLocales.sortable( {
@@ -136,43 +184,14 @@
 
 		// Backspace.
 		if ( 8 === e.which ) {
-			removeLocale();
+			removeActiveLocale();
 			e.preventDefault();
 		}
 	} );
 
 	// Add new locale to list.
 	$inactiveLocalesControls.find( '.locales-add' ).on( 'click', function() {
-		var $option    = $inactiveLocales.find( 'select option:selected' ),
-		    $newLocale = $( '<li/>', { 'id': $option.val() || 'en_US', text: $option.text(), 'aria-selected': false } ),
-			$successor;
-
-		$successor = $option.prev( ':not(.hidden)' );
-
-		if ( 0 === $successor.length ) {
-			$successor = $option.next( ':not(.hidden)' );
-		}
-
-		// 1. Change selected value in dropdown.
-		$successor.attr('selected', true);
-		$inactiveLocalesControls.val( $successor.val() );
-
-		// 2. Hide from dropdown.
-		$option.removeAttr('selected');
-		$option.addClass('hidden');
-
-		// 3. Add to list.
-		$activeLocales.append( $newLocale );
-
-		toggleLocale( $newLocale );
-
-		// 4. Scroll into view.
-		$activeLocales.animate( {
-			scrollTop: $newLocale.offset().top - $activeLocales.offset().top + $activeLocales.scrollTop()
-		} );
-
-		// 5. Update hidden input field.
-		updateHiddenInput();
+		removeInactiveLocale( $inactiveLocales.find( 'select option:selected' ) );
 	} );
 
 	// Select a locale.
@@ -185,5 +204,5 @@
 	$activeLocalesControls.find( '.locales-move-down' ).on( 'click', moveLocaleDown );
 
 	// Remove locale from list.
-	$activeLocalesControls.find( '.locales-remove' ).on( 'click', removeLocale );
+	$activeLocalesControls.find( '.locales-remove' ).on( 'click', removeActiveLocale );
 })( jQuery, window.preferredLanguages );

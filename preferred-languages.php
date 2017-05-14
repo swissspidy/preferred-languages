@@ -346,30 +346,10 @@ function preferred_languages_display_form( $args = array() ) {
 	<div class="inactive-locales">
 		<div class="inactive-locales-list">
 			<?php
-			foreach ( $languages as $key => $locale ) {
-				if ( in_array( $locale, $preferred_locales, true ) ) {
-					unset( $languages[ $key ] );
-				}
-			}
-
-			foreach ( $translations as $key => $translation ) {
-				if ( in_array( $translation['language'], $preferred_locales, true ) ) {
-					unset( $translations[ $key ] );
-				}
-			}
-
-			$dropdown = wp_dropdown_languages( array(
+			wp_dropdown_languages( array(
 				'languages'    => $languages,
 				'translations' => $translations,
-				'echo'         => false,
 			) );
-
-			if ( in_array( 'en_US', $preferred_locales, true ) ) {
-				// Hack to remove hardcoded en_US option.
-				echo str_replace( '<option value="" lang="en" data-installed="1" selected=\'selected\'>English (United States)</option>', '', $dropdown );
-			} else {
-				echo $dropdown;
-			}
 			?>
 		</div>
 		<div class="inactive-locales-controls">
