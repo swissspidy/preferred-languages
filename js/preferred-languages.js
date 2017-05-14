@@ -99,7 +99,7 @@
 		}
 
 		// 5. Make visible in dropdown again.
-		$inactiveLocales.find( 'select option[value="' + locale + '"]' ).show();
+		$inactiveLocales.find( 'select option[value="' + locale + '"]' ).removeClass('hidden');
 	}
 
 	changeButtonState( $selectedLocale );
@@ -143,10 +143,10 @@
 		    $newLocale = $( '<li/>', { 'id': $option.val() || 'en_US', text: $option.text(), 'aria-selected': false } ),
 			$successor;
 
-		$successor = $option.prev(':visible');
+		$successor = $option.prev( ':not(.hidden)' );
 
 		if ( 0 === $successor.length ) {
-			$successor = $option.next(':visible');
+			$successor = $option.next( ':not(.hidden)' );
 		}
 
 		// 1. Change selected value in dropdown.
@@ -155,7 +155,7 @@
 
 		// 2. Hide from dropdown.
 		$option.removeAttr('selected');
-		$option.hide();
+		$option.addClass('hidden');
 
 		// 3. Add to list.
 		$activeLocales.append( $newLocale );
