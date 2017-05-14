@@ -60,8 +60,8 @@ add_action( 'init', 'preferred_languages_register_setting' );
  *
  * @since 1.0.0
  *
- * @param mixed  $old_value The old option value.
- * @param mixed  $value     The new option value.
+ * @param mixed $old_value The old option value.
+ * @param mixed $value     The new option value.
  */
 function preferred_languages_download_language_packs( $old_value, $value ) {
 	if ( is_multisite() && ! is_super_admin() ) {
@@ -114,14 +114,13 @@ function preferred_languages_sanitize_list( $preferred_languages ) {
 }
 
 /**
+ * Filters load_textdomain() calls to respect the list of preferred languages.
  *
  * @param string $mofile Path to the MO file.
- * @param string $domain Text domain. Unique identifier for retrieving translated strings.
- *
- * @return string
+ * @return string The modified MO file path.
  */
-function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
-	$preferred_locales = explode( ',', get_option( 'preferred_languages', '' ) );
+function preferred_languages_load_textdomain_mofile( $mofile ) {
+	$preferred_locales = array_filter( explode( ',', get_option( 'preferred_languages', '' ) ) );
 
 	if ( empty( $preferred_locales ) ) {
 		return $mofile;
@@ -133,7 +132,7 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 
 	$current_locale = get_locale();
 
-	foreach( $preferred_locales as $locale ) {
+	foreach ( $preferred_locales as $locale ) {
 		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
 
 		if ( is_readable( $preferred_mofile ) ) {
@@ -144,7 +143,7 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 	return $mofile;
 }
 
-add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10, 3 );
+add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10 );
 
 /**
  * Registers the needed scripts and styles.
@@ -173,7 +172,7 @@ function preferred_languages_settings_field() {
 		'general',
 		'default',
 		array(
-			'label_for' => 'preferred_languages',
+			'preferred_locales' => array_filter( explode( ',', get_option( 'preferred_languages', '' ) ) ),
 		)
 	);
 }
@@ -181,14 +180,42 @@ function preferred_languages_settings_field() {
 add_action( 'admin_init', 'preferred_languages_settings_field' );
 
 /**
+ * @param WP_User $user The current WP_User object.
+ */
+function preferred_languages_personal_options( $user ) {
+	$languages = get_available_languages();
+
+	if ( ! $languages ) {
+		return;
+	}
+	?>
+	<tr class="user-preferred-languages-wrap">
+		<th scope="row">
+			<?php /* translators: The user language selection field label */ ?>
+			<label for="locale"><?php _e( 'Language' ); ?></label>
+		</th>
+		<td>
+			<?php
+			preferred_languages_display_form( array(
+				'preferred_locales' => array_filter( explode( ',', get_user_option( 'preferred_languages', $user->ID ) ) ),
+			) );
+			?>
+		</td>
+	</tr>
+	<?php
+}
+
+add_action( 'personal_options', 'preferred_languages_personal_options' );
+
+/**
  * Displays the actual form to select the preferred languages.
  *
- * @param array $args Settings field args.
+ * @param array $args Optional. Arguments to pass to the form.
  */
-function preferred_languages_display_form( $args ) {
+function preferred_languages_display_form( $args = array() ) {
 	wp_enqueue_script( 'preferred-languages' );
 
-	$preferred_locales = explode( ',', get_option( 'preferred_languages', '' ) );
+	$preferred_locales = ! empty( $args['preferred_locales'] ) ? $args['preferred_locales'] : array();
 
 	if ( empty( $preferred_locales ) ) {
 		$preferred_locales = array( get_locale() );
@@ -233,7 +260,7 @@ function preferred_languages_display_form( $args ) {
 					aria-label="<?php _e( 'Order locales in order of preference', 'preferred-languages' ); ?>"
 					tabindex="0"
 					aria-activedescendant="<?php echo esc_attr( get_locale() ); ?>"
-					id="<?php echo esc_attr( $args['label_for'] ); ?>"
+					id="preferred_languages"
 					class="active-locales-list">
 				<?php foreach ( $preferred_languages as $language ) : ?>
 					<li
@@ -298,7 +325,7 @@ function preferred_languages_display_form( $args ) {
 			$dropdown = wp_dropdown_languages( array(
 				'languages'    => $languages,
 				'translations' => $translations,
-				'echo' => false,
+				'echo'         => false,
 			) );
 
 			if ( in_array( 'en_US', $preferred_locales, true ) ) {
