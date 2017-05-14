@@ -1,0 +1,66 @@
+# Copyright (C) 2017 Preferred Languages
+# This file is distributed under the same license as the Preferred Languages package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Preferred Languages 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/preferred-"
+"languages\n"
+"POT-Creation-Date: 2017-05-14 09:59:49+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#: preferred-languages.php:53
+msgid "List of preferred locales."
+msgstr ""
+
+#: preferred-languages.php:140
+msgid "Site Language"
+msgstr ""
+
+#: preferred-languages.php:198
+msgid "Choose languages for displaying WordPress in, in order of preference."
+msgstr ""
+
+#: preferred-languages.php:202
+msgid "Order locales in order of preference"
+msgstr ""
+
+#: preferred-languages.php:225
+msgid "Move Up"
+msgstr ""
+
+#: preferred-languages.php:234
+msgid "Move Down"
+msgstr ""
+
+#: preferred-languages.php:243
+msgid "Remove"
+msgstr ""
+
+#: preferred-languages.php:282
+msgid "Add"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "Preferred Languages"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "https://github.com/swissspidy/preferred-languages/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Set a list of preferred locales in order of preference."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Pascal Birchler"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://pascalbirchler.com"
+msgstr ""
