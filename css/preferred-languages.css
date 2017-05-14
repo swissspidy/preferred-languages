@@ -1,0 +1,37 @@
+.active-locales-list,
+.inactive-locales-list {
+	width: 25em;
+	margin-right: 1em;
+	clear: both;
+	float: left;
+}
+
+.active-locales-list {
+	height: 7em;
+	overflow-y: scroll;
+	margin-top: 0;
+}
+
+.active-locales-list li {
+	height: 2em;
+	line-height: 2em;
+	margin: 0;
+	padding: 2px 5px;
+	cursor: pointer;
+}
+
+.active-locales-list li:hover {
+	background: #dfdfdf;
+}
+
+.active-locales-list li[aria-selected="true"] {
+	background: #ccc;
+}
+
+.inactive-locales {
+	clear: both;
+}
+
+.inactive-locales select {
+	width: 100%;
+}
