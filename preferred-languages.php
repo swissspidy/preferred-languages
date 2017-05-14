@@ -204,7 +204,7 @@ function preferred_languages_settings_field() {
 		'general',
 		'default',
 		array(
-			'preferred_locales' => array_filter( explode( ',', get_option( 'preferred_languages', '' ) ) ),
+			'selected' => array_filter( explode( ',', get_option( 'preferred_languages', '' ) ) ),
 		)
 	);
 }
@@ -229,7 +229,9 @@ function preferred_languages_personal_options( $user ) {
 		<td>
 			<?php
 			preferred_languages_display_form( array(
-				'preferred_locales' => array_filter( explode( ',', get_user_option( 'preferred_languages', $user->ID ) ) ),
+				'selected'                    => array_filter( explode( ',', get_user_option( 'preferred_languages', $user->ID ) ) ),
+				'show_available_translations' => false,
+				'show_option_site_default'    => true,
 			) );
 			?>
 		</td>
@@ -247,10 +249,14 @@ add_action( 'personal_options', 'preferred_languages_personal_options' );
 function preferred_languages_display_form( $args = array() ) {
 	wp_enqueue_script( 'preferred-languages' );
 
-	$preferred_locales = ! empty( $args['preferred_locales'] ) ? $args['preferred_locales'] : array();
+	$args = wp_parse_args( $args, array(
+		'selected'                    => array(),
+		'show_available_translations' => true,
+		'show_option_site_default'    => false,
+	) );
 
-	if ( empty( $preferred_locales ) ) {
-		$preferred_locales = array( get_locale() );
+	if ( empty( $args['selected'] ) ) {
+		$args['selected'] = array( get_locale() );
 	}
 
 	require_once ABSPATH . 'wp-admin/includes/translation-install.php';
@@ -260,7 +266,7 @@ function preferred_languages_display_form( $args = array() ) {
 
 	$preferred_languages = array();
 
-	foreach ( $preferred_locales as $locale ) {
+	foreach ( $args['selected'] as $locale ) {
 		if ( isset( $translations[ $locale ] ) ) {
 			$translation = $translations[ $locale ];
 
@@ -303,7 +309,7 @@ function preferred_languages_display_form( $args = array() ) {
 					</li>
 				<?php endforeach; ?>
 			</ul>
-			<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', (array) $preferred_locales ) ); ?>"/>
+			<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $args['selected'] ) ); ?>"/>
 			<div class="active-locales-controls">
 				<ul>
 					<li>
