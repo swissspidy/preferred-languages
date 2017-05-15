@@ -7,7 +7,7 @@
 }
 
 .active-locales-list {
-	height: 7em;
+	height: 98px;
 	overflow-y: scroll;
 	margin-top: 0;
 	background: #fff;
@@ -17,10 +17,10 @@
 }
 
 .active-locales-list li {
-	height: 2em;
-	line-height: 2em;
+	height: 28px;
+	line-height: 28px;
 	margin: 0;
-	padding: 2px 5px;
+	padding: 0 0 0 8px;
 	cursor: pointer;
 }
 
