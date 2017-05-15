@@ -19,11 +19,11 @@ This feature project aims to change that by letting users choos multiple languag
 
 1. Upload the plugin files to the `/wp-content/plugins/preferred-languages` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Choose your preferred languages through 'Options' -> 'General' or your user profile.
+1. Choose your preferred languages through 'Settings' -> 'General' or your user profile.
 
 == Screenshots ==
 
-1. The new language section in 'Options' -> 'General'
+1. The new language section in 'Settings' -> 'General'
 2. The new language section in your user profile.
 
 == Changelog ==
