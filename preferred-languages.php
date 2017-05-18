@@ -177,7 +177,58 @@ function preferred_languages_sanitize_list( $preferred_languages ) {
 }
 
 /**
+ * Filters calls to get_locale() to use the preferred languages setting.
+ *
+ * @since 1.0.0
+ *
+ * @param string $locale The current locale.
+ * @return string
+ */
+function preferred_languages_filter_locale( $locale ) {
+	$preferred_languages = preferred_languages_get_list();
+
+	if ( empty( $preferred_languages ) ) {
+		return $locale;
+	}
+
+	return reset( $preferred_languages );
+}
+
+add_filter( 'locale', 'preferred_languages_filter_locale' );
+
+/**
+ * Filters calls to get_user_locale() to use the preferred languages setting.
+ *
+ * @since 1.0.0
+ *
+ * @param null|array|string $value     The value get_metadata() should return - a single metadata value,
+ *                                     or an array of values.
+ * @param int               $object_id Object ID.
+ * @param string            $meta_key  Meta key.
+ *
+ * @return null|array|string The meta value.
+ */
+function preferred_languages_filter_user_locale( $value, $object_id, $meta_key ) {
+	if ( 'locale' !== $meta_key ) {
+		return $value;
+	}
+
+	$preferred_languages = get_user_meta( $object_id, 'preferred_languages', true );
+	$preferred_languages = array_filter( explode( ',', $preferred_languages ) );
+
+	if ( ! empty( $preferred_languages ) ) {
+		return reset( $preferred_languages );
+	}
+
+	return $value;
+}
+
+add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
+
+/**
  * Filters load_textdomain() calls to respect the list of preferred languages.
+ *
+ * @since 1.0.0
  *
  * @param string $mofile Path to the MO file.
  * @return string The modified MO file path.
