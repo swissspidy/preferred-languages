@@ -157,7 +157,7 @@ function preferred_languages_download_language_packs( $old_value, $value ) {
 	add_filter( 'update_option_preferred_languages', 'preferred_languages_download_language_packs', 10, 2 );
 
 	// Reload translations after save.
-	load_default_textdomain( reset( $installed_languages ) );
+	load_default_textdomain( reset( preferred_languages_get_list() ) );
 }
 
 add_filter( 'update_option_preferred_languages', 'preferred_languages_download_language_packs', 10, 2 );
