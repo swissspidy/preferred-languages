@@ -428,9 +428,12 @@ function preferred_languages_display_form( $args = array() ) {
 		</div>
 	</div>
 	<div class="inactive-locales">
+		<label class="screen-reader-text" for="preferred-languages-inactive-locales"><?php _e( 'Inactive Locales', 'preferred-languages' ); ?></label>
 		<div class="inactive-locales-list">
 			<?php
 			wp_dropdown_languages( array(
+				'id'           => 'preferred-languages-inactive-locales',
+				'name'         => 'preferred-languages-inactive-locales',
 				'languages'                   => $languages,
 				'translations'                => $translations,
 				'show_available_translations' => $args['show_available_translations'],
