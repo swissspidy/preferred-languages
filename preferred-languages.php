@@ -399,7 +399,7 @@ function preferred_languages_display_form( $args = array() ) {
 								aria-keyshortcuts="Alt+ArrowUp"
 								aria-disabled="false"
 								type="button"
-								class="button-secondary locales-move-up">
+								class="button locales-move-up">
 							<?php _e( 'Move Up', 'preferred-languages' ); ?>
 						</button>
 					</li>
@@ -408,7 +408,7 @@ function preferred_languages_display_form( $args = array() ) {
 								aria-keyshortcuts="Alt+ArrowDown"
 								aria-disabled="false"
 								type="button"
-								class="button-secondary locales-move-down">
+								class="button locales-move-down">
 							<?php _e( 'Move Down', 'preferred-languages' ); ?>
 						</button>
 					</li>
@@ -417,7 +417,7 @@ function preferred_languages_display_form( $args = array() ) {
 								aria-keyshortcuts="Alt+Delete"
 								aria-disabled="false"
 								type="button"
-								class="button-secondary locales-remove">
+								class="button locales-remove">
 							<?php _e( 'Remove', 'preferred-languages' ); ?>
 						</button>
 					</li>
@@ -437,7 +437,7 @@ function preferred_languages_display_form( $args = array() ) {
 			?>
 		</div>
 		<div class="inactive-locales-controls">
-			<button type="button" class="button-secondary locales-add" data-action="add"><?php _e( 'Add', 'preferred-languages' ); ?></button>
+			<button type="button" class="button locales-add" data-action="add"><?php _e( 'Add', 'preferred-languages' ); ?></button>
 		</div>
 	</div>
 	<?php
