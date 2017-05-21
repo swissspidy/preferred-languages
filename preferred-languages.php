@@ -307,8 +307,7 @@ function preferred_languages_personal_options( $user ) {
 	?>
 	<tr class="user-preferred-languages-wrap">
 		<th scope="row">
-			<?php /* translators: The user language selection field label */ ?>
-			<label for="locale"><?php _e( 'Language' ); ?></label>
+			<?php _e( 'Language' ); ?>
 		</th>
 		<td>
 			<?php
@@ -377,9 +376,10 @@ function preferred_languages_display_form( $args = array() ) {
 	<div class="preferred-languages">
 		<p><?php _e( 'Choose languages for displaying WordPress in, in order of preference.', 'preferred-languages' ); ?></p>
 		<div class="active-locales">
+			<label class="screen-reader-text" id="preferred-languages-active-locales-label"><?php _e( 'Active Locales', 'preferred-languages' ); ?></label>
 			<ul
 					role="listbox"
-					aria-label="<?php _e( 'Order locales in order of preference', 'preferred-languages' ); ?>"
+					aria-labelledby="preferred-languages-active-locales-label"
 					tabindex="0"
 					aria-activedescendant="<?php echo esc_attr( get_locale() ); ?>"
 					id="preferred_languages"
