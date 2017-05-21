@@ -101,20 +101,21 @@ function preferred_languages_get_list() {
 
 	if ( is_admin() ) {
 		$preferred_languages = get_user_meta( get_current_user_id(), 'preferred_languages', true );
-		$preferred_languages = explode( ',', $preferred_languages );
+		$preferred_languages = array_filter( (array) explode( ',', $preferred_languages ) );
 	}
+
 
 	// Fall back to site setting.
 	if ( empty( $preferred_languages ) ) {
 		$preferred_languages = get_option( 'preferred_languages', '' );
-		$preferred_languages = explode( ',', $preferred_languages );
+		$preferred_languages = array_filter( (array) explode( ',', $preferred_languages ) );
 	}
 
 	if ( empty( $preferred_languages ) ) {
 		$preferred_languages = array( 'en_US' );
 	}
 
-	return array_filter( $preferred_languages );
+	return $preferred_languages;
 }
 
 /**
