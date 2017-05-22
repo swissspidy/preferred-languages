@@ -29,7 +29,7 @@
  */
 
 function preferred_languages_load_textdomain() {
-	load_plugin_textdomain( 'preferred-languages', false, basename( __FILE__ ) . '/languages' );
+	load_plugin_textdomain( 'preferred-languages', false, basename( dirname( __FILE__ ) ) . '/languages' );
 }
 
 add_action( 'init', 'preferred_languages_load_textdomain' );
