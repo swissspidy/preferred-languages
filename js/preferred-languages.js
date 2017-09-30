@@ -6,13 +6,26 @@
 	    $selectedLocale          = $activeLocales.find( 'li[aria-selected="true"]' ),
 	    $inputField              = $( 'input[name="preferred_languages"]' );
 
-	// Set initial button state.
+	/**
+	 * Sets the initial button state.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {jQuery} activeLocale Active locale element.
+	 */
 	function changeButtonState( activeLocale ) {
 		$activeLocalesControls.find( '.locales-move-up' ).attr( 'disabled', 0 === activeLocale.index() );
 		$activeLocalesControls.find( '.locales-move-down' ).attr( 'disabled', activeLocale.index() === $activeLocales.children( 'li' ).length - 1 );
 		$activeLocalesControls.find( '.locales-remove' ).attr( 'disabled', 1 === $activeLocales.children( 'li' ).length );
 	}
 
+	/**
+	 * Toggles a locale.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {jQuery} locale Locale element.
+	 */
 	function toggleLocale( locale ) {
 		var selected = locale.attr( 'aria-selected' ),
 		    newState = !!selected;
@@ -35,6 +48,11 @@
 		changeButtonState( locale );
 	}
 
+	/**
+	 * Updates the preferred languages input field after a change.
+	 *
+	 * @since 1.0.0
+	 */
 	function updateHiddenInput() {
 		var locales = [];
 
@@ -45,6 +63,11 @@
 		$inputField.val( locales.join( ',' ) );
 	}
 
+	/**
+	 * Moves a locale up in the list.
+	 *
+	 * @since 1.0.0
+	 */
 	function moveLocaleUp() {
 		// 1. Change position if possible.
 		$selectedLocale.insertBefore( $selectedLocale.prev() );
@@ -56,6 +79,11 @@
 		changeButtonState( $selectedLocale );
 	}
 
+	/**
+	 * Moves a locale down in the list.
+	 *
+	 * @since 1.0.0
+	 */
 	function moveLocaleDown() {
 		// 1. Change position if possible.
 		$selectedLocale.insertAfter( $selectedLocale.next() );
@@ -67,6 +95,11 @@
 		changeButtonState( $selectedLocale );
 	}
 
+	/**
+	 * Removes an active locale from the list.
+	 *
+	 * @since 1.0.0
+	 */
 	function removeActiveLocale() {
 		var locale = $selectedLocale.attr( 'id' ),
 		    $successor;
@@ -102,7 +135,14 @@
 		$inactiveLocales.find( 'select option[value="' + locale + '"]' ).removeClass('hidden');
 	}
 
-	function removeInactiveLocale( option ) {
+	/**
+	 * Makes an inactive locale active.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param {jQuery} option The locale element.
+	 */
+	function makeLocaleActive( option ) {
 		var $newLocale = $( '<li/>', { 'id': option.val() || 'en_US', text: option.text(), 'aria-selected': false } ),
 		    $successor;
 
@@ -153,7 +193,7 @@
 	$.each( $inputField.val().split( ',' ), function( index, value ) {
 		value = 'en_US' === value ? '' : value;
 
-		removeInactiveLocale( $inactiveLocales.find( '[value="' + value + '"]') );
+		makeLocaleActive( $inactiveLocales.find( '[value="' + value + '"]') );
 	} );
 
 	// Enabling sorting locales using drag and drop.
@@ -195,7 +235,7 @@
 
 	// Add new locale to list.
 	$inactiveLocalesControls.find( '.locales-add' ).on( 'click', function() {
-		removeInactiveLocale( $inactiveLocales.find( 'select option:selected' ) );
+		makeLocaleActive( $inactiveLocales.find( 'select option:selected' ) );
 	} );
 
 	// Select a locale.
