@@ -1,4 +1,4 @@
-(function( $, settings ) {
+(function( wp, settings, $ ) {
 	var $activeLocales           = $( '.active-locales-list' ),
 	    $activeLocalesControls   = $( '.active-locales-controls' ),
 	    $inactiveLocales         = $( '.inactive-locales-list' ),
@@ -77,6 +77,9 @@
 
 		// 3. Update buttons.
 		changeButtonState( $selectedLocale );
+
+		// 4. Announce to assistive technologies.
+		wp.a11y.speak( settings.l10n.movedUp );
 	}
 
 	/**
@@ -93,6 +96,9 @@
 
 		// 3. Update buttons.
 		changeButtonState( $selectedLocale );
+
+		// 4. Announce to assistive technologies.
+		wp.a11y.speak( settings.l10n.movedDown );
 	}
 
 	/**
@@ -133,6 +139,9 @@
 
 		// 5. Make visible in dropdown again.
 		$inactiveLocales.find( 'select option[value="' + locale + '"]' ).removeClass('hidden');
+
+		// 6. Announce to assistive technologies.
+		wp.a11y.speak( settings.l10n.localeRemoved );
 	}
 
 	/**
@@ -180,6 +189,9 @@
 
 		// 5. Update hidden input field.
 		updateHiddenInput();
+
+		// 6. Announce to assistive technologies.
+		wp.a11y.speak( settings.l10n.localeAdded );
 	}
 
 	// Hide original language settings.
@@ -249,4 +261,4 @@
 
 	// Remove locale from list.
 	$activeLocalesControls.find( '.locales-remove' ).on( 'click', removeActiveLocale );
-})( jQuery, window.preferredLanguages );
+})( wp, preferredLanguages, jQuery );
