@@ -1,6 +1,5 @@
 <?php
 
-add_action( 'init', 'preferred_languages_load_textdomain'  );
 add_action( 'init', 'preferred_languages_register_setting' );
 add_action( 'init', 'preferred_languages_register_meta'    );
 add_action( 'init', 'preferred_languages_register_scripts' );

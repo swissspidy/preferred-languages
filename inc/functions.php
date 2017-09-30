@@ -1,9 +1,5 @@
 <?php
 
-function preferred_languages_load_textdomain() {
-	load_plugin_textdomain( 'preferred-languages', false, basename( dirname( __FILE__ ) ) . '/languages' );
-}
-
 /**
  * Registers the option for the preferred languages.
  *
@@ -237,7 +233,7 @@ function preferred_languages_register_scripts() {
 		array(
 			'jquery',
 			'jquery-ui-sortable',
-			'wp-a11y'
+			'wp-a11y',
 		),
 		'20170930',
 		true
@@ -366,17 +362,17 @@ function preferred_languages_display_form( $args = array() ) {
 		<div class="active-locales">
 			<label class="screen-reader-text" id="preferred-languages-active-locales-label"><?php _e( 'Active Locales', 'preferred-languages' ); ?></label>
 			<ul
-					role="listbox"
-					aria-labelledby="preferred-languages-active-locales-label"
-					tabindex="0"
-					aria-activedescendant="<?php echo esc_attr( get_locale() ); ?>"
-					id="preferred_languages"
-					class="active-locales-list">
+				role="listbox"
+				aria-labelledby="preferred-languages-active-locales-label"
+				tabindex="0"
+				aria-activedescendant="<?php echo esc_attr( get_locale() ); ?>"
+				id="preferred_languages"
+				class="active-locales-list">
 				<?php foreach ( $preferred_languages as $language ) : ?>
 					<li
-							role="option"
-							aria-selected="<?php echo get_locale() === $language['language'] ? 'true' : 'false'; ?>"
-							id="<?php echo esc_attr( $language['language'] ); ?>">
+						role="option"
+						aria-selected="<?php echo get_locale() === $language['language'] ? 'true' : 'false'; ?>"
+						id="<?php echo esc_attr( $language['language'] ); ?>">
 						<?php echo esc_html( $language['native_name'] ); ?>
 					</li>
 				<?php endforeach; ?>
@@ -386,28 +382,28 @@ function preferred_languages_display_form( $args = array() ) {
 				<ul>
 					<li>
 						<button
-								aria-keyshortcuts="Alt+ArrowUp"
-								aria-disabled="false"
-								type="button"
-								class="button locales-move-up">
+							aria-keyshortcuts="Alt+ArrowUp"
+							aria-disabled="false"
+							type="button"
+							class="button locales-move-up">
 							<?php _e( 'Move Up', 'preferred-languages' ); ?>
 						</button>
 					</li>
 					<li>
 						<button
-								aria-keyshortcuts="Alt+ArrowDown"
-								aria-disabled="false"
-								type="button"
-								class="button locales-move-down">
+							aria-keyshortcuts="Alt+ArrowDown"
+							aria-disabled="false"
+							type="button"
+							class="button locales-move-down">
 							<?php _e( 'Move Down', 'preferred-languages' ); ?>
 						</button>
 					</li>
 					<li>
 						<button
-								aria-keyshortcuts="Alt+Delete"
-								aria-disabled="false"
-								type="button"
-								class="button locales-remove">
+							aria-keyshortcuts="Alt+Delete"
+							aria-disabled="false"
+							type="button"
+							class="button locales-remove">
 							<?php _e( 'Remove', 'preferred-languages' ); ?>
 						</button>
 					</li>
