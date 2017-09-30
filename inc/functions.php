@@ -57,6 +57,8 @@ function preferred_languages_update_user_option( $user_id ) {
  * If in the admin area, this returns the data for the current user.
  * Else the site settings are used.
  *
+ * @since 1.0.0
+ *
  * @return array Preferred languages.
  */
 function preferred_languages_get_list() {
@@ -86,8 +88,8 @@ function preferred_languages_get_list() {
  *
  * @since 1.0.0
  *
- * @param mixed $old_value The old option value.
- * @param mixed $value     The new option value.
+ * @param string $old_value The old option value.
+ * @param string $value     The new option value.
  */
 function preferred_languages_download_language_packs( $old_value, $value ) {
 	if ( is_multisite() && ! is_super_admin() ) {
@@ -278,6 +280,10 @@ function preferred_languages_settings_field() {
 }
 
 /**
+ * Adds a settings field for the preferred languages option to the user profile.
+ *
+ * @since 1.0.0
+ *
  * @param WP_User $user The current WP_User object.
  */
 function preferred_languages_personal_options( $user ) {
@@ -306,6 +312,8 @@ function preferred_languages_personal_options( $user ) {
 
 /**
  * Displays the actual form to select the preferred languages.
+ *
+ * @since 1.0.0
  *
  * @param array $args Optional. Arguments to pass to the form.
  */
