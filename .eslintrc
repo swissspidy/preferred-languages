@@ -1,0 +1,10 @@
+{
+  "root": true,
+  "extends": [
+    "wordpress"
+  ],
+  "env": {
+    "browser": false,
+    "es6": true
+  }
+}

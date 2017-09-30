@@ -254,7 +254,9 @@ function preferred_languages_register_scripts() {
 		)
 	);
 
-	wp_enqueue_style( 'preferred-languages', plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages.css', array(), '20170513', 'screen' );
+	$rtl_suffix = is_rtl() ? '-rtl' : '';
+
+	wp_enqueue_style( 'preferred-languages', plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages' . $rtl_suffix . '.css', array(), '20170930', 'screen' );
 }
 
 /**

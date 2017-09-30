@@ -2,9 +2,6 @@
   "name": "preferred-languages",
   "version": "1.0.0",
   "description": "Choose languages for displaying WordPress in, in order of preference.",
-  "scripts": {
-    "build:js": "uglifyjs -o ./js/preferred-languages.min.js ./js/preferred-languages.js"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/swissspidy/preferred-languages.git"
@@ -16,6 +13,25 @@
   },
   "homepage": "https://github.com/swissspidy/preferred-languages#readme",
   "devDependencies": {
+    "autoprefixer": "^7.1.4",
+    "babel-cli": "^6.24.1",
+    "babel-preset-env": "^1.5.2",
+    "cssnano": "^3.10.0",
+    "eslint-config-wordpress": "^2.0.0",
+    "nodemon": "^1.11.0",
+    "postcss": "^6.0.2",
+    "rtlcss": "^2.2.0",
     "uglify-js": "^3.1.2"
+  },
+  "scripts": {
+    "uglifyjs": "find js -type f -name '*.js' ! -name '*.min.js' -maxdepth 1 | while read FILE ; do uglifyjs \"${FILE}\" -o \"${FILE%.js}.min.js\" ; done",
+    "rtlcss": "rtlcss css/preferred-languages.css css/preferred-languages-rtl.css",
+    "build:css": "postcss css/src/preferred-languages.css -o css/preferred-languages.css && npm run rtlcss",
+    "build:js": "babel js/src -d js && npm run uglifyjs",
+    "build": "npm run build:css && npm run build:js",
+    "lint": "eslint .",
+    "watch:css": "nodemon --watch css/src -e css -x 'npm run build:css'",
+    "watch:js": "nodemon --watch js/src -e js -x 'npm run build:js'",
+    "watch": "nodemon --watch css/src --watch js/src -e css,js -x 'npm run build'"
   }
 }
