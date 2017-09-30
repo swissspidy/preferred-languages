@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Coding Standards for Preferred Languages Plugin">
+	<description>A custom set of code standard rules for Preferred Languages.</description>
+
+	<rule ref="PHPCompatibility"/>
+	<config name="testVersion" value="5.2-"/>
+
+	<rule ref="WordPress-Core" />
+	<rule ref="WordPress-Docs" />
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" value="preferred-languages" />
+		</properties>
+	</rule>
+</ruleset>
