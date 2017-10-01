@@ -9,16 +9,16 @@
 	var $inputField = $('input[name="preferred_languages"]');
 
 	/**
-  * Sets the initial button state.
+  * Changes the move button states.
   *
   * @since 1.0.0
   *
   * @param {jQuery} activeLocale Active locale element.
   */
 	function changeButtonState(activeLocale) {
-		$activeLocalesControls.find('.locales-move-up').attr('disabled', 0 === activeLocale.index());
-		$activeLocalesControls.find('.locales-move-down').attr('disabled', activeLocale.index() === $activeLocales.children('li').length - 1);
-		$activeLocalesControls.find('.locales-remove').attr('disabled', 1 === $activeLocales.children('li').length);
+		$activeLocalesControls.find('.locales-move-up').attr('disabled', $activeLocales.hasClass('empty-list') || 0 === activeLocale.index());
+		$activeLocalesControls.find('.locales-move-down').attr('disabled', $activeLocales.hasClass('empty-list') || activeLocale.index() === $activeLocales.children('li').length - 1);
+		$activeLocalesControls.find('.locales-remove').attr('disabled', $activeLocales.hasClass('empty-list') || 1 === $activeLocales.children('li').length);
 	}
 
 	/**
@@ -225,7 +225,7 @@
 	$('.user-language-wrap').remove();
 	$('#WPLANG').parent().parent().remove();
 
-	// Remove en_US as  an option from the dropdown.
+	// Remove en_US as an option from the dropdown.
 	$inactiveLocales.find('[lang="en"]').remove();
 
 	// Change initial button state.
