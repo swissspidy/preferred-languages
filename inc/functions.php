@@ -65,15 +65,10 @@ function preferred_languages_get_list() {
 		$preferred_languages = array_filter( explode( ',', $preferred_languages ) );
 	}
 
-
 	// Fall back to site setting.
 	if ( empty( $preferred_languages ) ) {
 		$preferred_languages = get_option( 'preferred_languages', '' );
 		$preferred_languages = array_filter( explode( ',', $preferred_languages ) );
-	}
-
-	if ( empty( $preferred_languages ) ) {
-		$preferred_languages = array( 'en_US' );
 	}
 
 	return $preferred_languages;
@@ -108,8 +103,6 @@ function preferred_languages_download_language_packs( $old_value, $value ) {
 		$language = wp_download_language_pack( $locale );
 		if ( $language ) {
 			$installed_languages[] = $language;
-		} else if ( 'en_US' === $locale ) {
-			$installed_languages[] = $locale;
 		}
 	}
 
@@ -231,7 +224,7 @@ function preferred_languages_register_scripts() {
 			'jquery-ui-sortable',
 			'wp-a11y',
 		),
-		'20170930',
+		'20171001',
 		true
 	);
 
@@ -250,7 +243,13 @@ function preferred_languages_register_scripts() {
 
 	$rtl_suffix = is_rtl() ? '-rtl' : '';
 
-	wp_enqueue_style( 'preferred-languages', plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages' . $rtl_suffix . '.css', array(), '20170930', 'screen' );
+	wp_enqueue_style(
+		'preferred-languages',
+		plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages' . $rtl_suffix . '.css',
+		array(),
+		'20171001',
+		'screen'
+	);
 }
 
 /**
@@ -294,7 +293,7 @@ function preferred_languages_personal_options( $user ) {
 			preferred_languages_display_form( array(
 				'selected'                    => array_filter( explode( ',', get_user_option( 'preferred_languages', $user->ID ) ) ),
 				'show_available_translations' => false,
-				'show_option_site_default'    => false,
+				'show_option_site_default'    => true,
 			) );
 			?>
 		</td>
@@ -338,13 +337,7 @@ function preferred_languages_display_form( $args = array() ) {
 				'native_name' => $translation['native_name'],
 				'lang'        => current( $translation['iso'] ),
 			);
-		} else if ( 'en_US' === $locale ) {
-			$preferred_languages[] = array(
-				'language'    => $locale,
-				'native_name' => 'English (United States)',
-				'lang'        => 'en',
-			);
-		} else {
+		} else if ( 'en_US' !== $locale ) {
 			$preferred_languages[] = array(
 				'language'    => $locale,
 				'native_name' => $locale,
@@ -360,9 +353,9 @@ function preferred_languages_display_form( $args = array() ) {
 				role="listbox"
 				aria-labelledby="preferred-languages-label"
 				tabindex="0"
-				aria-activedescendant="<?php echo esc_attr( get_locale() ); ?>"
+				aria-activedescendant="<?php echo empty( $preferred_languages ) ? '' : esc_attr( get_locale() ); ?>"
 				id="preferred_languages"
-				class="active-locales-list">
+				class="active-locales-list <?php echo empty( $preferred_languages ) ? 'empty-list' : ''; ?>">
 				<?php foreach ( $preferred_languages as $language ) : ?>
 					<li
 						role="option"
@@ -371,6 +364,18 @@ function preferred_languages_display_form( $args = array() ) {
 						<?php echo esc_html( $language['native_name'] ); ?>
 					</li>
 				<?php endforeach; ?>
+				<li class="<?php echo ! empty( $preferred_languages ) ? 'hidden' : ''; ?>" id="active-locales-list-empty-message">
+					<?php _e( 'Nothing set.', 'preferred-languages' ); ?>
+					<br>
+					<?php
+					if ( true === $args['show_option_site_default'] ) {
+						_e( 'Falling back to Site Default.', 'preferred-languages' );
+					} else {
+						/* translators: %s: English (United States) */
+						printf( __( 'Falling back to %s.', 'preferred-languages' ), 'English (United States)' );
+					}
+					?>
+				</li>
 			</ul>
 			<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $args['selected'] ) ); ?>"/>
 			<div class="active-locales-controls">
@@ -416,7 +421,6 @@ function preferred_languages_display_form( $args = array() ) {
 				'languages'                   => $languages,
 				'translations'                => $translations,
 				'show_available_translations' => $args['show_available_translations'],
-				'show_option_site_default'    => $args['show_option_site_default'],
 			) );
 			?>
 		</div>

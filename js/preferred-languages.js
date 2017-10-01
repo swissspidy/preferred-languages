@@ -1,10 +1,12 @@
+'use strict';
+
 (function (wp, settings, $) {
-	var $activeLocales = $('.active-locales-list'),
-	    $activeLocalesControls = $('.active-locales-controls'),
-	    $inactiveLocales = $('.inactive-locales-list'),
-	    $inactiveLocalesControls = $('.inactive-locales-controls'),
-	    $selectedLocale = $activeLocales.find('li[aria-selected="true"]'),
-	    $inputField = $('input[name="preferred_languages"]');
+	var $activeLocales = $('.active-locales-list');
+	var $activeLocalesControls = $('.active-locales-controls');
+	var $inactiveLocales = $('.inactive-locales-list');
+	var $inactiveLocalesControls = $('.inactive-locales-controls');
+	var $selectedLocale = $activeLocales.find('li[aria-selected="true"]');
+	var $inputField = $('input[name="preferred_languages"]');
 
 	/**
   * Sets the initial button state.
@@ -27,8 +29,8 @@
   * @param {jQuery} locale Locale element.
   */
 	function toggleLocale(locale) {
-		var selected = locale.attr('aria-selected'),
-		    newState = !!selected;
+		var selected = locale.attr('aria-selected');
+		var newState = !!selected;
 
 		// It's already the current locale, so nothing to do here.
 		if (true === selected) {
@@ -54,10 +56,12 @@
   * @since 1.0.0
   */
 	function updateHiddenInput() {
+		var _this = this;
+
 		var locales = [];
 
 		$activeLocales.children('li').each(function () {
-			locales.push($(this).attr('id'));
+			locales.push($(_this).attr('id'));
 		});
 
 		$inputField.val(locales.join(','));
@@ -69,6 +73,7 @@
   * @since 1.0.0
   */
 	function moveLocaleUp() {
+
 		// 1. Change position if possible.
 		$selectedLocale.insertBefore($selectedLocale.prev());
 
@@ -88,6 +93,7 @@
   * @since 1.0.0
   */
 	function moveLocaleDown() {
+
 		// 1. Change position if possible.
 		$selectedLocale.insertAfter($selectedLocale.next());
 
@@ -102,40 +108,56 @@
 	}
 
 	/**
+  * Displays a message in case the list of active locales is empty.
+  *
+  * @since 1.0.0
+  */
+	function showEmptyListMessage() {
+		$activeLocales.addClass('empty-list');
+		$activeLocales.attr('aria-activedescendant', '');
+		$activeLocales.find('#active-locales-list-empty-message').removeClass('hidden');
+	}
+
+	/**
+  * Hides the empty list of locales message.
+  *
+  * @since 1.0.0
+  */
+	function hideEmptyListMessage() {
+		$activeLocales.removeClass('empty-list');
+		$activeLocales.find('#active-locales-list-empty-message').addClass('hidden');
+	}
+
+	/**
   * Removes an active locale from the list.
   *
   * @since 1.0.0
   */
 	function removeActiveLocale() {
-		var locale = $selectedLocale.attr('id'),
-		    $successor;
+		var locale = $selectedLocale.attr('id');
+		var $successor = void 0;
 
-		// There must be at least one locale.
-		if (1 === $activeLocales.children('li').length) {
-			return;
-		}
-
-		$successor = $selectedLocale.prev();
+		$successor = $selectedLocale.prev(':visible');
 
 		if (0 === $successor.length) {
-			$successor = $selectedLocale.next();
+			$successor = $selectedLocale.next(':visible');
 		}
 
 		// 1. Remove selected locale.
 		$selectedLocale.remove();
 
 		// 2. Make another locale the current one.
-		toggleLocale($successor);
+		if ($successor.length > 0) {
+			toggleLocale($successor);
+		} else {
+			showEmptyListMessage();
+		}
 
 		// 3. Update buttons.
 		changeButtonState($selectedLocale);
 
 		// 4. Update hidden input field.
 		updateHiddenInput();
-
-		if ('en_US' === locale) {
-			locale = '';
-		}
 
 		// 5. Make visible in dropdown again.
 		$inactiveLocales.find('select option[value="' + locale + '"]').removeClass('hidden');
@@ -152,8 +174,8 @@
   * @param {jQuery} option The locale element.
   */
 	function makeLocaleActive(option) {
-		var $newLocale = $('<li/>', { 'id': option.val() || 'en_US', text: option.text(), 'aria-selected': false }),
-		    $successor;
+		var $newLocale = $('<li/>', { 'id': option.val(), text: option.text(), 'aria-selected': false });
+		var $successor = void 0;
 
 		$successor = option.prev(':not(.hidden)');
 
@@ -173,16 +195,21 @@
 		option.removeAttr('selected').addClass('hidden');
 
 		// It's already in the list of active locales, stop here.
-		if ($activeLocales.find('#' + (option.val() || 'en_US')).length > 0) {
+		if ($activeLocales.find('#' + option.val()).length > 0) {
 			return;
 		}
 
-		// 3. Add to list.
+		// 3. Hide empty list message if present.
+		if ($activeLocales.hasClass('empty-list')) {
+			hideEmptyListMessage();
+		}
+
+		// 4. Add to list.
 		$activeLocales.append($newLocale);
 
 		toggleLocale($newLocale);
 
-		// 4. Scroll into view.
+		// 5. Scroll into view.
 		$activeLocales.animate({
 			scrollTop: $newLocale.offset().top - $activeLocales.offset().top + $activeLocales.scrollTop()
 		});
@@ -198,24 +225,29 @@
 	$('.user-language-wrap').remove();
 	$('#WPLANG').parent().parent().remove();
 
+	// Remove en_US as  an option from the dropdown.
+	$inactiveLocales.find('[lang="en"]').remove();
+
 	// Change initial button state.
 	changeButtonState($selectedLocale);
 
 	// Initially hide already active locales from dropdown.
 	$.each($inputField.val().split(','), function (index, value) {
-		value = 'en_US' === value ? '' : value;
-
-		makeLocaleActive($inactiveLocales.find('[value="' + value + '"]'));
+		if ('en_US' !== value) {
+			makeLocaleActive($inactiveLocales.find('[value="' + value + '"]'));
+		}
 	});
 
 	// Enabling sorting locales using drag and drop.
 	$activeLocales.sortable({
 		axis: 'y',
-		cursor: 'move'
+		cursor: 'move',
+		items: ':not(#active-locales-list-empty-message)'
 	});
 
 	// Arrow key handler.
 	$activeLocales.on('keydown', function (e) {
+
 		// Up.
 		if (38 === e.which) {
 			if (e.altKey) {
@@ -252,7 +284,7 @@
 
 	// Select a locale.
 	$activeLocales.on('click', 'li', function () {
-		toggleLocale($(this));
+		toggleLocale($(undefined));
 	});
 
 	$activeLocalesControls.find('.locales-move-up').on('click', moveLocaleUp);
