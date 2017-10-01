@@ -1,22 +1,29 @@
 {
   "options": {
-    clean: false,
-	processUrls: { atrule: true, decl: false },
-	stringMap: [
-		{
-			name: 'import-rtl-stylesheet',
-			priority: 10,
-			exclusive: true,
-			search: [ '.css' ],
-			replace: [ '-rtl.css' ],
-			options: {
-				scope: 'url',
-				ignoreCase: false
-			}
-		}
-	]
+    "clean": false,
+    "processUrls": {
+      "atrule": true,
+      "decl": false
+    },
+    "stringMap": [
+      {
+        "name": "import-rtl-stylesheet",
+        "priority": 10,
+        "exclusive": true,
+        "search": [
+          ".css"
+        ],
+        "replace": [
+          "-rtl.css"
+        ],
+        "options": {
+          "scope": "url",
+          "ignoreCase": false
+        }
+      }
+    ]
   },
-  saveUnmodified: false,
+  "saveUnmodified": false,
   "plugins": [],
   "map": false
 }
