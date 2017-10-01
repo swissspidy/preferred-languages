@@ -198,11 +198,7 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
 function preferred_languages_load_textdomain_mofile( $mofile ) {
 	$preferred_locales = preferred_languages_get_list();
 
-	if ( empty( $preferred_locales ) ) {
-		return $mofile;
-	}
-
-	if ( is_readable( $mofile ) ) {
+	if ( empty( $preferred_locales ) || is_readable( $mofile ) ) {
 		return $mofile;
 	}
 
