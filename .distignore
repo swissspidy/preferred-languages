@@ -1,7 +1,7 @@
 .distignore
 .DS_Store
 .editorconfig
-.eslintrc
+.eslintrc.json
 .git
 .gitignore
 .idea
