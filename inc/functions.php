@@ -265,7 +265,7 @@ function preferred_languages_register_scripts() {
 function preferred_languages_settings_field() {
 	add_settings_field(
 		'preferred_languages',
-		__( 'Site Language', 'preferred-languages' ),
+		'<span id="preferred-languages-label">' . __( 'Site Language', 'preferred-languages' ) . '<span/>',
 		'preferred_languages_display_form',
 		'general',
 		'default',
@@ -291,7 +291,7 @@ function preferred_languages_personal_options( $user ) {
 	?>
 	<tr class="user-preferred-languages-wrap">
 		<th scope="row">
-			<?php _e( 'Language' ); ?>
+			<span id="preferred-languages-label"><?php _e( 'Language' ); ?></span>
 		</th>
 		<td>
 			<?php
@@ -360,10 +360,9 @@ function preferred_languages_display_form( $args = array() ) {
 	<div class="preferred-languages">
 		<p><?php _e( 'Choose languages for displaying WordPress in, in order of preference.', 'preferred-languages' ); ?></p>
 		<div class="active-locales">
-			<label class="screen-reader-text" id="preferred-languages-active-locales-label"><?php _e( 'Active Locales', 'preferred-languages' ); ?></label>
 			<ul
 				role="listbox"
-				aria-labelledby="preferred-languages-active-locales-label"
+				aria-labelledby="preferred-languages-label"
 				tabindex="0"
 				aria-activedescendant="<?php echo esc_attr( get_locale() ); ?>"
 				id="preferred_languages"
