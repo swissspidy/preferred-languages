@@ -4,3 +4,7 @@ vendor/
 
 # npm
 node_modules/
+
+# Built files
+js/*.js
+css/*.css
