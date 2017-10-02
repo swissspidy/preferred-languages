@@ -317,10 +317,6 @@ function preferred_languages_display_form( $args = array() ) {
 		'show_option_site_default'    => false,
 	) );
 
-	if ( empty( $args['selected'] ) ) {
-		$args['selected'] = array( get_locale() );
-	}
-
 	require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 	$translations = wp_get_available_translations();
 
