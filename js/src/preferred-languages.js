@@ -26,7 +26,11 @@
 		);
 		$activeLocalesControls.find( '.locales-remove' ).attr(
 			'disabled',
-			$activeLocales.hasClass( 'empty-list' )
+			$activeLocales.hasClass( 'empty-list' ) || ! $selectedLocale.length
+		);
+		$inactiveLocalesControls.find( '.locales-add' ).attr(
+			'disabled',
+			'disabled' === $inactiveLocales.find( 'select' ).attr( 'disabled' )
 		);
 	}
 
@@ -39,7 +43,7 @@
 	 */
 	function toggleLocale( locale ) {
 		const selected = locale.attr( 'aria-selected' );
-		const newState = !! selected;
+		const newState = '' === selected ? true : !! selected;
 
 		// It's already the current locale, so nothing to do here.
 		if ( true === selected ) {
@@ -144,30 +148,31 @@
 		let locale = $selectedLocale.attr( 'id' );
 		let $successor;
 
-		$successor = $selectedLocale.prev( ':visible' );
+		$successor = $selectedLocale.prevAll( ':visible:first' );
 
 		if ( 0 === $successor.length ) {
-			$successor = $selectedLocale.next( ':visible' );
+			$successor = $selectedLocale.nextAll( ':visible:first' );
 		}
 
 		// 1. Remove selected locale.
 		$selectedLocale.remove();
 
 		// 2. Make another locale the current one.
-		if ( $successor.length > 0 ) {
+		if ( $successor.length ) {
 			toggleLocale( $successor );
 		} else {
 			showEmptyListMessage();
 		}
 
-		// 3. Update buttons.
-		changeButtonState( $selectedLocale );
+		// 3. Make visible in dropdown again.
+		$inactiveLocales.find( `select option[value="${locale}"]` ).removeClass( 'hidden' );
+		$inactiveLocales.find( 'select' ).attr( 'disabled', false );
 
 		// 4. Update hidden input field.
 		updateHiddenInput();
 
-		// 5. Make visible in dropdown again.
-		$inactiveLocales.find( `select option[value="${locale}"]` ).removeClass( 'hidden' );
+		// 5. Update buttons.
+		changeButtonState( $selectedLocale );
 
 		// 6. Announce to assistive technologies.
 		wp.a11y.speak( settings.l10n.localeRemoved );
@@ -184,14 +189,14 @@
 		const $newLocale = $( '<li/>', { 'id': option.val(), text: option.text(), 'aria-selected': false, 'class': 'active-locale' } );
 		let $successor;
 
-		$successor = option.prev( ':not(.hidden)' );
+		$successor = option.prevAll( ':not(.hidden):first' );
 
-		if ( 0 === $successor.length ) {
-			$successor = option.next( ':not(.hidden)' );
+		if ( ! $successor.length ) {
+			$successor = option.nextAll( ':not(.hidden):first' );
 		}
 
-		if ( 0 === $successor.length ) {
-			$successor = $inactiveLocales.find( 'option' ).first();
+		if ( ! $successor.length ) {
+			$inactiveLocales.find( 'select' ).attr( 'disabled', true );
 		}
 
 		// 1. Change selected value in dropdown.
@@ -202,7 +207,7 @@
 		option.removeAttr( 'selected' ).addClass( 'hidden' );
 
 		// It's already in the list of active locales, stop here.
-		if ( $activeLocales.find( `#${option.val()}` ).length > 0 ) {
+		if ( $activeLocales.find( `#${option.val()}` ).length ) {
 			return;
 		}
 
