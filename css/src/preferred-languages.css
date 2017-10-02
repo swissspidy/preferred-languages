@@ -27,6 +27,7 @@
 }
 
 .active-locales-list li {
+	box-sizing: border-box;
 	width: 100%;
 	height: 28px;
 	line-height: 28px;
