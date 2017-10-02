@@ -8,12 +8,15 @@
 .idea
 .rtlcssrc
 assets
+bin
 composer.json
 composer.lock
 node_modules
 package.json
 package-lock.json
 phpcs.xml.dist
+phpunit.xml.dist
 postcss.config.js
 README.md
+tests
 vendor
