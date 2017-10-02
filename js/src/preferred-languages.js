@@ -14,9 +14,20 @@
 	 * @param {jQuery} activeLocale Active locale element.
 	 */
 	function changeButtonState( activeLocale ) {
-		$activeLocalesControls.find( '.locales-move-up' ).attr( 'disabled', $activeLocales.hasClass( 'empty-list' ) || 0 === activeLocale.index() );
-		$activeLocalesControls.find( '.locales-move-down' ).attr( 'disabled', $activeLocales.hasClass( 'empty-list' ) || activeLocale.index() === $activeLocales.children( 'li' ).length - 1 );
-		$activeLocalesControls.find( '.locales-remove' ).attr( 'disabled', $activeLocales.hasClass( 'empty-list' ) || 1 === $activeLocales.children( 'li' ).length );
+		const activeLocalesList = $activeLocales.find( '.active-locale' );
+
+		$activeLocalesControls.find( '.locales-move-up' ).attr(
+			'disabled',
+			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.first().is( activeLocale )
+		);
+		$activeLocalesControls.find( '.locales-move-down' ).attr(
+			'disabled',
+			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.last().is( activeLocale )
+		);
+		$activeLocalesControls.find( '.locales-remove' ).attr(
+			'disabled',
+			$activeLocales.hasClass( 'empty-list' )
+		);
 	}
 
 	/**
@@ -56,7 +67,7 @@
 	function updateHiddenInput() {
 		const locales = [];
 
-		$activeLocales.children( 'li' ).each( () => {
+		$activeLocales.children( '.active-locale' ).each( () => {
 			locales.push( $( this ).attr( 'id' ) );
 		} );
 
@@ -170,7 +181,7 @@
 	 * @param {jQuery} option The locale element.
 	 */
 	function makeLocaleActive( option ) {
-		const $newLocale = $( '<li/>', { 'id': option.val(), text: option.text(), 'aria-selected': false } );
+		const $newLocale = $( '<li/>', { 'id': option.val(), text: option.text(), 'aria-selected': false, 'class': 'active-locale' } );
 		let $successor;
 
 		$successor = option.prev( ':not(.hidden)' );
@@ -228,11 +239,11 @@
 	changeButtonState( $selectedLocale );
 
 	// Initially hide already active locales from dropdown.
-	$.each( $inputField.val().split( ',' ), ( index, value ) => {
-		if ( 'en_US' !== value ) {
+	if ( $inputField.val().length ) {
+		$.each( $inputField.val().split( ',' ), ( index, value ) => {
 			makeLocaleActive( $inactiveLocales.find( `[value="${value}"]` ) );
-		}
-	} );
+		} );
+	}
 
 	// Enabling sorting locales using drag and drop.
 	$activeLocales.sortable({
@@ -279,8 +290,8 @@
 	} );
 
 	// Select a locale.
-	$activeLocales.on( 'click', 'li', () => {
-		toggleLocale( $( this ) );
+	$activeLocales.on( 'click', '.active-locale', ( e ) => {
+		toggleLocale( $( e.currentTarget ) );
 	} );
 
 	$activeLocalesControls.find( '.locales-move-up' ).on( 'click', moveLocaleUp );

@@ -355,8 +355,9 @@ function preferred_languages_display_form( $args = array() ) {
 				<?php foreach ( $preferred_languages as $language ) : ?>
 					<li
 						role="option"
-						aria-selected="<?php echo get_locale() === $language['language'] ? 'true' : 'false'; ?>"
-						id="<?php echo esc_attr( $language['language'] ); ?>">
+						aria-selected="<?php echo (string) ( get_locale() === $language['language'] ); ?>"
+						id="<?php echo esc_attr( $language['language'] ); ?>"
+						class="active-locale">
 						<?php echo esc_html( $language['native_name'] ); ?>
 					</li>
 				<?php endforeach; ?>
