@@ -11,6 +11,8 @@ assets
 bin
 composer.json
 composer.lock
+css/src
+js/src
 node_modules
 package.json
 package-lock.json
