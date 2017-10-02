@@ -14,7 +14,7 @@ Choose languages for displaying WordPress in, in order of preference.
 
 Thanks to language packs it's easier than ever before to change the main language of your site. However, in some cases a single locale is not enough. When WordPress can't find a translation for the active locale, it falls back to the original English strings. That’s a poor user experience for many non-English speakers.
 
-This feature project aims to change that by letting users choos multiple languages for displaying WordPress in. That way you can set some sort of "fallback chain" where WordPress tries to load translations in your preferred order.
+This feature project aims to change that by letting users choose multiple languages for displaying WordPress in. That way you can set some sort of "fallback chain" where WordPress tries to load translations in your preferred order.
 
 == Screenshots ==
 
