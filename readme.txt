@@ -23,11 +23,18 @@ This feature project aims to change that by letting users choose multiple langua
 
 == Upgrade Notice ==
 
+= 1.0.1 =
+
+This release fixes a bug that prevented saving changes in some cases.
+
 = 1.0.0 =
 
 Initial release.
 
 == Changelog ==
+
+= 1.0.1 =
+* Fixed: Fixed a bug that prevented saving changes.
 
 = 1.0.0 =
 * Initial release.
