@@ -15,12 +15,6 @@ Thanks to language packs it's easier than ever before to change the main languag
 
 This feature project aims to change that by letting users choos multiple languages for displaying WordPress in. That way you can set some sort of "fallback chain" where WordPress tries to load translations in your preferred order.
 
-== Installation ==
-
-1. Upload the plugin files to the `/wp-content/plugins/preferred-languages` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Choose your preferred languages through 'Settings' -> 'General' or your user profile.
-
 == Screenshots ==
 
 1. The new language section in 'Settings' -> 'General'
