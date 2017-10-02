@@ -21,6 +21,12 @@ This feature project aims to change that by letting users choos multiple languag
 1. The new language section in 'Settings' -> 'General'
 2. The new language section in your user profile.
 
+== Upgrade Notice ==
+
+= 1.0.0 =
+
+Initial release.
+
 == Changelog ==
 
 = 1.0.0 =
