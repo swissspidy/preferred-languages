@@ -67,8 +67,8 @@
 	function updateHiddenInput() {
 		const locales = [];
 
-		$activeLocales.children( '.active-locale' ).each( () => {
-			locales.push( $( this ).attr( 'id' ) );
+		$activeLocales.children( '.active-locale' ).each( ( index, el ) => {
+			locales.push( $( el ).attr( 'id' ) );
 		} );
 
 		$inputField.val( locales.join( ',' ) );
