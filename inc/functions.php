@@ -233,10 +233,10 @@ function preferred_languages_register_scripts() {
 		'preferredLanguages',
 		array(
 			'l10n' => array(
-				'localeAdded'   => __( 'Locale added to list' ),
-				'localeRemoved' => __( 'Locale removed from list' ),
-				'movedUp'       => __( 'Locale moved up' ),
-				'movedDown'     => __( 'Locale moved down' ),
+				'localeAdded'   => __( 'Locale added to list', 'preferred-languages' ),
+				'localeRemoved' => __( 'Locale removed from list', 'preferred-languages' ),
+				'movedUp'       => __( 'Locale moved up', 'preferred-languages' ),
+				'movedDown'     => __( 'Locale moved down', 'preferred-languages' ),
 			),
 		)
 	);
@@ -286,7 +286,7 @@ function preferred_languages_personal_options( $user ) {
 	?>
 	<tr class="user-preferred-languages-wrap">
 		<th scope="row">
-			<span id="preferred-languages-label"><?php _e( 'Language' ); ?></span>
+			<span id="preferred-languages-label"><?php _e( 'Language', 'preferred-languages' ); ?></span>
 		</th>
 		<td>
 			<?php
