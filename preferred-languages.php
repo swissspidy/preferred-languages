@@ -28,6 +28,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+require_once( dirname( __FILE__ ) . '/inc/class-preferred-languages-textdomain-registry.php' );
 require_once( dirname( __FILE__ ) . '/inc/functions.php' );
 require_once( dirname( __FILE__ ) . '/inc/default-filters.php' );
 

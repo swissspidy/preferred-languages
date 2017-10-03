@@ -431,3 +431,65 @@ function preferred_languages_display_form( $args = array() ) {
 	</div>
 	<?php
 }
+
+/**
+ * Initializes the class used for registering textdomains.
+ *
+ * @since 1.1.0
+ */
+function preferred_languages_init_registry() {
+	global $textdomain_registry;
+
+	$textdomain_registry = new Preferred_Languages_Textdomain_Registry();
+}
+
+/**
+ * Filters gettext call to work around limitations in just-in-time loading of translations.
+ *
+ * @since 1.1.0
+ *
+ * @param string $translation  Translated text.
+ * @param string $text         Text to translate.
+ * @param string $domain       Text domain. Unique identifier for retrieving translated strings.
+ *
+ * @return string Translated text.
+ */
+function preferred_languages_filter_gettext( $translation, $text, $domain ) {
+	if ( 'default' === $domain ) {
+		return $translation;
+	}
+
+	$translations = get_translations_for_domain( $domain );
+
+	if ( $translations instanceof NOOP_Translations ) {
+		/* @var Preferred_Languages_Textdomain_Registry $textdomain_registry */
+		global $textdomain_registry;
+
+		$path = $textdomain_registry->get( $domain );
+
+		if ( ! $path ) {
+			$textdomain_registry->get_translation_from_lang_dir( $domain );
+		}
+
+		$path = $textdomain_registry->get( $domain );
+
+		if ( ! $path ) {
+			return $translation;
+		}
+
+		$preferred_locales = preferred_languages_get_list();
+
+		foreach ( $preferred_locales as $locale ) {
+			$mofile = "{$path}/{$domain}-{$locale}.mo";
+
+			if ( load_textdomain( $domain, $mofile ) ) {
+				$translations = get_translations_for_domain( $domain );
+				$translation  = $translations->translate( $text );
+
+				break;
+			}
+		}
+	}
+
+	return $translation;
+}
