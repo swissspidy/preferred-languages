@@ -189,9 +189,13 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
  * @return string The modified MO file path.
  */
 function preferred_languages_load_textdomain_mofile( $mofile ) {
+	if ( is_readable( $mofile ) ) {
+		return $mofile;
+	}
+
 	$preferred_locales = preferred_languages_get_list();
 
-	if ( empty( $preferred_locales ) || is_readable( $mofile ) ) {
+	if ( empty( $preferred_locales ) ) {
 		return $mofile;
 	}
 
