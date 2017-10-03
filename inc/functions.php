@@ -333,7 +333,7 @@ function preferred_languages_display_form( $args = array() ) {
 				'native_name' => $translation['native_name'],
 				'lang'        => current( $translation['iso'] ),
 			);
-		} else if ( 'en_US' !== $locale ) {
+		} elseif ( 'en_US' !== $locale ) {
 			$preferred_languages[] = array(
 				'language'    => $locale,
 				'native_name' => $locale,
