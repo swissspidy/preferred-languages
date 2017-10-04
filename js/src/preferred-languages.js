@@ -1,7 +1,7 @@
 ( ( ( wp, settings, $ ) => {
 	const $activeLocales           = $( '.active-locales-list' );
 	const $activeLocalesControls   = $( '.active-locales-controls' );
-	const $inactiveLocales         = $( '.inactive-locales-list' );
+	const $inactiveLocales         = $( '.inactive-locales-list select' );
 	const $inactiveLocalesControls = $( '.inactive-locales-controls' );
 	let $selectedLocale            = $activeLocales.find( 'li[aria-selected="true"]' );
 	const $inputField              = $( 'input[name="preferred_languages"]' );
@@ -30,7 +30,7 @@
 		);
 		$inactiveLocalesControls.find( '.locales-add' ).attr(
 			'disabled',
-			'disabled' === $inactiveLocales.find( 'select' ).attr( 'disabled' )
+			'disabled' === $inactiveLocales.attr( 'disabled' )
 		);
 	}
 
@@ -166,7 +166,7 @@
 
 		// 3. Make visible in dropdown again.
 		$inactiveLocales.find( `select option[value="${locale}"]` ).removeClass( 'hidden' );
-		$inactiveLocales.find( 'select' ).attr( 'disabled', false );
+		$inactiveLocales.attr( 'disabled', false );
 
 		// 4. Update hidden input field.
 		updateHiddenInput();
@@ -196,7 +196,7 @@
 		}
 
 		if ( ! $successor.length ) {
-			$inactiveLocales.find( 'select' ).attr( 'disabled', true );
+			$inactiveLocales.attr( 'disabled', true );
 		}
 
 		// 1. Change selected value in dropdown.
@@ -291,7 +291,7 @@
 
 	// Add new locale to list.
 	$inactiveLocalesControls.find( '.locales-add' ).on( 'click', () => {
-		makeLocaleActive( $inactiveLocales.find( 'select option:selected' ) );
+		makeLocaleActive( $inactiveLocales.find( 'option:selected' ) );
 	} );
 
 	// Select a locale.
