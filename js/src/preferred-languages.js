@@ -257,7 +257,7 @@
 		items: ':not(#active-locales-list-empty-message)'
 	});
 
-	// Arrow key handler.
+	// Active locales keyboard shortcuts.
 	$activeLocales.on( 'keydown', e => {
 
 		// Up.
@@ -285,6 +285,19 @@
 		// Backspace.
 		if ( 8 === e.which ) {
 			removeActiveLocale();
+			e.preventDefault();
+		}
+	} );
+
+	// Inactive Locales keyboard shortcuts.
+	$inactiveLocales.on( 'keydown', e => {
+
+		// Letter "A".
+		if ( 65 === e.which ) {
+			if ( e.altKey ) {
+				makeLocaleActive( $inactiveLocales.find( 'option:selected' ) );
+			}
+
 			e.preventDefault();
 		}
 	} );
