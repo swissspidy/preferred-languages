@@ -465,6 +465,10 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		/* @var Preferred_Languages_Textdomain_Registry $textdomain_registry */
 		global $textdomain_registry;
 
+		if ( ! $textdomain_registry instanceof  Preferred_Languages_Textdomain_Registry ) {
+			preferred_languages_init_registry();
+		}
+
 		$path = $textdomain_registry->get( $domain );
 
 		if ( ! $path ) {
