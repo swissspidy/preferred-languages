@@ -347,6 +347,7 @@ function preferred_languages_display_form( $args = array() ) {
 	}
 	?>
 	<div class="preferred-languages">
+		<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $args['selected'] ) ); ?>"/>
 		<p><?php _e( 'Choose languages for displaying WordPress in, in order of preference.', 'preferred-languages' ); ?></p>
 		<div class="active-locales">
 			<ul
@@ -378,7 +379,6 @@ function preferred_languages_display_form( $args = array() ) {
 					?>
 				</li>
 			</ul>
-			<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $args['selected'] ) ); ?>"/>
 			<div class="active-locales-controls">
 				<ul>
 					<li>
