@@ -251,7 +251,7 @@ function preferred_languages_register_scripts() {
 		'preferred-languages',
 		plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages' . $rtl_suffix . '.css',
 		array(),
-		'20171002',
+		'20171006',
 		'screen'
 	);
 }

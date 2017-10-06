@@ -1,9 +1,31 @@
+.active-locales {
+	margin: 1em 0;
+}
+
 .active-locales-list,
 .inactive-locales-list {
 	width: 25em;
-	margin-right: 1em;
+	margin: 0 1em 1em 0;
 	clear: both;
 	float: left;
+}
+
+.active-locales-controls {
+	clear: both;
+}
+
+.active-locales-controls ul {
+	margin: 0;
+}
+
+.active-locales-controls .button {
+	margin: 0;
+}
+
+@media screen and (min-width: 510px) {
+	.active-locales-controls {
+		clear: none;
+	}
 }
 
 .active-locales-list {
