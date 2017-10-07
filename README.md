@@ -6,15 +6,19 @@ A [feature project](https://make.wordpress.org/core/features/) for letting WordP
 
 This plugin lets you select multiple preferred languages in your settings. WordPress then tries to load the translations for the first language that's available, falling back to the next language in your list.
 
-This works great when you want to display WordPress in a locale like German (Formal) and have it fall back to informal German when there's no translation available.
+This works great when you want to display WordPress in a locale like German (formal) and have it fall back to informal German when there's no translation available.
+
+## Download
+
+This GitHub repository holds the source files for the plugin. To download the final build, [head over to WordPress.org](https://wordpress.org/plugins/preferred-languages/).
 
 ## Screenshots
 
-![Preferred Languages: Settings Section](https://raw.githubusercontent.com/swissspidy/preferred-languages/master/assets/screenshot-1.png)
+![Preferred Languages: Settings Section](https://ps.w.org/preferred-languages/assets/screenshot-1.png?rev=1739409)
 
 Preferred Languages settings section
 
-![Preferred Languages: User Profile](https://raw.githubusercontent.com/swissspidy/preferred-languages/master/assets/screenshot-2.png)
+![Preferred Languages: User Profile](https://ps.w.org/preferred-languages/assets/screenshot-2.png?rev=1739409)
 
 A user’s individual list of preferred languages
 
