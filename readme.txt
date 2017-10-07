@@ -2,9 +2,9 @@
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, l10n, language, locale, translation
 Requires at least: 4.7
-Tested up to: 4.8
+Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 1.0.1
+Stable tag: 1.1.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -21,7 +21,29 @@ This feature project aims to change that by letting users choose multiple langua
 1. The new language section in 'Settings' -> 'General'
 2. The new language section in your user profile.
 
+== Changelog ==
+
+= 1.1.0 =
+
+* New: Support for just-in-time loading of translations.
+* New: Keyboard shortcut for making inactive locales active.
+* Fixed: Responsive design improvements.
+* Fixed: Worked around a few edge cases with the various controls.
+* Fixed: Added missing text domains.
+
+= 1.0.1 =
+
+* Fixed: Fixed a bug that prevented saving changes.
+
+= 1.0.0 =
+
+* Initial release.
+
 == Upgrade Notice ==
+
+= 1.1.0 =
+
+This release includes some accessibility and usability improvements, as well as support for just-in-time loading of translations.
 
 = 1.0.1 =
 
@@ -30,11 +52,3 @@ This release fixes a bug that prevented saving changes in some cases.
 = 1.0.0 =
 
 Initial release.
-
-== Changelog ==
-
-= 1.0.1 =
-* Fixed: Fixed a bug that prevented saving changes.
-
-= 1.0.0 =
-* Initial release.
