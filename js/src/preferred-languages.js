@@ -238,7 +238,7 @@
 	$( '#WPLANG' ).parent().parent().remove();
 
 	// Remove en_US as an option from the dropdown.
-	$inactiveLocales.find( '[lang="en"]' ).remove();
+	$inactiveLocales.find( '[lang="en"][value=""]' ).remove();
 
 	// Change initial button state.
 	changeButtonState( $selectedLocale );
