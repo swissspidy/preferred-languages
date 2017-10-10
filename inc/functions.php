@@ -251,7 +251,7 @@ function preferred_languages_register_scripts() {
 		'preferred-languages',
 		plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages' . $rtl_suffix . '.css',
 		array(),
-		'20171006',
+		'20171010',
 		'screen'
 	);
 }
@@ -350,6 +350,26 @@ function preferred_languages_display_form( $args = array() ) {
 		<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $args['selected'] ) ); ?>"/>
 		<p><?php _e( 'Choose languages for displaying WordPress in, in order of preference.', 'preferred-languages' ); ?></p>
 		<div class="active-locales">
+			<?php
+			if ( true === $args['show_option_site_default'] ) {
+				$screen_reader_text = __( 'No languages selected. Falling back to Site Default.', 'preferred-languages' );
+			} else {
+				/* translators: %s: English (United States) */
+				$screen_reader_text = sprintf( __( 'No languages selected. Falling back to %s.', 'preferred-languages' ), 'English (United States)' );
+			}
+			?>
+			<div class="<?php echo ! empty( $preferred_languages ) ? 'hidden' : ''; ?>" id="active-locales-empty-message" data-a11y-message="<?php echo esc_attr( $screen_reader_text ); ?>">
+				<?php _e( 'Nothing set.', 'preferred-languages' ); ?>
+				<br>
+				<?php
+				if ( true === $args['show_option_site_default'] ) {
+					_e( 'Falling back to Site Default.', 'preferred-languages' );
+				} else {
+					/* translators: %s: English (United States) */
+					printf( __( 'Falling back to %s.', 'preferred-languages' ), 'English (United States)' );
+				}
+				?>
+			</div>
 			<ul
 				role="listbox"
 				aria-labelledby="preferred-languages-label"
@@ -366,18 +386,6 @@ function preferred_languages_display_form( $args = array() ) {
 						<?php echo esc_html( $language['native_name'] ); ?>
 					</li>
 				<?php endforeach; ?>
-				<li class="<?php echo ! empty( $preferred_languages ) ? 'hidden' : ''; ?>" id="active-locales-list-empty-message">
-					<?php _e( 'Nothing set.', 'preferred-languages' ); ?>
-					<br>
-					<?php
-					if ( true === $args['show_option_site_default'] ) {
-						_e( 'Falling back to Site Default.', 'preferred-languages' );
-					} else {
-						/* translators: %s: English (United States) */
-						printf( __( 'Falling back to %s.', 'preferred-languages' ), 'English (United States)' );
-					}
-					?>
-				</li>
 			</ul>
 			<div class="active-locales-controls">
 				<ul>

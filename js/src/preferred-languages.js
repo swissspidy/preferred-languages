@@ -1,6 +1,7 @@
 ( ( ( wp, settings, $ ) => {
 	const $activeLocales           = $( '.active-locales-list' );
 	const $activeLocalesControls   = $( '.active-locales-controls' );
+	const $emptyMessage            = $( '#active-locales-empty-message' );
 	const $inactiveLocales         = $( '.inactive-locales-list select' );
 	const $inactiveLocalesControls = $( '.inactive-locales-controls' );
 	let $selectedLocale            = $activeLocales.find( 'li[aria-selected="true"]' );
@@ -121,22 +122,19 @@
 	/**
 	 * Displays a message in case the list of active locales is empty.
 	 *
-	 * @since 1.0.0
+	 * @since 1.1.1
 	 */
-	function showEmptyListMessage() {
-		$activeLocales.addClass( 'empty-list' );
-		$activeLocales.attr( 'aria-activedescendant', '' );
-		$activeLocales.find( '#active-locales-list-empty-message' ).removeClass( 'hidden' );
-	}
+	function toggleEmptyListMessage() {
+		if ( $activeLocales.hasClass( 'empty-list' ) ) {
+			$activeLocales.removeClass( 'empty-list' );
+			$emptyMessage.addClass( 'hidden' );
+		} else {
+			$activeLocales.addClass( 'empty-list' );
+			$activeLocales.attr( 'aria-activedescendant', '' );
+			$emptyMessage.removeClass( 'hidden' );
 
-	/**
-	 * Hides the empty list of locales message.
-	 *
-	 * @since 1.0.0
-	 */
-	function hideEmptyListMessage() {
-		$activeLocales.removeClass( 'empty-list' );
-		$activeLocales.find( '#active-locales-list-empty-message' ).addClass( 'hidden' );
+			wp.a11y.speak( $emptyMessage.data( 'a11y-message' ) );
+		}
 	}
 
 	/**
@@ -148,10 +146,10 @@
 		let locale = $selectedLocale.attr( 'id' );
 		let $successor;
 
-		$successor = $selectedLocale.prevAll( ':visible:first' );
+		$successor = $selectedLocale.prevAll( ':first' );
 
 		if ( 0 === $successor.length ) {
-			$successor = $selectedLocale.nextAll( ':visible:first' );
+			$successor = $selectedLocale.nextAll( ':first' );
 		}
 
 		// 1. Remove selected locale.
@@ -161,7 +159,7 @@
 		if ( $successor.length ) {
 			toggleLocale( $successor );
 		} else {
-			showEmptyListMessage();
+			toggleEmptyListMessage();
 		}
 
 		// 3. Make visible in dropdown again.
@@ -213,7 +211,7 @@
 
 		// 3. Hide empty list message if present.
 		if ( $activeLocales.hasClass( 'empty-list' ) ) {
-			hideEmptyListMessage();
+			toggleEmptyListMessage();
 		}
 
 		// 4. Add to list.

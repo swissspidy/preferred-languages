@@ -66,11 +66,13 @@
 	background: rgba(0, 0, 0, 0.15);
 }
 
-#active-locales-list-empty-message {
-	background: transparent;
+#active-locales-empty-message {
 	text-align: center;
-	height: auto;
-	cursor: default;
+	width: 25em;
+	height: 98px;
+	margin-bottom: -98px;
+	padding-top: 30px;
+	box-sizing: border-box;
 }
 
 .inactive-locales {
