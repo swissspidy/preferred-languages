@@ -163,7 +163,7 @@
 		}
 
 		// 3. Make visible in dropdown again.
-		$inactiveLocales.find( `select option[value="${locale}"]` ).removeClass( 'hidden' );
+		$inactiveLocales.find( `option[value="${locale}"]` ).removeClass( 'hidden' );
 		$inactiveLocales.attr( 'disabled', false );
 
 		// 4. Update hidden input field.
