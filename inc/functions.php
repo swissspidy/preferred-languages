@@ -228,7 +228,7 @@ function preferred_languages_register_scripts() {
 			'jquery-ui-sortable',
 			'wp-a11y',
 		),
-		'20171010',
+		'20171011',
 		true
 	);
 
