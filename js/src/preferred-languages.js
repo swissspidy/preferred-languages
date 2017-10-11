@@ -40,10 +40,10 @@
 	 *
 	 * @since 1.0.0
 	 *
-	 * @param {jQuery} locale Locale element.
+	 * @param {jQuery} $locale Locale element.
 	 */
-	function toggleLocale( locale ) {
-		const selected = locale.attr( 'aria-selected' );
+	function toggleLocale( $locale ) {
+		const selected = $locale.attr( 'aria-selected' );
 		const newState = '' === selected ? true : !! selected;
 
 		// It's already the current locale, so nothing to do here.
@@ -53,15 +53,15 @@
 
 		$selectedLocale.attr( 'aria-selected', false );
 
-		locale.attr( 'aria-selected', newState );
+		$locale.attr( 'aria-selected', newState );
 
 		if ( true === newState ) {
-			$selectedLocale = locale;
+			$selectedLocale = $locale;
 
 			$activeLocales.attr( 'aria-activedescendant', $selectedLocale.attr( 'id' ) );
 		}
 
-		changeButtonState( locale );
+		changeButtonState( $locale );
 	}
 
 	/**
