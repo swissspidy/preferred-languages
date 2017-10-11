@@ -244,8 +244,16 @@
 	// Initially hide already active locales from dropdown.
 	if ( $inputField.val().length ) {
 		$.each( $inputField.val().split( ',' ), ( index, value ) => {
-			makeLocaleActive( $inactiveLocales.find( `[value="${value}"]` ) );
+			const $option = $inactiveLocales.find( `[value="${value}"]` );
+
+			// 2. Hide from dropdown.
+			$option.removeAttr( 'selected' ).addClass( 'hidden' );
 		} );
+
+		const $firstInactiveLocale = $inactiveLocales.find( 'option:not(.hidden):first' );
+
+		$firstInactiveLocale.attr( 'selected', true );
+		$inactiveLocalesControls.val( $firstInactiveLocale.val() );
 	}
 
 	// Enabling sorting locales using drag and drop.
