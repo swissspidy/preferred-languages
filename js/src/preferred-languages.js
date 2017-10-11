@@ -142,7 +142,7 @@
 	 *
 	 * @since 1.0.0
 	 */
-	function removeActiveLocale() {
+	function makeLocaleInactive() {
 		let locale = $selectedLocale.attr( 'id' );
 		let $successor;
 
@@ -290,7 +290,7 @@
 
 		// Backspace.
 		if ( 8 === e.which ) {
-			removeActiveLocale();
+			makeLocaleInactive();
 			e.preventDefault();
 		}
 	} );
@@ -323,5 +323,5 @@
 	$activeLocalesControls.find( '.locales-move-down' ).on( 'click', moveLocaleDown );
 
 	// Remove locale from list.
-	$activeLocalesControls.find( '.locales-remove' ).on( 'click', removeActiveLocale );
+	$activeLocalesControls.find( '.locales-remove' ).on( 'click', makeLocaleInactive );
 } ) )( wp, preferredLanguages, jQuery );
