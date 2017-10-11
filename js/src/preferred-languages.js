@@ -184,8 +184,11 @@
 	 * @param {jQuery} option The locale element.
 	 */
 	function makeLocaleActive( option ) {
-		const $newLocale = $( '<li/>', { 'id': option.val(), text: option.text(), 'aria-selected': false, 'class': 'active-locale' } );
+		const $newLocale = $( '<li/>', { text: option.text(), 'role': 'option', 'aria-selected': false, 'id': option.val(), 'class': 'active-locale', } );
 		let $successor;
+
+		// 1. Hide from dropdown.
+		option.removeAttr( 'selected' ).addClass( 'hidden' );
 
 		$successor = option.prevAll( ':not(.hidden):first' );
 
@@ -193,16 +196,18 @@
 			$successor = option.nextAll( ':not(.hidden):first' );
 		}
 
+		// Empty optgroup, just select the first option we can find.
+		if ( ! $successor.length ) {
+			$successor = $inactiveLocales.find( 'option:not(.hidden):first' );
+		}
+
 		if ( ! $successor.length ) {
 			$inactiveLocales.attr( 'disabled', true );
 		}
 
-		// 1. Change selected value in dropdown.
+		// 2. Change selected value in dropdown.
 		$successor.attr( 'selected', true );
 		$inactiveLocalesControls.val( $successor.val() );
-
-		// 2. Hide from dropdown.
-		option.removeAttr( 'selected' ).addClass( 'hidden' );
 
 		// It's already in the list of active locales, stop here.
 		if ( $activeLocales.find( `#${option.val()}` ).length ) {
