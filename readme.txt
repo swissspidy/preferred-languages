@@ -56,7 +56,7 @@ If you want to get involved, check out [open issues](https://github.com/swissspi
 
 = 1.2.0 =
 
-Fix various bugs when adding and removing multiple languages.
+This release fixes various bugs when adding and removing multiple languages.
 
 = 1.1.0 =
 
