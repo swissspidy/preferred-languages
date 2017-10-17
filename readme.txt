@@ -16,6 +16,14 @@ Thanks to language packs it's easier than ever before to change the main languag
 
 This feature project aims to change that by letting users choose multiple languages for displaying WordPress in. That way you can set some sort of "fallback chain" where WordPress tries to load translations in your preferred order.
 
+Please help us test this plugin and let us know if something is not working as you think it should.
+
+= Get Involved =
+
+Active development is taking place on [GitHub](https://github.com/swissspidy/preferred-languages).
+
+If you want to get involved, check out [open issues](https://github.com/swissspidy/preferred-languages/issues) and join the [#core-i18n](https://wordpress.slack.com/messages/core-i18n) channel on [Slack](https://wordpress.slack.com/). If you don't have a Slack account yet, you can sign up at [make.wordpress.org/chat/](https://make.wordpress.org/chat/).
+
 == Screenshots ==
 
 1. The new language section in 'Settings' -> 'General'
