@@ -4,7 +4,7 @@ Tags: internationalization, i18n, localization, l10n, language, locale, translat
 Requires at least: 4.7
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 1.1.0
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -23,6 +23,11 @@ This feature project aims to change that by letting users choose multiple langua
 
 == Changelog ==
 
+= 1.2.0 =
+
+* Fixed: Other English locales can now be added again.
+* Fixed: Prevented some errors when adding all available locales.
+
 = 1.1.0 =
 
 * New: Support for just-in-time loading of translations.
@@ -40,6 +45,10 @@ This feature project aims to change that by letting users choose multiple langua
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.2.0 =
+
+Fix various bugs when adding and removing multiple languages.
 
 = 1.1.0 =
 

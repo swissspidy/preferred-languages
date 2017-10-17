@@ -1,6 +1,6 @@
 {
   "name": "preferred-languages",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "Choose languages for displaying WordPress in, in order of preference.",
   "repository": {
     "type": "git",
