@@ -9,4 +9,24 @@
 			<property name="text_domain" value="preferred-languages" />
 		</properties>
 	</rule>
+
+	<!-- Check all PHP files in directory tree by default. -->
+	<arg name="extensions" value="php"/>
+	<file>.</file>
+
+	<!-- File Layout: Declare symbols or run code, but not both. -->
+	<rule ref="PSR1.Files.SideEffects" />
+
+	<!-- Prevent false positives for IDE annotations. -->
+	<rule ref="Squiz.PHP.CommentedOutCode">
+		<properties>
+			<property name="maxPercentage" value="75" />
+		</properties>
+	</rule>
+
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/tests/*</exclude-pattern>
+	<exclude-pattern>*.js</exclude-pattern>
+	<exclude-pattern>*.css</exclude-pattern>
 </ruleset>

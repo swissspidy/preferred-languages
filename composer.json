@@ -13,5 +13,13 @@
   ],
   "require": {
     "php": ">=5.2.4"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+		"wp-coding-standards/wpcs": "^0.14.0"
+  },
+  "scripts": {
+    "format": "vendor/bin/phpcbf --report-summary --report-source .",
+    "lint": "vendor/bin/phpcs --report-summary --report-source ."
   }
 }
