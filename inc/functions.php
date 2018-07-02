@@ -1,4 +1,9 @@
 <?php
+/**
+ * Plugin functions.
+ *
+ * @package PreferredLanguages
+ */
 
 /**
  * Registers the option for the preferred languages.
@@ -25,13 +30,15 @@ function preferred_languages_register_setting() {
  * @since 1.0.0
  */
 function preferred_languages_register_meta() {
-	register_meta( 'user', 'preferred_languages', array(
-		'type'              => 'string',
-		'description'       => 'List of preferred languages',
-		'single'            => true,
-		'sanitize_callback' => 'preferred_languages_sanitize_list',
-		'show_in_rest'      => true,
-	) );
+	register_meta(
+		'user', 'preferred_languages', array(
+			'type'              => 'string',
+			'description'       => 'List of preferred languages',
+			'single'            => true,
+			'sanitize_callback' => 'preferred_languages_sanitize_list',
+			'show_in_rest'      => true,
+		)
+	);
 }
 
 /**
@@ -294,11 +301,13 @@ function preferred_languages_personal_options( $user ) {
 		</th>
 		<td>
 			<?php
-			preferred_languages_display_form( array(
-				'selected'                    => array_filter( explode( ',', get_user_option( 'preferred_languages', $user->ID ) ) ),
-				'show_available_translations' => false,
-				'show_option_site_default'    => true,
-			) );
+			preferred_languages_display_form(
+				array(
+					'selected'                    => array_filter( explode( ',', get_user_option( 'preferred_languages', $user->ID ) ) ),
+					'show_available_translations' => false,
+					'show_option_site_default'    => true,
+				)
+			);
 			?>
 		</td>
 	</tr>
@@ -315,11 +324,13 @@ function preferred_languages_personal_options( $user ) {
 function preferred_languages_display_form( $args = array() ) {
 	wp_enqueue_script( 'preferred-languages' );
 
-	$args = wp_parse_args( $args, array(
-		'selected'                    => array(),
-		'show_available_translations' => true,
-		'show_option_site_default'    => false,
-	) );
+	$args = wp_parse_args(
+		$args, array(
+			'selected'                    => array(),
+			'show_available_translations' => true,
+			'show_option_site_default'    => false,
+		)
+	);
 
 	require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 	$translations = wp_get_available_translations();
@@ -424,13 +435,15 @@ function preferred_languages_display_form( $args = array() ) {
 		<label class="screen-reader-text" for="preferred-languages-inactive-locales"><?php _e( 'Inactive Locales', 'preferred-languages' ); ?></label>
 		<div class="inactive-locales-list">
 			<?php
-			wp_dropdown_languages( array(
-				'id'                          => 'preferred-languages-inactive-locales',
-				'name'                        => 'preferred-languages-inactive-locales',
-				'languages'                   => $languages,
-				'translations'                => $translations,
-				'show_available_translations' => $args['show_available_translations'],
-			) );
+			wp_dropdown_languages(
+				array(
+					'id'                          => 'preferred-languages-inactive-locales',
+					'name'                        => 'preferred-languages-inactive-locales',
+					'languages'                   => $languages,
+					'translations'                => $translations,
+					'show_available_translations' => $args['show_available_translations'],
+				)
+			);
 			?>
 		</div>
 		<div class="inactive-locales-controls">
@@ -496,7 +509,8 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 
 			if ( load_textdomain( $domain, $mofile ) ) {
 				$translations = get_translations_for_domain( $domain );
-				$translation  = $translations->translate( $text );
+				// phpcs:ignore WordPress.WP.I18n
+				$translation = $translations->translate( $text );
 
 				break;
 			}
