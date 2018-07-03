@@ -1,5 +1,7 @@
 # Preferred Languages
 
+[![Build Status](https://travis-ci.com/swissspidy/preferred-languages.svg?branch=master)](https://travis-ci.com/swissspidy/preferred-languages) [![codecov](https://codecov.io/gh/swissspidy/preferred-languages/branch/master/graph/badge.svg)](https://codecov.io/gh/swissspidy/preferred-languages)
+
 A [feature project](https://make.wordpress.org/core/features/) for letting WordPress users set their site's language in a more sensible way.
 
 ## What it does
