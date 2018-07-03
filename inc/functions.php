@@ -127,19 +127,14 @@ function preferred_languages_get_list() {
  * @param string $value     The new option value.
  */
 function preferred_languages_download_language_packs( $old_value, $value ) {
-	if ( is_multisite() && ! is_super_admin() ) {
+	if ( ! current_user_can( 'install_languages' ) ) {
 		return;
 	}
 
 	// Handle translation install.
 	require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 
-	if ( ! wp_can_install_language_pack() ) {
-		return;
-	}
-
-	$locales = $value;
-	$locales = explode( ',', $locales );
+	$locales = explode( ',', $value );
 
 	$installed_languages = array();
 
@@ -340,7 +335,7 @@ function preferred_languages_personal_options( $user ) {
 			preferred_languages_display_form(
 				array(
 					'selected'                    => preferred_languages_get_user_list( $user ),
-					'show_available_translations' => false,
+					'show_available_translations' => current_user_can( 'install_languages' ),
 					'show_option_site_default'    => true,
 					'show_option_en_US'           => true,
 				)
@@ -364,7 +359,7 @@ function preferred_languages_display_form( $args = array() ) {
 	$args = wp_parse_args(
 		$args, array(
 			'selected'                    => array(),
-			'show_available_translations' => true,
+			'show_available_translations' => current_user_can( 'install_languages' ),
 			'show_option_site_default'    => false,
 			'show_option_en_US'           => false,
 		)
