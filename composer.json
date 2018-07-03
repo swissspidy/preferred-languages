@@ -20,6 +20,7 @@
   },
   "scripts": {
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
-    "lint": "vendor/bin/phpcs --report-summary --report-source ."
+    "lint": "vendor/bin/phpcs --report-summary --report-source .",
+    "test": "phpunit"
   }
 }
