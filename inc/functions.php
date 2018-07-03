@@ -119,22 +119,74 @@ function preferred_languages_get_list() {
 }
 
 /**
- * Downloads language packs upon updating the option.
+ * Downloads language pack when updating user meta.
  *
- * @since 1.0.0
+ * @since 1.3.0
+ *
+ * @param int    $meta_id    ID of the metadata entry to update.
+ * @param int    $object_id  Object ID.
+ * @param string $meta_key   Meta key.
+ * @param mixed  $meta_value Meta value.
+ */
+function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, $meta_value ) {
+	if ( 'preferred_languages' !== $meta_key ) {
+		return;
+	}
+
+	remove_filter( 'update_user_meta', 'preferred_languages_update_user_meta' );
+
+	$locales             = array_filter( explode( ',', $meta_value ) );
+	$installed_languages = preferred_languages_download_language_packs( $locales );
+
+	// Only store actually installed languages in option.
+	update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+
+	add_filter( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
+
+	// Reload translations after save.
+	$preferred_languages_list = preferred_languages_get_list();
+	load_default_textdomain( reset( $preferred_languages_list ) );
+}
+
+/**
+ * Downloads language packs upon updating the site option.
+ *
+ * @since 1.3.0
  *
  * @param string $old_value The old option value.
  * @param string $value     The new option value.
  */
-function preferred_languages_download_language_packs( $old_value, $value ) {
+function preferred_languages_update_option( $old_value, $value ) {
+	remove_filter( 'update_option_preferred_languages', 'preferred_languages_update_option' );
+
+	$locales             = array_filter( explode( ',', $value ) );
+	$installed_languages = preferred_languages_download_language_packs( $locales );
+
+	// Only store actually installed languages in option.
+	update_option( 'preferred_languages', implode( ',', $installed_languages ) );
+
+	add_filter( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
+
+	// Reload translations after save.
+	$preferred_languages_list = preferred_languages_get_list();
+	load_default_textdomain( reset( $preferred_languages_list ) );
+}
+
+/**
+ * Downloads language packs upon updating the option.
+ *
+ * @since 1.0.0
+ *
+ * @param array $locales The language packs to install.
+ * @return array|false The installed language packs or false on failure.
+ */
+function preferred_languages_download_language_packs( $locales ) {
 	if ( ! current_user_can( 'install_languages' ) ) {
-		return;
+		return false;
 	}
 
 	// Handle translation install.
 	require_once ABSPATH . 'wp-admin/includes/translation-install.php';
-
-	$locales = explode( ',', $value );
 
 	$installed_languages = array();
 
@@ -145,16 +197,7 @@ function preferred_languages_download_language_packs( $old_value, $value ) {
 		}
 	}
 
-	remove_filter( 'update_option_preferred_languages', 'preferred_languages_download_language_packs' );
-
-	// Only store actually installed languages in option.
-	update_option( 'preferred_languages', implode( ',', $installed_languages ) );
-
-	add_filter( 'update_option_preferred_languages', 'preferred_languages_download_language_packs', 10, 2 );
-
-	// Reload translations after save.
-	$preferred_languages_list = preferred_languages_get_list();
-	load_default_textdomain( reset( $preferred_languages_list ) );
+	return $installed_languages;
 }
 
 /**
@@ -322,7 +365,7 @@ function preferred_languages_settings_field() {
 function preferred_languages_personal_options( $user ) {
 	$languages = get_available_languages();
 
-	if ( ! $languages ) {
+	if ( ! $languages && ! current_user_can( 'install_languages' ) ) {
 		return;
 	}
 	?>
