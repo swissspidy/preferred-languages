@@ -55,10 +55,49 @@ function preferred_languages_update_user_option( $user_id ) {
 }
 
 /**
+ * Returns the list of preferred languages of a user.
+ *
+ * @since 1.3.0
+ *
+ * @param int|WP_User $user_id User's ID or a WP_User object. Defaults to current user.
+ * @return array|false Preferred languages or false if user does not exists.
+ */
+function preferred_languages_get_user_list( $user_id = 0 ) {
+	$user = false;
+
+	if ( 0 === $user_id && function_exists( 'wp_get_current_user' ) ) {
+		$user = wp_get_current_user();
+	} elseif ( $user_id instanceof WP_User ) {
+		$user = $user_id;
+	} elseif ( $user_id && is_numeric( $user_id ) ) {
+		$user = get_user_by( 'id', $user_id );
+	}
+
+	if ( ! $user ) {
+		return false;
+	}
+
+	$preferred_languages = get_user_meta( $user->ID, 'preferred_languages', true );
+	return array_filter( explode( ',', $preferred_languages ) );
+}
+
+/**
+ * Returns the list of preferred languages of the current site.
+ *
+ * @since 1.3.0
+ *
+ * @return array|false Preferred languages.
+ */
+function preferred_languages_get_site_list() {
+	$preferred_languages = get_option( 'preferred_languages', '' );
+	return array_filter( explode( ',', $preferred_languages ) );
+}
+
+/**
  * Returns the list of preferred languages.
  *
  * If in the admin area, this returns the data for the current user.
- * Else the site settings are used.
+ * Otherwise the site settings are used.
  *
  * @since 1.0.0
  *
@@ -68,17 +107,15 @@ function preferred_languages_get_list() {
 	$preferred_languages = array();
 
 	if ( is_admin() ) {
-		$preferred_languages = get_user_meta( get_current_user_id(), 'preferred_languages', true );
-		$preferred_languages = array_filter( explode( ',', $preferred_languages ) );
+		$preferred_languages = preferred_languages_get_user_list( get_current_user_id() );
+	}
+
+	if ( ! empty( $preferred_languages ) ) {
+		return $preferred_languages;
 	}
 
 	// Fall back to site setting.
-	if ( empty( $preferred_languages ) ) {
-		$preferred_languages = get_option( 'preferred_languages', '' );
-		$preferred_languages = array_filter( explode( ',', $preferred_languages ) );
-	}
-
-	return $preferred_languages;
+	return preferred_languages_get_site_list();
 }
 
 /**
@@ -176,8 +213,7 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
 		return $value;
 	}
 
-	$preferred_languages = get_user_meta( $object_id, 'preferred_languages', true );
-	$preferred_languages = array_filter( explode( ',', $preferred_languages ) );
+	$preferred_languages = preferred_languages_get_user_list( $object_id );
 
 	if ( ! empty( $preferred_languages ) ) {
 		return reset( $preferred_languages );
@@ -258,7 +294,7 @@ function preferred_languages_register_scripts() {
 		'preferred-languages',
 		plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages' . $rtl_suffix . '.css',
 		array(),
-		'20171010',
+		'20180702',
 		'screen'
 	);
 }
@@ -276,7 +312,7 @@ function preferred_languages_settings_field() {
 		'general',
 		'default',
 		array(
-			'selected' => array_filter( explode( ',', get_option( 'preferred_languages', '' ) ) ),
+			'selected' => preferred_languages_get_site_list(),
 		)
 	);
 }
@@ -303,9 +339,10 @@ function preferred_languages_personal_options( $user ) {
 			<?php
 			preferred_languages_display_form(
 				array(
-					'selected'                    => array_filter( explode( ',', get_user_option( 'preferred_languages', $user->ID ) ) ),
+					'selected'                    => preferred_languages_get_user_list( $user ),
 					'show_available_translations' => false,
 					'show_option_site_default'    => true,
+					'show_option_en_US'           => true,
 				)
 			);
 			?>
@@ -329,6 +366,7 @@ function preferred_languages_display_form( $args = array() ) {
 			'selected'                    => array(),
 			'show_available_translations' => true,
 			'show_option_site_default'    => false,
+			'show_option_en_US'           => false,
 		)
 	);
 
@@ -339,7 +377,7 @@ function preferred_languages_display_form( $args = array() ) {
 
 	$preferred_languages = array();
 
-	foreach ( $args['selected'] as $locale ) {
+	foreach ( (array) $args['selected'] as $locale ) {
 		if ( isset( $translations[ $locale ] ) ) {
 			$translation = $translations[ $locale ];
 
@@ -354,19 +392,26 @@ function preferred_languages_display_form( $args = array() ) {
 				'native_name' => $locale,
 				'lang'        => '',
 			);
+		} else {
+			$preferred_languages[] = array(
+				'language'    => $locale,
+				'native_name' => 'English (United States)',
+				'lang'        => 'en',
+			);
 		}
 	}
+
 	?>
 	<div class="preferred-languages">
 		<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $args['selected'] ) ); ?>"/>
 		<p><?php _e( 'Choose languages for displaying WordPress in, in order of preference.', 'preferred-languages' ); ?></p>
 		<div class="active-locales">
 			<?php
+			/* translators: %s: English (United States) */
+			$screen_reader_text = sprintf( __( 'No languages selected. Falling back to %s.', 'preferred-languages' ), 'English (United States)' );
+
 			if ( true === $args['show_option_site_default'] ) {
 				$screen_reader_text = __( 'No languages selected. Falling back to Site Default.', 'preferred-languages' );
-			} else {
-				/* translators: %s: English (United States) */
-				$screen_reader_text = sprintf( __( 'No languages selected. Falling back to %s.', 'preferred-languages' ), 'English (United States)' );
 			}
 			?>
 			<div class="<?php echo ! empty( $preferred_languages ) ? 'hidden' : ''; ?>" id="active-locales-empty-message" data-a11y-message="<?php echo esc_attr( $screen_reader_text ); ?>">
@@ -433,7 +478,7 @@ function preferred_languages_display_form( $args = array() ) {
 	</div>
 	<div class="inactive-locales">
 		<label class="screen-reader-text" for="preferred-languages-inactive-locales"><?php _e( 'Inactive Locales', 'preferred-languages' ); ?></label>
-		<div class="inactive-locales-list">
+		<div class="inactive-locales-list" data-show-en_US="<?php echo $args['show_option_en_US'] ? 'true' : 'false'; ?>">
 			<?php
 			wp_dropdown_languages(
 				array(

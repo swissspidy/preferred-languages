@@ -2,7 +2,8 @@
 	const $activeLocales           = $( '.active-locales-list' );
 	const $activeLocalesControls   = $( '.active-locales-controls' );
 	const $emptyMessage            = $( '#active-locales-empty-message' );
-	const $inactiveLocales         = $( '.inactive-locales-list select' );
+	const $inactiveLocalesWrap     = $( '.inactive-locales-list' );
+	const $inactiveLocales         = $inactiveLocalesWrap.find( 'select' );
 	const $inactiveLocalesControls = $( '.inactive-locales-controls' );
 	let $selectedLocale            = $activeLocales.find( 'li[aria-selected="true"]' );
 	const $inputField              = $( 'input[name="preferred_languages"]' );
@@ -184,7 +185,8 @@
 	 * @param {jQuery} option The locale element.
 	 */
 	function makeLocaleActive( option ) {
-		const $newLocale = $( '<li/>', { text: option.text(), 'role': 'option', 'aria-selected': false, 'id': option.val(), 'class': 'active-locale', } );
+		const locale = option.val() || 'en_US';
+		const $newLocale = $( '<li/>', { text: option.text(), 'role': 'option', 'aria-selected': false, 'id': locale, 'class': 'active-locale', } );
 		let $successor;
 
 		// 1. Hide from dropdown.
@@ -210,7 +212,7 @@
 		$inactiveLocalesControls.val( $successor.val() );
 
 		// It's already in the list of active locales, stop here.
-		if ( $activeLocales.find( `#${option.val()}` ).length ) {
+		if ( $activeLocales.find( `#${locale}` ).length ) {
 			return;
 		}
 
@@ -241,7 +243,7 @@
 	$( '#WPLANG' ).parent().parent().remove();
 
 	// Remove en_US as an option from the dropdown.
-	$inactiveLocales.find( '[lang="en"][value=""]' ).remove();
+	$inactiveLocalesWrap.filter( '[data-show-en_US="false"]' ).find( '[lang="en"][value=""]' ).remove();
 
 	// Change initial button state.
 	changeButtonState( $selectedLocale );
@@ -249,6 +251,8 @@
 	// Initially hide already active locales from dropdown.
 	if ( $inputField.val().length ) {
 		$.each( $inputField.val().split( ',' ), ( index, value ) => {
+			value = 'en_US' === value ? '' : value;
+
 			const $option = $inactiveLocales.find( `[value="${value}"]` );
 
 			// 2. Hide from dropdown.

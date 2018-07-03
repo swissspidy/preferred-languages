@@ -23,7 +23,3 @@ add_filter( 'update_option_preferred_languages', 'preferred_languages_download_l
 add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
 add_filter( 'locale', 'preferred_languages_filter_locale' );
 add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10 );
-
-
-
-
