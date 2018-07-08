@@ -20,11 +20,11 @@
 
 		$activeLocalesControls.find( '.locales-move-up' ).attr(
 			'disabled',
-			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.first().is( activeLocale )
+			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.first().is( activeLocale )|| ! $selectedLocale.length
 		);
 		$activeLocalesControls.find( '.locales-move-down' ).attr(
 			'disabled',
-			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.last().is( activeLocale )
+			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.last().is( activeLocale )|| ! $selectedLocale.length
 		);
 		$activeLocalesControls.find( '.locales-remove' ).attr(
 			'disabled',
@@ -45,14 +45,21 @@
 	 */
 	function toggleLocale( $locale ) {
 		const selected = $locale.attr( 'aria-selected' );
-		const newState = '' === selected ? true : !! selected;
+		const newState = 'true' !== selected;
 
 		// It's already the current locale, so nothing to do here.
-		if ( true === selected ) {
+		if ( 'true' === selected ) {
+			$locale.attr( 'aria-selected', false );
+			$selectedLocale = [];
+
+			changeButtonState( $locale );
+
 			return;
 		}
 
-		$selectedLocale.attr( 'aria-selected', false );
+		if ( $selectedLocale.length ) {
+			$selectedLocale.attr( 'aria-selected', false );
+		}
 
 		$locale.attr( 'aria-selected', newState );
 
