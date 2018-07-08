@@ -4,7 +4,7 @@ Tags: internationalization, i18n, localization, l10n, language, locale, translat
 Requires at least: 4.9
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -31,6 +31,11 @@ If you want to get involved, check out [open issues](https://github.com/swissspi
 
 == Changelog ==
 
+= 1.3.0 =
+
+* New: Users can now choose English (United States) again as a preferred locale.
+* New: Users with the right capabilities can now install languages in their user profile as well.
+
 = 1.2.0 =
 
 * Fixed: Other English locales can now be added again.
@@ -53,6 +58,10 @@ If you want to get involved, check out [open issues](https://github.com/swissspi
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.3.0 =
+
+Users can now install new languages from their user profile. Also, English (US) can be chosen as a preferred user language.
 
 = 1.2.0 =
 
