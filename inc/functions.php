@@ -309,7 +309,7 @@ function preferred_languages_register_scripts() {
 			'jquery-ui-sortable',
 			'wp-a11y',
 		),
-		'20171011',
+		'20180708',
 		true
 	);
 
@@ -332,7 +332,7 @@ function preferred_languages_register_scripts() {
 		'preferred-languages',
 		plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages' . $rtl_suffix . '.css',
 		array(),
-		'20180702',
+		'20180708',
 		'screen'
 	);
 }
