@@ -359,7 +359,7 @@ function preferred_languages_register_scripts() {
 			'jquery-ui-sortable',
 			'wp-a11y',
 		),
-		'20180708',
+		'20180727',
 		true
 	);
 

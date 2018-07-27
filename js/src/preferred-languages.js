@@ -1,12 +1,13 @@
 ( ( ( wp, settings, $ ) => {
+	const $document                = $( document );
 	const $activeLocales           = $( '.active-locales-list' );
 	const $activeLocalesControls   = $( '.active-locales-controls' );
 	const $emptyMessage            = $( '#active-locales-empty-message' );
 	const $inactiveLocalesWrap     = $( '.inactive-locales-list' );
 	const $inactiveLocales         = $inactiveLocalesWrap.find( 'select' );
 	const $inactiveLocalesControls = $( '.inactive-locales-controls' );
-	let $selectedLocale            = $activeLocales.find( 'li[aria-selected="true"]' );
 	const $inputField              = $( 'input[name="preferred_languages"]' );
+	let $selectedLocale            = $activeLocales.find( 'li[aria-selected="true"]' );
 
 	/**
 	 * Changes the move button states.
@@ -20,15 +21,15 @@
 
 		$activeLocalesControls.find( '.locales-move-up' ).attr(
 			'disabled',
-			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.first().is( activeLocale )|| ! $selectedLocale.length
+			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.first().is( activeLocale )
 		);
 		$activeLocalesControls.find( '.locales-move-down' ).attr(
 			'disabled',
-			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.last().is( activeLocale )|| ! $selectedLocale.length
+			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.last().is( activeLocale )
 		);
 		$activeLocalesControls.find( '.locales-remove' ).attr(
 			'disabled',
-			$activeLocales.hasClass( 'empty-list' ) || ! $selectedLocale.length
+			$activeLocales.hasClass( 'empty-list' )
 		);
 		$inactiveLocalesControls.find( '.locales-add' ).attr(
 			'disabled',
@@ -49,22 +50,17 @@
 
 		// It's already the current locale, so nothing to do here.
 		if ( 'true' === selected ) {
-			$locale.attr( 'aria-selected', false );
-			$selectedLocale = [];
-
-			changeButtonState( $locale );
-
 			return;
 		}
 
-		if ( $selectedLocale.length ) {
-			$selectedLocale.attr( 'aria-selected', false );
-		}
+		$selectedLocale.attr( 'aria-selected', false );
+		$selectedLocale.removeAttr( 'tabindex' );
 
 		$locale.attr( 'aria-selected', newState );
 
 		if ( true === newState ) {
 			$selectedLocale = $locale;
+			$selectedLocale.attr( 'tabindex', '0' );
 
 			$activeLocales.attr( 'aria-activedescendant', $selectedLocale.attr( 'id' ) );
 		}
@@ -255,6 +251,9 @@
 	// Change initial button state.
 	changeButtonState( $selectedLocale );
 
+	// Set initial tabindex.
+	$selectedLocale.attr( 'tabindex', '0' );
+
 	// Initially hide already active locales from dropdown.
 	if ( $inputField.val().length ) {
 		$.each( $inputField.val().split( ',' ), ( index, value ) => {
@@ -280,39 +279,41 @@
 	});
 
 	// Active locales keyboard shortcuts.
-	$activeLocales.on( 'keydown', e => {
+	$document.on( 'keydown', $activeLocales, e => {
+		switch ( e.which ) {
 
-		// Up.
-		if ( 38 === e.which ) {
-			if ( e.altKey ) {
-				moveLocaleUp();
-			} else {
-				$selectedLocale.prev().length && toggleLocale( $selectedLocale.prev() );
-			}
+			// Up.
+			case 38:
+				if ( e.altKey ) {
+					moveLocaleUp();
+				} else {
+					$selectedLocale.prev().length && toggleLocale( $selectedLocale.prev() );
+				}
 
-			e.preventDefault();
-		}
+				e.preventDefault();
+				break;
 
-		// Down.
-		if ( 40 === e.which ) {
-			if ( e.altKey ) {
-				moveLocaleDown();
-			} else {
-				$selectedLocale.next().length && toggleLocale( $selectedLocale.next() );
-			}
+			// Down.
+			case 40:
+				if ( e.altKey ) {
+					moveLocaleDown();
+				} else {
+					$selectedLocale.next().length && toggleLocale( $selectedLocale.next() );
+				}
 
-			e.preventDefault();
-		}
+				e.preventDefault();
+				break;
 
-		// Backspace.
-		if ( 8 === e.which ) {
-			makeLocaleInactive();
-			e.preventDefault();
+			// Backspace.
+			case 8:
+				makeLocaleInactive();
+				e.preventDefault();
+				break;
 		}
 	} );
 
 	// Inactive Locales keyboard shortcuts.
-	$inactiveLocales.on( 'keydown', e => {
+	$document.on( 'keydown', $inactiveLocales, e => {
 
 		// Letter "A".
 		if ( 65 === e.which ) {

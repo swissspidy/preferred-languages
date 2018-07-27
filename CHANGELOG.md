@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.4.0
+
+* New: Keyboard navigation improvements
+* New: Missing translations are now downloaded even when no changes were made.
+* New: Show warning when some of the preferred languages aren't installed.
+* New: Settings form is now hidden when JavaScript is disabled.
+* Fixed: Improved setting the current locale.
+* Fixed: CSS is no longer enqueued on the front end.
+
 ## 1.3.0
 
 * New: Users can now choose English (United States) again as a preferred locale.
