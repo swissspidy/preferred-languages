@@ -275,7 +275,7 @@ function preferred_languages_sanitize_list( $preferred_languages ) {
  * @return string
  */
 function preferred_languages_filter_locale( $locale ) {
-	$preferred_languages = preferred_languages_get_list();
+	$preferred_languages = preferred_languages_get_site_list();
 
 	if ( empty( $preferred_languages ) ) {
 		return $locale;
