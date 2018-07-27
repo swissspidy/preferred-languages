@@ -93,3 +93,9 @@
 .preferred-languages .notice {
 	display: inline-block;
 }
+
+.no-js .preferred-languages,
+.no-js #preferred-languages-label,
+.no-js .user-preferred-languages-wrap {
+	display: none;
+}
