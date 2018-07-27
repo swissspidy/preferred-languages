@@ -89,3 +89,7 @@
 .inactive-locales select {
 	width: 100%;
 }
+
+.preferred-languages .notice {
+	display: inline-block;
+}

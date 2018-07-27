@@ -503,7 +503,7 @@ function preferred_languages_display_form( $args = array() ) {
 	<div class="preferred-languages">
 		<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $args['selected'] ) ); ?>"/>
 		<p><?php _e( 'Choose languages for displaying WordPress in, in order of preference.', 'preferred-languages' ); ?></p>
-		<div class="active-locales">
+		<div class="active-locales wp-clearfix">
 			<?php
 			/* translators: %s: English (United States) */
 			$screen_reader_text = sprintf( __( 'No languages selected. Falling back to %s.', 'preferred-languages' ), 'English (United States)' );
@@ -512,7 +512,8 @@ function preferred_languages_display_form( $args = array() ) {
 				$screen_reader_text = __( 'No languages selected. Falling back to Site Default.', 'preferred-languages' );
 			}
 			?>
-			<div class="<?php echo ! empty( $preferred_languages ) ? 'hidden' : ''; ?>" id="active-locales-empty-message" data-a11y-message="<?php echo esc_attr( $screen_reader_text ); ?>">
+			<div class="<?php echo ! empty( $preferred_languages ) ? 'hidden' : ''; ?>"
+			     id="active-locales-empty-message" data-a11y-message="<?php echo esc_attr( $screen_reader_text ); ?>">
 				<?php _e( 'Nothing set.', 'preferred-languages' ); ?>
 				<br>
 				<?php
@@ -573,8 +574,7 @@ function preferred_languages_display_form( $args = array() ) {
 				</ul>
 			</div>
 		</div>
-	</div>
-	<div class="inactive-locales">
+		<div class="inactive-locales wp-clearfix">
 		<label class="screen-reader-text" for="preferred-languages-inactive-locales"><?php _e( 'Inactive Locales', 'preferred-languages' ); ?></label>
 		<div class="inactive-locales-list" data-show-en_US="<?php echo $args['show_option_en_US'] ? 'true' : 'false'; ?>">
 			<?php
@@ -592,6 +592,27 @@ function preferred_languages_display_form( $args = array() ) {
 		<div class="inactive-locales-controls">
 			<button type="button" class="button locales-add" data-action="add"><?php _e( 'Add', 'preferred-languages' ); ?></button>
 		</div>
+	</div>
+		<?php
+		if ( current_user_can( 'install_languages' ) ) {
+			foreach ( $preferred_languages as $language ) {
+				if ( 'en_US' === $language['language'] ) {
+					continue;
+				}
+
+				if ( ! in_array( $language['language'], get_available_languages(), true ) ) {
+					?>
+					<div class="notice notice-warning inline">
+						<p>
+							<?php _e( 'Some of the languages are not installed. Re-save changes to download translations.', 'preferred-languages' ); ?>
+						</p>
+					</div>
+					<?php
+					break;
+				}
+			}
+		}
+		?>
 	</div>
 	<?php
 }
