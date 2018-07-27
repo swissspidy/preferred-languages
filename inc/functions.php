@@ -138,7 +138,6 @@ function preferred_languages_pre_update_user_meta( $check, $user_id, $meta_key, 
 			$old_value = get_user_meta( $user_id, $meta_key, true );
 		}
 
-
 		if ( $value === $old_value ) {
 			$locales = array_filter( explode( ',', $value ) );
 			preferred_languages_download_language_packs( $locales );
@@ -512,8 +511,7 @@ function preferred_languages_display_form( $args = array() ) {
 				$screen_reader_text = __( 'No languages selected. Falling back to Site Default.', 'preferred-languages' );
 			}
 			?>
-			<div class="<?php echo ! empty( $preferred_languages ) ? 'hidden' : ''; ?>"
-			     id="active-locales-empty-message" data-a11y-message="<?php echo esc_attr( $screen_reader_text ); ?>">
+			<div class="<?php echo ! empty( $preferred_languages ) ? 'hidden' : ''; ?>" id="active-locales-empty-message" data-a11y-message="<?php echo esc_attr( $screen_reader_text ); ?>">
 				<?php _e( 'Nothing set.', 'preferred-languages' ); ?>
 				<br>
 				<?php
