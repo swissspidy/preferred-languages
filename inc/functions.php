@@ -542,9 +542,9 @@ function preferred_languages_display_form( $args = array() ) {
  * @since 1.1.0
  */
 function preferred_languages_init_registry() {
-	global $textdomain_registry;
+	global $preferred_languages_textdomain_registry;
 
-	$textdomain_registry = new Preferred_Languages_Textdomain_Registry();
+	$preferred_languages_textdomain_registry = new Preferred_Languages_Textdomain_Registry();
 }
 
 /**
@@ -566,20 +566,20 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 	$translations = get_translations_for_domain( $domain );
 
 	if ( $translations instanceof NOOP_Translations ) {
-		/* @var Preferred_Languages_Textdomain_Registry $textdomain_registry */
-		global $textdomain_registry;
+		/* @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry */
+		global $preferred_languages_textdomain_registry;
 
-		if ( ! $textdomain_registry instanceof  Preferred_Languages_Textdomain_Registry ) {
+		if ( ! $preferred_languages_textdomain_registry instanceof  Preferred_Languages_Textdomain_Registry ) {
 			preferred_languages_init_registry();
 		}
 
-		$path = $textdomain_registry->get( $domain );
+		$path = $preferred_languages_textdomain_registry->get( $domain );
 
 		if ( ! $path ) {
-			$textdomain_registry->get_translation_from_lang_dir( $domain );
+			$preferred_languages_textdomain_registry->get_translation_from_lang_dir( $domain );
 		}
 
-		$path = $textdomain_registry->get( $domain );
+		$path = $preferred_languages_textdomain_registry->get( $domain );
 
 		if ( ! $path ) {
 			return $translation;
