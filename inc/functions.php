@@ -573,24 +573,24 @@ function preferred_languages_display_form( $args = array() ) {
 			</div>
 		</div>
 		<div class="inactive-locales wp-clearfix">
-		<label class="screen-reader-text" for="preferred-languages-inactive-locales"><?php _e( 'Inactive Locales', 'preferred-languages' ); ?></label>
-		<div class="inactive-locales-list" data-show-en_US="<?php echo $args['show_option_en_US'] ? 'true' : 'false'; ?>">
-			<?php
-			wp_dropdown_languages(
-				array(
-					'id'                          => 'preferred-languages-inactive-locales',
-					'name'                        => 'preferred-languages-inactive-locales',
-					'languages'                   => $languages,
-					'translations'                => $translations,
-					'show_available_translations' => $args['show_available_translations'],
-				)
-			);
-			?>
+			<label class="screen-reader-text" for="preferred-languages-inactive-locales"><?php _e( 'Inactive Locales', 'preferred-languages' ); ?></label>
+			<div class="inactive-locales-list" data-show-en_US="<?php echo $args['show_option_en_US'] ? 'true' : 'false'; ?>">
+				<?php
+				wp_dropdown_languages(
+					array(
+						'id'                          => 'preferred-languages-inactive-locales',
+						'name'                        => 'preferred-languages-inactive-locales',
+						'languages'                   => $languages,
+						'translations'                => $translations,
+						'show_available_translations' => $args['show_available_translations'],
+					)
+				);
+				?>
+			</div>
+			<div class="inactive-locales-controls">
+				<button type="button" class="button locales-add" data-action="add"><?php _e( 'Add', 'preferred-languages' ); ?></button>
+			</div>
 		</div>
-		<div class="inactive-locales-controls">
-			<button type="button" class="button locales-add" data-action="add"><?php _e( 'Add', 'preferred-languages' ); ?></button>
-		</div>
-	</div>
 		<?php
 		if ( current_user_can( 'install_languages' ) ) {
 			foreach ( $preferred_languages as $language ) {
