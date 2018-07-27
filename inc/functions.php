@@ -377,15 +377,24 @@ function preferred_languages_register_scripts() {
 		)
 	);
 
-	$rtl_suffix = is_rtl() ? '-rtl' : '';
-
-	wp_enqueue_style(
+	wp_register_style(
 		'preferred-languages',
-		plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages' . $rtl_suffix . '.css',
+		plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages.css',
 		array(),
-		'20180708',
+		'20180727',
 		'screen'
 	);
+
+	wp_styles()->add_data( 'preferred-languages', 'rtl', true );
+}
+
+/**
+ * Enqueues the stylesheet in the admin.
+ *
+ * @since 1.4.0
+ */
+function preferred_languages_enqueue_scripts() {
+	wp_enqueue_style( 'preferred-languages' );
 }
 
 /**

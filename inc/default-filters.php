@@ -13,6 +13,8 @@ add_action( 'init', 'preferred_languages_register_setting' );
 add_action( 'init', 'preferred_languages_register_meta' );
 add_action( 'init', 'preferred_languages_register_scripts' );
 
+add_action( 'admin_enqueue_scripts', 'preferred_languages_enqueue_scripts' );
+
 add_action( 'admin_init', 'preferred_languages_settings_field' );
 
 add_action( 'personal_options', 'preferred_languages_personal_options' );
