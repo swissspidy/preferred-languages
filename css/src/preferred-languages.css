@@ -99,3 +99,80 @@
 .no-js .user-preferred-languages-wrap {
 	display: none;
 }
+
+/* Tooltips inspired by https://github.com/primer/primer */
+
+@keyframes tooltip-appear {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+}
+
+.tooltipped {
+	position: relative;
+}
+
+.tooltipped:hover:before,
+.tooltipped:active:before,
+.tooltipped:focus:before,
+.tooltipped:hover:after,
+.tooltipped:active:after,
+.tooltipped:focus:after {
+	opacity: 1;
+	display: inline-block;
+	text-decoration: none;
+	animation-name: tooltip-appear;
+	animation-duration: .1s;
+	animation-fill-mode: backwards;
+	animation-timing-function: ease-in;
+	animation-delay: .4s;
+}
+
+.tooltipped:before {
+	position: absolute;
+	z-index: 1000001;
+	display: none;
+	width: 0;
+	height: 0;
+	color: #191E23;
+	pointer-events: none;
+	content: "";
+	border: 6px solid transparent;
+	opacity: 0;
+	top: -7px;
+	right: 50%;
+	bottom: auto;
+	margin-right: -6px;
+	border-top-color: #191E23;
+}
+
+.tooltipped:after {
+	position: absolute;
+	z-index: 1000000;
+	display: none;
+	padding: .5em .75em;
+	font: normal normal 11px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+	-webkit-font-smoothing: subpixel-antialiased;
+	color: #fff;
+	text-align: center;
+	text-decoration: none;
+	text-shadow: none;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: break-word;
+	white-space: pre;
+	pointer-events: none;
+	content: attr(data-tooltip);
+	background: #191E23;
+	border-radius: 3px;
+	opacity: 0;
+	right: auto;
+	left: 50%;
+	margin-left: -16px;
+	bottom: 100%;
+	margin-bottom: 6px;
+}

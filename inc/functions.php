@@ -498,6 +498,18 @@ function preferred_languages_display_form( $args = array() ) {
 		}
 	}
 
+	/* translators: accessibility text */
+	$label_up = __( 'Move up (Alt+Up)', 'preferred-languages' );
+
+	/* translators: accessibility text */
+	$label_down = __( 'Move down (Alt+Down)', 'preferred-languages' );
+
+	/* translators: accessibility text */
+	$label_remove = __( 'Remove from list (Alt+Delete)', 'preferred-languages' );
+
+	/* translators: accessibility text */
+	$label_add = __( 'Add to list (Alt+A)', 'preferred-languages' );
+
 	?>
 	<div class="preferred-languages">
 		<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $args['selected'] ) ); ?>"/>
@@ -545,27 +557,33 @@ function preferred_languages_display_form( $args = array() ) {
 					<li>
 						<button
 							aria-keyshortcuts="Alt+ArrowUp"
+							aria-label="<?php esc_attr( $label_up ); ?>"
 							aria-disabled="false"
+							data-tooltip="Alt+Up"
 							type="button"
-							class="button locales-move-up">
+							class="button locales-move-up tooltipped">
 							<?php _e( 'Move Up', 'preferred-languages' ); ?>
 						</button>
 					</li>
 					<li>
 						<button
 							aria-keyshortcuts="Alt+ArrowDown"
+							aria-label="<?php esc_attr( $label_down ); ?>"
 							aria-disabled="false"
+							data-tooltip="Alt+Down"
 							type="button"
-							class="button locales-move-down">
+							class="button locales-move-down tooltipped">
 							<?php _e( 'Move Down', 'preferred-languages' ); ?>
 						</button>
 					</li>
 					<li>
 						<button
 							aria-keyshortcuts="Alt+Delete"
+							aria-label="<?php esc_attr( $label_remove ); ?>"
 							aria-disabled="false"
+							data-tooltip="Alt+Delete"
 							type="button"
-							class="button locales-remove">
+							class="button locales-remove tooltipped">
 							<?php _e( 'Remove', 'preferred-languages' ); ?>
 						</button>
 					</li>
@@ -588,7 +606,16 @@ function preferred_languages_display_form( $args = array() ) {
 				?>
 			</div>
 			<div class="inactive-locales-controls">
-				<button type="button" class="button locales-add" data-action="add"><?php _e( 'Add', 'preferred-languages' ); ?></button>
+				<button
+					aria-keyshortcuts="Alt+A"
+					aria-label="<?php esc_attr( $label_add ); ?>"
+					aria-disabled="false"
+					data-tooltip="Alt+A"
+					type="button"
+					class="button locales-add tooltipped"
+				>
+					<?php _e( 'Add', 'preferred-languages' ); ?>
+				</button>
 			</div>
 		</div>
 		<?php
