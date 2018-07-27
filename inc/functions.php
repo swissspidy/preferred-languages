@@ -592,8 +592,7 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 
 			if ( load_textdomain( $domain, $mofile ) ) {
 				$translations = get_translations_for_domain( $domain );
-				// phpcs:ignore WordPress.WP.I18n
-				$translation = $translations->translate( $text );
+				$translation  = $translations->translate( $text );
 
 				break;
 			}
