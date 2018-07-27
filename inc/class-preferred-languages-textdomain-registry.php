@@ -1,6 +1,6 @@
 <?php
 /**
- * Locale API: WP_Textdomain_Registry class
+ * Locale API: Preferred_Languages_Textdomain_Registry class
  *
  * @package    WordPress
  * @subpackage i18n
