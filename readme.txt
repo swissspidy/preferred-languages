@@ -33,9 +33,10 @@ If you want to get involved, check out [open issues](https://github.com/swissspi
 
 = 1.4.0 =
 
-* New: Keyboard navigation improvements
+* New: Keyboard navigation improvements.
+* New: Tooltips now show the available keyboard shortcuts.
 * New: Missing translations are now downloaded even when no changes were made.
-* New: Show warning when some of the preferred languages aren't installed.
+* New: A warning is shown when some of the preferred languages aren't installed.
 * New: Settings form is now hidden when JavaScript is disabled.
 * Fixed: Improved setting the current locale.
 * Fixed: CSS is no longer enqueued on the front end.
