@@ -9,6 +9,10 @@
 	const $inputField              = $( 'input[name="preferred_languages"]' );
 	let $selectedLocale            = $activeLocales.find( 'li[aria-selected="true"]' );
 
+	const KEY_UP        = 38;
+	const KEY_DOWN      = 40;
+	const KEY_BACKSPACE = 8;
+
 	/**
 	 * Changes the move button states.
 	 *
@@ -54,13 +58,11 @@
 		}
 
 		$selectedLocale.attr( 'aria-selected', false );
-		$selectedLocale.removeAttr( 'tabindex' );
 
 		$locale.attr( 'aria-selected', newState );
 
 		if ( true === newState ) {
 			$selectedLocale = $locale;
-			$selectedLocale.attr( 'tabindex', '0' );
 
 			$activeLocales.attr( 'aria-activedescendant', $selectedLocale.attr( 'id' ) );
 		}
@@ -251,9 +253,6 @@
 	// Change initial button state.
 	changeButtonState( $selectedLocale );
 
-	// Set initial tabindex.
-	$selectedLocale.attr( 'tabindex', '0' );
-
 	// Initially hide already active locales from dropdown.
 	if ( $inputField.val().length ) {
 		$.each( $inputField.val().split( ',' ), ( index, value ) => {
@@ -281,9 +280,7 @@
 	// Active locales keyboard shortcuts.
 	$document.on( 'keydown', $activeLocales, e => {
 		switch ( e.which ) {
-
-			// Up.
-			case 38:
+			case KEY_UP:
 				if ( e.altKey ) {
 					moveLocaleUp();
 				} else {
@@ -293,8 +290,7 @@
 				e.preventDefault();
 				break;
 
-			// Down.
-			case 40:
+			case KEY_DOWN:
 				if ( e.altKey ) {
 					moveLocaleDown();
 				} else {
@@ -304,8 +300,7 @@
 				e.preventDefault();
 				break;
 
-			// Backspace.
-			case 8:
+			case KEY_BACKSPACE:
 				makeLocaleInactive();
 				e.preventDefault();
 				break;
