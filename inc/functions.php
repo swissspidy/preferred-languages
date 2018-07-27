@@ -86,7 +86,7 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
  *
  * @since 1.3.0
  *
- * @return array|false Preferred languages.
+ * @return array Preferred languages.
  */
 function preferred_languages_get_site_list() {
 	$preferred_languages = get_option( 'preferred_languages', '' );
@@ -119,6 +119,36 @@ function preferred_languages_get_list() {
 }
 
 /**
+ * Downloads language packs when saving user meta without any changes.
+ *
+ * Makes sure the translations are downloaded when it didn't work the first time around.
+ *
+ * @since 1.4.0
+ *
+ * @param null|bool $check     Whether to allow updating metadata for the given type.
+ * @param int       $user_id   User ID.
+ * @param string    $meta_key  Meta key.
+ * @param mixed     $value     Meta value.
+ * @param mixed     $old_value The previous meta value.
+ * @return mixed
+ */
+function preferred_languages_pre_update_user_meta( $check, $user_id, $meta_key, $value, $old_value ) {
+	if ( 'preferred_languages' === $meta_key ) {
+		if ( empty( $old_value ) ) {
+			$old_value = get_user_meta( $user_id, $meta_key, true );
+		}
+
+
+		if ( $value === $old_value ) {
+			$locales = array_filter( explode( ',', $value ) );
+			preferred_languages_download_language_packs( $locales );
+		}
+	}
+
+	return $check;
+}
+
+/**
  * Downloads language pack when updating user meta.
  *
  * @since 1.3.0
@@ -146,6 +176,27 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 	// Reload translations after save.
 	$preferred_languages_list = preferred_languages_get_list();
 	load_default_textdomain( reset( $preferred_languages_list ) );
+}
+
+/**
+ * Downloads language packs when saving the site option without any changes.
+ *
+ * Makes sure the translations are downloaded when it didn't work the first time around.
+ *
+ * @since 1.4.0
+ *
+ * @param mixed  $value     The new, unserialized option value.
+ * @param string $option    Name of the option.
+ * @param mixed  $old_value The old option value.
+ * @return mixed
+ */
+function preferred_languages_pre_update_option( $value, $option, $old_value ) {
+	if ( 'preferred_languages' === $option && $value === $old_value ) {
+		$locales = array_filter( explode( ',', $value ) );
+		preferred_languages_download_language_packs( $locales );
+	}
+
+	return $value;
 }
 
 /**
