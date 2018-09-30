@@ -38,6 +38,9 @@
 		</properties>
 	</rule>
 
+	<!-- Test for PHP 5.2+ compatibility. -->
+	<config name="testVersion" value="5.2-"/>
+
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/tests/*</exclude-pattern>

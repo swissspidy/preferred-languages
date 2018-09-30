@@ -16,11 +16,12 @@
   },
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
-    "wp-coding-standards/wpcs": "^1.0"
+    "wp-coding-standards/wpcs": "^1.0",
+    "phpcompatibility/phpcompatibility-wp": "^1.0"
   },
   "scripts": {
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
     "lint": "vendor/bin/phpcs --report-summary --report-source .",
-    "test": "phpunit"
+    "test": "vendor/bin/phpunit"
   }
 }
