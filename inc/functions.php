@@ -31,7 +31,9 @@ function preferred_languages_register_setting() {
  */
 function preferred_languages_register_meta() {
 	register_meta(
-		'user', 'preferred_languages', array(
+		'user',
+		'preferred_languages',
+		array(
 			'type'              => 'string',
 			'description'       => 'List of preferred languages',
 			'single'            => true,
@@ -459,7 +461,8 @@ function preferred_languages_display_form( $args = array() ) {
 	wp_enqueue_script( 'preferred-languages' );
 
 	$args = wp_parse_args(
-		$args, array(
+		$args,
+		array(
 			'selected'                    => array(),
 			'show_available_translations' => current_user_can( 'install_languages' ),
 			'show_option_site_default'    => false,
