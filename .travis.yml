@@ -19,13 +19,18 @@ php:
   - 7.2
   - 7.0
   - 5.6
-  - 5.2
 
 env:
   - WP_VERSION=latest WP_MULTISITE=0
   - WP_VERSION=latest WP_MULTISITE=1
   - WP_VERSION=nightly WP_MULTISITE=0
   - WP_VERSION=nightly WP_MULTISITE=1
+
+matrix:
+  include:
+  - php: 5.2
+    env: WP_VERSION=latest WP_MULTISITE=0
+    dist: precise
 
 before_install:
   - |
