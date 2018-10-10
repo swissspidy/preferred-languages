@@ -313,25 +313,19 @@
 				e.preventDefault();
 				break;
 
-			case KEY_BACKSPACE:
-				makeLocaleInactive();
+			case KEY_A:
+				if ( e.altKey ) {
+					makeLocaleActive( $inactiveLocales.find( 'option:selected' ) );
+				}
+
 				e.preventDefault();
 				break;
-		}
-	} );
 
-	// Inactive Locales keyboard shortcuts.
-	$inactiveLocales.on( 'keydown', e => {
-		if ( ! document.querySelector( '.preferred-languages' ).contains( document.activeElement ) ) {
-			return;
-		}
+			case KEY_BACKSPACE:
+				makeLocaleInactive();
 
-		if ( KEY_A === e.which ) {
-			if ( e.altKey ) {
-				makeLocaleActive( $inactiveLocales.find( 'option:selected' ) );
-			}
-
-			e.preventDefault();
+				e.preventDefault();
+				break;
 		}
 	} );
 
