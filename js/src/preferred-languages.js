@@ -279,7 +279,11 @@
 	});
 
 	// Active locales keyboard shortcuts.
-	$document.on( 'keydown', $activeLocales, e => {
+	$document.on( 'keydown', e => {
+		if ( ! document.querySelector( '.preferred-languages' ).contains( document.activeElement ) ) {
+			return;
+		}
+
 		switch ( e.which ) {
 			case KEY_UP:
 				if ( e.altKey ) {
@@ -309,7 +313,11 @@
 	} );
 
 	// Inactive Locales keyboard shortcuts.
-	$document.on( 'keydown', $inactiveLocales, e => {
+	$inactiveLocales.on( 'keydown', e => {
+		if ( ! document.querySelector( '.preferred-languages' ).contains( document.activeElement ) ) {
+			return;
+		}
+
 		if ( KEY_A === e.which ) {
 			if ( e.altKey ) {
 				makeLocaleActive( $inactiveLocales.find( 'option:selected' ) );
