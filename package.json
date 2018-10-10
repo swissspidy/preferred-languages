@@ -13,15 +13,16 @@
   },
   "homepage": "https://github.com/swissspidy/preferred-languages#readme",
   "devDependencies": {
-    "autoprefixer": "^7.1.4",
-    "babel-cli": "^6.24.1",
-    "babel-preset-env": "^1.5.2",
-    "cssnano": "^3.10.0",
+    "autoprefixer": "^9.1.5",
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/preset-env": "^7.1.0",
+    "cssnano": "^4.1.4",
     "eslint-config-wordpress": "^2.0.0",
-    "nodemon": "^1.11.0",
-    "postcss": "^6.0.2",
-    "rtlcss": "^2.2.0",
-    "uglify-js": "^3.1.2"
+    "nodemon": "^1.18.4",
+    "postcss": "^7.0.5",
+    "rtlcss": "^2.4.0",
+    "uglify-js": "^3.4.9"
   },
   "scripts": {
     "uglifyjs": "find js -type f -name '*.js' ! -name '*.min.js' -maxdepth 1 | while read FILE ; do uglifyjs \"${FILE}\" -o \"${FILE%.js}.min.js\" ; done",

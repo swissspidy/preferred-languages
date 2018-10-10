@@ -1,16 +1,6 @@
 {
 	"presets": [
-		[
-			"env",
-			{
-				"targets": {
-					"uglify": true
-				},
-				"browsers": [
-					"last 2 versions"
-				]
-			}
-		]
+		"@babel/preset-env"
 	],
 	"sourceMaps": true
 }
