@@ -288,8 +288,12 @@
 			case KEY_UP:
 				if ( e.altKey ) {
 					moveLocaleUp();
+				} else if ( $selectedLocale.prev().length ) {
+						toggleLocale( $selectedLocale.prev() );
 				} else {
-					$selectedLocale.prev().length && toggleLocale( $selectedLocale.prev() );
+
+					// We're at the top of the list.
+					$activeLocales.focus();
 				}
 
 				e.preventDefault();
@@ -298,8 +302,12 @@
 			case KEY_DOWN:
 				if ( e.altKey ) {
 					moveLocaleDown();
+				} else if ( $selectedLocale.next().length ) {
+					toggleLocale( $selectedLocale.next() );
 				} else {
-					$selectedLocale.next().length && toggleLocale( $selectedLocale.next() );
+
+					// We're at the bottom of the list.
+					$activeLocales.focus();
 				}
 
 				e.preventDefault();
