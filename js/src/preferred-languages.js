@@ -12,6 +12,7 @@
 	const KEY_UP        = 38;
 	const KEY_DOWN      = 40;
 	const KEY_BACKSPACE = 8;
+	const KEY_A         = 65;
 
 	/**
 	 * Changes the move button states.
@@ -309,9 +310,7 @@
 
 	// Inactive Locales keyboard shortcuts.
 	$document.on( 'keydown', $inactiveLocales, e => {
-
-		// Letter "A".
-		if ( 65 === e.which ) {
+		if ( KEY_A === e.which ) {
 			if ( e.altKey ) {
 				makeLocaleActive( $inactiveLocales.find( 'option:selected' ) );
 			}
