@@ -4,7 +4,7 @@ Tags: internationalization, i18n, localization, l10n, language, locale, translat
 Requires at least: 4.9
 Tested up to: 4.9
 Requires PHP: 5.2
-Stable tag: 1.4.0
+Stable tag: 1.5.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -30,6 +30,10 @@ If you want to get involved, check out [open issues](https://github.com/swissspi
 2. The new language section in your user profile.
 
 == Changelog ==
+
+= 1.5.0 =
+
+* Fixed: Fixes an issue with keyboard navigation.
 
 = 1.4.0 =
 
@@ -68,6 +72,10 @@ If you want to get involved, check out [open issues](https://github.com/swissspi
 * Initial release.
 
 == Upgrade Notice ==
+
+= 1.5.0 =
+
+This release addresses an issue with keyboard navigation.
 
 = 1.4.0 =
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.0
+
+* Fixed: Fixes an issue with keyboard navigation.
+
 ## 1.4.0
 
 * New: Keyboard navigation improvements.
