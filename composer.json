@@ -2,7 +2,7 @@
   "name": "swissspidy/preferred-languages",
   "description": "Choose languages for displaying WordPress in, in order of preference.",
   "type": "wordpress-plugin",
-  "license": "GPL-2.0+",
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Pascal Birchler",
