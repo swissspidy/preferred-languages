@@ -334,6 +334,11 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 
 	$current_locale = get_locale();
 
+	// Locale has been filtered by something else.
+	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+		return $mofile;
+	}
+
 	foreach ( $preferred_locales as $locale ) {
 		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
 
@@ -657,7 +662,7 @@ function preferred_languages_init_registry() {
 }
 
 /**
- * Filters gettext call to work around limitations in just-in-time loading of translations.
+ * Filters gettext calls to work around limitations in just-in-time loading of translations.
  *
  * @since 1.1.0
  *
@@ -678,7 +683,7 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		/* @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry */
 		global $preferred_languages_textdomain_registry;
 
-		if ( ! $preferred_languages_textdomain_registry instanceof  Preferred_Languages_Textdomain_Registry ) {
+		if ( ! $preferred_languages_textdomain_registry instanceof Preferred_Languages_Textdomain_Registry ) {
 			preferred_languages_init_registry();
 		}
 
@@ -695,6 +700,11 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		}
 
 		$preferred_locales = preferred_languages_get_list();
+
+		// Locale has been filtered by something else.
+		if ( ! in_array( get_locale(), $preferred_locales, true ) ) {
+			return $translation;
+		}
 
 		foreach ( $preferred_locales as $locale ) {
 			$mofile = "{$path}/{$domain}-{$locale}.mo";
