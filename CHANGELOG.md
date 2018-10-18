@@ -2,7 +2,9 @@
 
 ## 1.5.0
 
+* Enhancement: Improved compatibility with multilingual plugins like Polylang.
 * Fixed: Fixes an issue with keyboard navigation.
+* Fixed: Make sure the correct languages are retrieved when updating the settings.
 
 ## 1.4.0
 
