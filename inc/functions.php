@@ -175,7 +175,7 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 	add_filter( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
 
 	// Reload translations after save.
-	$preferred_languages_list = preferred_languages_get_list();
+	$preferred_languages_list = preferred_languages_get_user_list( $object_id );
 	load_default_textdomain( reset( $preferred_languages_list ) );
 }
 
@@ -220,7 +220,7 @@ function preferred_languages_update_option( $old_value, $value ) {
 	add_filter( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 
 	// Reload translations after save.
-	$preferred_languages_list = preferred_languages_get_list();
+	$preferred_languages_list = preferred_languages_get_site_list();
 	load_default_textdomain( reset( $preferred_languages_list ) );
 }
 
