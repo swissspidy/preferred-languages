@@ -454,6 +454,7 @@ function preferred_languages_settings_field() {
 		'general',
 		'default',
 		array(
+			'class'    => 'site-preferred-languages-wrap',
 			'selected' => preferred_languages_get_site_list(),
 		)
 	);

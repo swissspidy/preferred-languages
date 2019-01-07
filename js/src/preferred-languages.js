@@ -244,9 +244,9 @@
 		wp.a11y.speak( settings.l10n.localeAdded );
 	}
 
-	// Hide original language settings.
-	$( '.user-language-wrap' ).remove();
-	$( '#WPLANG' ).parent().parent().remove();
+	// Replace original language settings.
+	$( '.user-language-wrap' ).replaceWith( $( '.user-preferred-languages-wrap' ) );
+	$( '#WPLANG' ).parent().parent().replaceWith( $( '.site-preferred-languages-wrap' ) );
 
 	// Remove en_US as an option from the dropdown.
 	$inactiveLocalesWrap.filter( '[data-show-en_US="false"]' ).find( '[lang="en"][value=""]' ).remove();

@@ -94,6 +94,9 @@
 	display: inline-block;
 }
 
+.js label[for="WPLANG"],
+.js #WPLANG,
+.js .user-language-wrap,
 .no-js .preferred-languages,
 .no-js #preferred-languages-label,
 .no-js .user-preferred-languages-wrap {
