@@ -351,6 +351,44 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 }
 
 /**
+ * Filters load_script_translation_file() calls to respect the list of preferred languages.
+ *
+ * @since 1.6.0
+ *
+ * @param string|false $file Path to the translation file to load. False if there isn't one.
+ *
+ * @return string The modified JSON file path.
+ */
+function preferred_languages_load_script_translation_file( $file ) {
+	if ( is_readable( $file ) ) {
+		return $file;
+	}
+
+	$preferred_locales = preferred_languages_get_list();
+
+	if ( empty( $preferred_locales ) ) {
+		return $file;
+	}
+
+	$current_locale = determine_locale();
+
+	// Locale has been filtered by something else.
+	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+		return $file;
+	}
+
+	foreach ( $preferred_locales as $locale ) {
+		$preferred_file = str_replace( $current_locale, $locale, $file );
+
+		if ( is_readable( $preferred_file ) ) {
+			return $preferred_file;
+		}
+	}
+
+	return $file;
+}
+
+/**
  * Registers the needed scripts and styles.
  *
  * @since 1.0.0

@@ -1,26 +1,26 @@
 {
   "name": "preferred-languages",
-  "version": "1.2.0",
+  "version": "1.6.0",
   "description": "Choose languages for displaying WordPress in, in order of preference.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/swissspidy/preferred-languages.git"
   },
   "author": "swissspidy",
-  "license": "GPL-2.0+",
+  "license": "GPL-2.0-or-later",
   "bugs": {
     "url": "https://github.com/swissspidy/preferred-languages/issues"
   },
   "homepage": "https://github.com/swissspidy/preferred-languages#readme",
   "devDependencies": {
-    "autoprefixer": "^9.1.5",
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.1.2",
-    "@babel/preset-env": "^7.1.0",
-    "cssnano": "^4.1.4",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "autoprefixer": "^9.4.4",
+    "cssnano": "^4.1.8",
     "eslint-config-wordpress": "^2.0.0",
-    "nodemon": "^1.18.4",
-    "postcss": "^7.0.5",
+    "nodemon": "^1.18.9",
+    "postcss": "^7.0.7",
     "rtlcss": "^2.4.0",
     "uglify-js": "^3.4.9"
   },

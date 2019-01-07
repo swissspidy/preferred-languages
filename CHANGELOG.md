@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6.0
+
+* Enhancement: Added support for JavaScript internationalization as used in the new block editor in WordPress 5.0. Requires WordPress 5.0.3.
+
 ## 1.5.0
 
 * Enhancement: Improved compatibility with multilingual plugins like Polylang.
