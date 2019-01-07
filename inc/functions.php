@@ -404,7 +404,7 @@ function preferred_languages_register_scripts() {
 			'jquery-ui-sortable',
 			'wp-a11y',
 		),
-		'20181010',
+		'20190107',
 		true
 	);
 
@@ -425,7 +425,7 @@ function preferred_languages_register_scripts() {
 		'preferred-languages',
 		plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages.css',
 		array(),
-		'20180727',
+		'20190107',
 		'screen'
 	);
 

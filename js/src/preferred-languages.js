@@ -275,7 +275,8 @@
 	$activeLocales.sortable({
 		axis: 'y',
 		cursor: 'move',
-		items: ':not(#active-locales-list-empty-message)'
+		items: ':not(#active-locales-list-empty-message)',
+		update: updateHiddenInput
 	});
 
 	// Active locales keyboard shortcuts.

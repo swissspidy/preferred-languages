@@ -3,6 +3,7 @@
 ## 1.6.0
 
 * Enhancement: Added support for JavaScript internationalization as used in the new block editor in WordPress 5.0. Requires WordPress 5.0.3.
+* Fixed: Fixes an issue where the preferred languages list wasn't updating after sorting via drag & drop.
 
 ## 1.5.0
 
