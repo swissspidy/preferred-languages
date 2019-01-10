@@ -271,12 +271,17 @@
 		$inactiveLocalesControls.val( $firstInactiveLocale.val() );
 	}
 
+	function onSortableUpdate() {
+		updateHiddenInput();
+		changeButtonState( $selectedLocale );
+	}
+
 	// Enabling sorting locales using drag and drop.
 	$activeLocales.sortable({
 		axis: 'y',
 		cursor: 'move',
 		items: ':not(#active-locales-list-empty-message)',
-		update: updateHiddenInput
+		update: onSortableUpdate
 	});
 
 	// Active locales keyboard shortcuts.
