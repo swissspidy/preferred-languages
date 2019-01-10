@@ -3,7 +3,7 @@
  * Plugin Name: Preferred Languages
  * Plugin URI:  https://github.com/swissspidy/preferred-languages/
  * Description: Choose languages for displaying WordPress in, in order of preference.
- * Version:     1.5.0
+ * Version:     1.6.0
  * Author:      Pascal Birchler
  * Author URI:  https://pascalbirchler.com
  * License:     GPL-2.0+
