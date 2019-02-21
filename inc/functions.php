@@ -233,16 +233,23 @@ function preferred_languages_update_option( $old_value, $value ) {
  * @return array|false The installed language packs or false on failure.
  */
 function preferred_languages_download_language_packs( $locales ) {
-	if ( ! current_user_can( 'install_languages' ) ) {
-		return false;
-	}
-
 	// Handle translation install.
 	require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 
-	$installed_languages = array();
+	$installed_languages            = array();
+	$available_languages            = get_available_languages();
+	$current_user_install_languages = current_user_can( 'install_languages' );
 
 	foreach ( $locales as $locale ) {
+		if ( in_array( $locale, $available_languages, true ) ) {
+			$installed_languages[] = $locale;
+			continue;
+		}
+
+		if ( ! $current_user_install_languages ) {
+			continue;
+		}
+
 		$language = wp_download_language_pack( $locale );
 		if ( $language ) {
 			$installed_languages[] = $language;
