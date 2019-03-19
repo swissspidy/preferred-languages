@@ -1,0 +1,9 @@
+{
+  "root": true,
+  "extends": [ "plugin:@wordpress/eslint-plugin/recommended" ],
+  "globals": {
+    "jQuery": true,
+    "preferredLanguages": true,
+    "wp": true
+  }
+}

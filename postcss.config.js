@@ -1,4 +1,4 @@
-module.exports = ( ctx ) => ({
+module.exports = () => ( {
 	plugins: [
 		require( 'autoprefixer' )( {
 			browsers: [
@@ -11,12 +11,12 @@ module.exports = ( ctx ) => ({
 				'last 2 Safari versions',
 				'last 2 iOS versions',
 				'last 2 Edge versions',
-				'last 2 Opera versions'
+				'last 2 Opera versions',
 			],
-			cascade:  false
+			cascade: false,
 		} ),
 		require( 'cssnano' )( {
 			safe: true,
 		} ),
-	]
-})
+	],
+} );

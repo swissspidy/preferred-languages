@@ -1,18 +1,18 @@
 ( ( ( wp, settings, $ ) => {
-	const $document                = $( document );
-	const $activeLocales           = $( '.active-locales-list' );
-	const $activeLocalesControls   = $( '.active-locales-controls' );
-	const $emptyMessage            = $( '#active-locales-empty-message' );
-	const $inactiveLocalesWrap     = $( '.inactive-locales-list' );
-	const $inactiveLocales         = $inactiveLocalesWrap.find( 'select' );
+	const $document = $( document );
+	const $activeLocales = $( '.active-locales-list' );
+	const $activeLocalesControls = $( '.active-locales-controls' );
+	const $emptyMessage = $( '#active-locales-empty-message' );
+	const $inactiveLocalesWrap = $( '.inactive-locales-list' );
+	const $inactiveLocales = $inactiveLocalesWrap.find( 'select' );
 	const $inactiveLocalesControls = $( '.inactive-locales-controls' );
-	const $inputField              = $( 'input[name="preferred_languages"]' );
-	let $selectedLocale            = $activeLocales.find( 'li[aria-selected="true"]' );
+	const $inputField = $( 'input[name="preferred_languages"]' );
+	let $selectedLocale = $activeLocales.find( 'li[aria-selected="true"]' );
 
-	const KEY_UP        = 38;
-	const KEY_DOWN      = 40;
+	const KEY_UP = 38;
+	const KEY_DOWN = 40;
 	const KEY_BACKSPACE = 8;
-	const KEY_A         = 65;
+	const KEY_A = 65;
 
 	/**
 	 * Changes the move button states.
@@ -92,7 +92,6 @@
 	 * @since 1.0.0
 	 */
 	function moveLocaleUp() {
-
 		// 1. Change position if possible.
 		$selectedLocale.insertBefore( $selectedLocale.prev() );
 
@@ -112,7 +111,6 @@
 	 * @since 1.0.0
 	 */
 	function moveLocaleDown() {
-
 		// 1. Change position if possible.
 		$selectedLocale.insertAfter( $selectedLocale.next() );
 
@@ -150,7 +148,7 @@
 	 * @since 1.0.0
 	 */
 	function makeLocaleInactive() {
-		let locale = $selectedLocale.attr( 'id' );
+		const locale = $selectedLocale.attr( 'id' );
 		let $successor;
 
 		$successor = $selectedLocale.prevAll( ':first' );
@@ -170,7 +168,7 @@
 		}
 
 		// 3. Make visible in dropdown again.
-		$inactiveLocales.find( `option[value="${locale}"]` ).removeClass( 'hidden' );
+		$inactiveLocales.find( `option[value="${ locale }"]` ).removeClass( 'hidden' );
 		$inactiveLocales.attr( 'disabled', false );
 
 		// 4. Update hidden input field.
@@ -192,7 +190,6 @@
 	 */
 	function makeLocaleActive( option ) {
 		const locale = option.val() || 'en_US';
-		const $newLocale = $( '<li/>', { text: option.text(), 'role': 'option', 'aria-selected': false, 'id': locale, 'class': 'active-locale', } );
 		let $successor;
 
 		// 1. Hide from dropdown.
@@ -218,7 +215,7 @@
 		$inactiveLocalesControls.val( $successor.val() );
 
 		// It's already in the list of active locales, stop here.
-		if ( $activeLocales.find( `#${locale}` ).length ) {
+		if ( $activeLocales.find( `#${ locale }` ).length ) {
 			return;
 		}
 
@@ -227,15 +224,17 @@
 			toggleEmptyListMessage();
 		}
 
+		const $newLocale = $( '<li/>', { text: option.text(), role: 'option', 'aria-selected': false, id: locale, class: 'active-locale' } );
+
 		// 4. Add to list.
 		$activeLocales.append( $newLocale );
 
 		toggleLocale( $newLocale );
 
 		// 5. Scroll into view.
-		$activeLocales.animate({
-			scrollTop: $newLocale.offset().top - $activeLocales.offset().top + $activeLocales.scrollTop()
-		});
+		$activeLocales.animate( {
+			scrollTop: $newLocale.offset().top - $activeLocales.offset().top + $activeLocales.scrollTop(),
+		} );
 
 		// 5. Update hidden input field.
 		updateHiddenInput();
@@ -259,7 +258,7 @@
 		$.each( $inputField.val().split( ',' ), ( index, value ) => {
 			value = 'en_US' === value ? '' : value;
 
-			const $option = $inactiveLocales.find( `[value="${value}"]` );
+			const $option = $inactiveLocales.find( `[value="${ value }"]` );
 
 			// 2. Hide from dropdown.
 			$option.removeAttr( 'selected' ).addClass( 'hidden' );
@@ -277,15 +276,15 @@
 	}
 
 	// Enabling sorting locales using drag and drop.
-	$activeLocales.sortable({
+	$activeLocales.sortable( {
 		axis: 'y',
 		cursor: 'move',
 		items: ':not(#active-locales-list-empty-message)',
-		update: onSortableUpdate
-	});
+		update: onSortableUpdate,
+	} );
 
 	// Active locales keyboard shortcuts.
-	$document.on( 'keydown', e => {
+	$document.on( 'keydown', ( e ) => {
 		if ( ! document.querySelector( '.preferred-languages' ).contains( document.activeElement ) ) {
 			return;
 		}
@@ -295,9 +294,8 @@
 				if ( e.altKey ) {
 					moveLocaleUp();
 				} else if ( $selectedLocale.prev().length ) {
-						toggleLocale( $selectedLocale.prev() );
+					toggleLocale( $selectedLocale.prev() );
 				} else {
-
 					// We're at the top of the list.
 					$activeLocales.focus();
 				}
@@ -311,7 +309,6 @@
 				} else if ( $selectedLocale.next().length ) {
 					toggleLocale( $selectedLocale.next() );
 				} else {
-
 					// We're at the bottom of the list.
 					$activeLocales.focus();
 				}
