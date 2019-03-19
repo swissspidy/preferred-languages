@@ -270,6 +270,12 @@
 		$inactiveLocalesControls.val( $firstInactiveLocale.val() );
 	}
 
+	// Disable controls if there are no more languages that could be added.
+	if ( $inactiveLocales.find( ':not(.hidden)' ).length === 0 ) {
+		$inactiveLocales.attr( 'disabled', true );
+		$inactiveLocalesControls.find( '.locales-add' ).attr( 'disabled', true );
+	}
+
 	function onSortableUpdate() {
 		updateHiddenInput();
 		changeButtonState( $selectedLocale );

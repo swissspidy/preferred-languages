@@ -411,7 +411,7 @@ function preferred_languages_register_scripts() {
 			'jquery-ui-sortable',
 			'wp-a11y',
 		),
-		'20190107',
+		'20190319',
 		true
 	);
 
@@ -490,7 +490,7 @@ function preferred_languages_personal_options( $user ) {
 			preferred_languages_display_form(
 				array(
 					'selected'                    => preferred_languages_get_user_list( $user ),
-					'show_available_translations' => current_user_can( 'install_languages' ),
+					'show_available_translations' => false,
 					'show_option_site_default'    => true,
 					'show_option_en_US'           => true,
 				)
