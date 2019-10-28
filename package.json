@@ -19,7 +19,7 @@
     "@wordpress/eslint-plugin": "^3.1.0",
     "autoprefixer": "^9.7.0",
     "cssnano": "^4.1.8",
-    "eslint": "^6.5.1",
+    "eslint": "^6.6.0",
     "nodemon": "^1.19.4",
     "postcss": "^7.0.20",
     "rtlcss": "^2.4.0",
