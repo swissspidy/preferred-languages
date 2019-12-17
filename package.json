@@ -22,7 +22,7 @@
     "eslint": "^6.7.2",
     "nodemon": "^2.0.2",
     "postcss": "^7.0.25",
-    "rtlcss": "^2.4.0",
+    "rtlcss": "^2.4.1",
     "uglify-js": "^3.7.2"
   },
   "scripts": {
