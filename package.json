@@ -14,7 +14,7 @@
   "homepage": "https://github.com/swissspidy/preferred-languages#readme",
   "devDependencies": {
     "@babel/cli": "^7.7.7",
-    "@babel/core": "^7.7.5",
+    "@babel/core": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
     "@wordpress/eslint-plugin": "^3.2.0",
     "autoprefixer": "^9.7.3",
