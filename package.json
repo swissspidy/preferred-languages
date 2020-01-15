@@ -17,7 +17,7 @@
     "@babel/core": "^7.8.3",
     "@babel/preset-env": "^7.8.3",
     "@wordpress/eslint-plugin": "^3.3.0",
-    "autoprefixer": "^9.7.3",
+    "autoprefixer": "^9.7.4",
     "cssnano": "^4.1.8",
     "eslint": "^6.8.0",
     "nodemon": "^2.0.2",
