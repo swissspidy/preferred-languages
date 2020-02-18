@@ -21,7 +21,7 @@
     "cssnano": "^4.1.8",
     "eslint": "^6.8.0",
     "nodemon": "^2.0.2",
-    "postcss": "^7.0.26",
+    "postcss": "^7.0.27",
     "rtlcss": "^2.5.0",
     "uglify-js": "^3.7.7"
   },
