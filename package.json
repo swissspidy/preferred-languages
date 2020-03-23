@@ -15,7 +15,7 @@
   "devDependencies": {
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.8.7",
-    "@babel/preset-env": "^7.8.4",
+    "@babel/preset-env": "^7.9.0",
     "@wordpress/eslint-plugin": "^4.0.0",
     "autoprefixer": "^9.7.4",
     "cssnano": "^4.1.8",
