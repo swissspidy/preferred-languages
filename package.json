@@ -23,7 +23,7 @@
     "nodemon": "^2.0.3",
     "postcss": "^7.0.29",
     "rtlcss": "^2.5.0",
-    "uglify-js": "^3.8.1"
+    "uglify-js": "^3.9.2"
   },
   "scripts": {
     "uglifyjs": "find js -type f -name '*.js' ! -name '*.min.js' -maxdepth 1 | while read FILE ; do uglifyjs \"${FILE}\" -o \"${FILE%.js}.min.js\" ; done",
