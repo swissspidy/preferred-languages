@@ -20,7 +20,7 @@
     "autoprefixer": "^9.8.6",
     "cssnano": "^4.1.8",
     "eslint": "^7.8.1",
-    "nodemon": "^2.0.4",
+    "nodemon": "^2.0.5",
     "postcss": "^7.0.32",
     "rtlcss": "^2.5.0",
     "uglify-js": "^3.10.3"
