@@ -347,12 +347,12 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 
 	remove_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
 
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
+
 	foreach ( $preferred_locales as $locale ) {
 		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
 
 		if ( is_readable( $preferred_mofile ) ) {
-			$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $locale, $current_locale );
-
 			if( !$merge_translations ) {
 				return $preferred_mofile;
 			}
