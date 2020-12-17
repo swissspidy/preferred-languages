@@ -351,6 +351,12 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
 
 		if ( is_readable( $preferred_mofile ) ) {
+			$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $locale, $current_locale );
+
+			if( !$merge_translations ) {
+				return $preferred_mofile;
+			}
+
 			load_textdomain( $domain, $preferred_mofile );
 
 			if ( null === $first_mofile ) {
