@@ -9,7 +9,8 @@
  * License:     GPL-2.0+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: preferred-languages
- * Domain Path: /languages
+ * Requires at least: 4.9
+ * Requires PHP: 5.6
  *
  * Copyright (c) 2017 Pascal Birchler (email: swissspidy@chat.wordpress.org)
  *
