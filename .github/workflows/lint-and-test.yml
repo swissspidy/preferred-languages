@@ -69,7 +69,7 @@ jobs:
         run: composer validate --no-check-all --strict
 
       - name: Install dependencies
-        run: commposer install
+        run: composer install
 
       - name: Lint PHP
         run: composer lint
