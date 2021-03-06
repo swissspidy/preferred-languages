@@ -8,21 +8,27 @@ on:
 
 jobs:
   lint-js:
-    - name: Install dependencies
-      run: npm ci
+    name: JS Lints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Lint JS
-      run: npm run lint
+      - name: Lint JS
+        run: npm run lint
 
   lint-php:
-    - name: Validate composer.json
-      run: composer validate --no-check-all --strict
+    name: PHP Lints
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate composer.json
+        run: composer validate --no-check-all --strict
 
-    - name: Install dependencies
-      run: commposer install
+      - name: Install dependencies
+        run: commposer install
 
-    - name: Lint PHP
-      run: composer lint
+      - name: Lint PHP
+        run: composer lint
 
   unit:
     name: 'PHP ${{ matrix.php }} - WP ${{ matrix.wp }}'
