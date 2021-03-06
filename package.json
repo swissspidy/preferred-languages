@@ -13,15 +13,15 @@
   },
   "homepage": "https://github.com/swissspidy/preferred-languages#readme",
   "devDependencies": {
-    "@babel/cli": "^7.11.5",
-    "@babel/core": "^7.10.5",
+    "@babel/cli": "^7.13.0",
+    "@babel/core": "^7.13.8",
     "@babel/preset-env": "^7.13.9",
-    "@wordpress/eslint-plugin": "^7.3.0",
-    "autoprefixer": "^9.8.6",
-    "cssnano": "^4.1.8",
+    "@wordpress/browserslist-config": "^3.0.1",
+    "@wordpress/eslint-plugin": "^8.0.2",
+    "autoprefixer": "^10.2.5",
+    "cssnano": "^4.1.10",
     "eslint": "^7.21.0",
-    "nodemon": "^2.0.4",
-    "postcss": "^8.2.7",
+    "postcss-cli": "^8.3.1",
     "rtlcss": "^3.1.2",
     "uglify-js": "^3.13.0"
   },
@@ -31,9 +31,6 @@
     "build:css": "postcss css/src/preferred-languages.css -o css/preferred-languages.css && npm run rtlcss",
     "build:js": "babel js/src -d js && npm run uglifyjs",
     "build": "npm run build:css && npm run build:js",
-    "lint": "eslint .",
-    "watch:css": "nodemon --watch css/src -e css -x 'npm run build:css'",
-    "watch:js": "nodemon --watch js/src -e js -x 'npm run build:js'",
-    "watch": "nodemon --watch css/src --watch js/src -e css,js -x 'npm run build'"
+    "lint": "eslint ."
   }
 }
