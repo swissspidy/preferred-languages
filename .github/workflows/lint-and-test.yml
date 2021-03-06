@@ -142,8 +142,8 @@ jobs:
       - name: Install dependencies
         run: composer install
 
-      - name: Update PHPUnit
-        run: composer update --ignore-platform-reqs
+#      - name: Update PHPUnit
+#        run: composer update --ignore-platform-reqs
 
       - name: Run tests
         run: composer test
