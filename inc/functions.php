@@ -229,7 +229,7 @@ function preferred_languages_update_option( $old_value, $value ) {
  *
  * @since 1.0.0
  *
- * @param array $locales The language packs to install.
+ * @param array $locales List of locales to install language packs for.
  * @return array The installed and available languages.
  */
 function preferred_languages_download_language_packs( $locales ) {
@@ -251,10 +251,19 @@ function preferred_languages_download_language_packs( $locales ) {
 		}
 
 		$language = wp_download_language_pack( $locale );
+
 		if ( $language ) {
 			$installed_languages[] = $language;
 		}
 	}
+
+	/**
+	 * Fires when downloading language packs upon updating preferences.
+	 *
+	 * @param array $locales             List of locales to install language packs for.
+	 * @param array $installed_languages List of language packs that were successfully installed.
+	 */
+	do_action( 'preferred_languages_download_language_packs', $locales, $installed_languages );
 
 	return $installed_languages;
 }

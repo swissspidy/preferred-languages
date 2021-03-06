@@ -3,6 +3,7 @@
 ## 1.7.0
 
 * Adds a new `preferred_languages_merge_translations` filter that allows merging translations (off by default).
+* Adds a new `preferred_languages_download_language_packs` actions for plugins to hook in.
 * Minimum PHP version requirement has been increased to 5.6.
 * Minimum WordPress version requirement has been increased to 5.3.
 
