@@ -13,6 +13,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	public function test_meta_is_registered() {
+		preferred_languages_register_meta();
 		$this->assertTrue( registered_meta_key_exists( 'user', 'preferred_languages' ) );
 	}
 
