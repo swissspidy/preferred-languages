@@ -1,6 +1,9 @@
 # Preferred Languages
 
-[![Build Status](https://travis-ci.com/swissspidy/preferred-languages.svg?branch=master)](https://travis-ci.com/swissspidy/preferred-languages) [![codecov](https://codecov.io/gh/swissspidy/preferred-languages/branch/master/graph/badge.svg)](https://codecov.io/gh/swissspidy/preferred-languages)
+[![Latest Release)](https://img.shields.io/github/v/release/swissspidy/preferred-languages?include_prereleases)](https://github.com/swissspidy/preferred-languages/releases)
+[![Commit activity](https://img.shields.io/github/commit-activity/m/swissspidy/preferred-languages)](https://github.com/swissspidy/preferred-languages/pulse/monthly)
+[![Code Coverage](https://codecov.io/gh/swissspidy/preferred-languages/branch/main/graph/badge.svg)](https://codecov.io/gh/swissspidy/preferred-languages)
+[![License](https://img.shields.io/github/license/swissspidy/preferred-languages)](https://github.com/swissspidy/preferred-languages/blob/main/LICENSE)
 
 A [feature project](https://make.wordpress.org/core/features/) for letting WordPress users set their site's language in a more sensible way.
 
@@ -28,6 +31,6 @@ A user’s individual list of preferred languages
 
 Please help test! Install the plugin and [open issues](https://github.com/swissspidy/preferred-languages/issues) for any bugs you might find.
 
-To minify assets like JavaScript files and CSS when submitting a PR, run `npm run build`. 
+To minify assets like JavaScript files and CSS when submitting a PR, run `npm run build`.
 
 Also, please read all the blog posts tagged [#preferred-languages](https://make.wordpress.org/core/tag/preferred-languages/) on make/core and join the discussion in [#core-i18n](https://wordpress.slack.com/messages/#core-i18n) on the WordPress [Slack](https://make.wordpress.org/chat/) team.
