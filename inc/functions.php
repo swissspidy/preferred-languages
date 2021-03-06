@@ -347,6 +347,13 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 
 	remove_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
 
+	/**
+	 * Filters whether translations should be merged with existing ones.
+	 *
+	 * @param bool   $merge          Whether translations should be merged.
+	 * @param string $domain         The text domain
+	 * @param string $current_locale The current locale.
+	 */
 	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
 
 	foreach ( $preferred_locales as $locale ) {

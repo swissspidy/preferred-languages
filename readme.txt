@@ -1,8 +1,8 @@
 === Preferred Languages ===
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, l10n, language, locale, translation
-Requires at least: 4.9
-Tested up to: 5.5
+Requires at least: 5.3
+Tested up to: 5.7
 Requires PHP: 5.6
 Stable tag: 1.6.0
 License: GPLv2 or later
@@ -34,6 +34,10 @@ If you want to get involved, check out [open issues](https://github.com/swissspi
 For the plugin's changelog, please head over to [the GitHub repository](https://github.com/swissspidy/preferred-languages).
 
 == Upgrade Notice ==
+
+= 1.7.0 =
+
+This release contains a new `preferred_languages_merge_translations` filter that allows merging translations.
 
 = 1.6.0 =
 

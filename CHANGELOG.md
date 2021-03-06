@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.7.0
+
+* Adds a new `preferred_languages_merge_translations` filter that allows merging translations (off by default).
+* Minimum PHP version requirement has been increased to 5.6.
+* Minimum WordPress version requirement has been increased to 5.3.
+
 ## 1.6.0
 
 * Enhancement: Added support for JavaScript internationalization as used in the new block editor in WordPress 5.0. Requires WordPress 5.0.3.
