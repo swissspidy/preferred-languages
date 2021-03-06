@@ -353,7 +353,7 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
 
 		if ( is_readable( $preferred_mofile ) ) {
-			if( !$merge_translations ) {
+			if ( ! $merge_translations ) {
 				return $preferred_mofile;
 			}
 
@@ -367,7 +367,7 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 
 	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10, 2 );
 
-	if( null !== $first_mofile ) {
+	if ( null !== $first_mofile ) {
 		return $first_mofile;
 	}
 
@@ -422,7 +422,7 @@ function preferred_languages_register_scripts() {
 
 	wp_register_script(
 		'preferred-languages',
-		plugin_dir_url( dirname( __FILE__ ) ) . 'js/preferred-languages' . $suffix . '.js',
+		plugin_dir_url( __DIR__ ) . 'js/preferred-languages' . $suffix . '.js',
 		array(
 			'jquery',
 			'jquery-ui-sortable',
@@ -447,7 +447,7 @@ function preferred_languages_register_scripts() {
 
 	wp_register_style(
 		'preferred-languages',
-		plugin_dir_url( dirname( __FILE__ ) ) . 'css/preferred-languages.css',
+		plugin_dir_url( __DIR__ ) . 'css/preferred-languages.css',
 		array(),
 		'20190107',
 		'screen'
@@ -528,7 +528,7 @@ function preferred_languages_personal_options( $user ) {
 function preferred_languages_display_form( $args = array() ) {
 	wp_enqueue_script( 'preferred-languages' );
 
-	$args = wp_parse_args(
+	$args = (array) wp_parse_args(
 		$args,
 		array(
 			'selected'                    => array(),
