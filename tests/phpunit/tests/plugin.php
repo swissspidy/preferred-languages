@@ -23,4 +23,13 @@ class Plugin_Test extends WP_UnitTestCase {
 			has_filter( 'sanitize_user_meta_preferred_languages', 'preferred_languages_sanitize_list' )
 		);
 	}
+
+	public function test_preferred_languages_filter_locale_returns_locale_unchanged() {
+		$this->assertSame( 'de_CH', preferred_languages_filter_locale( 'de_CH' ) );
+	}
+
+	public function test_preferred_languages_filter_locale_returns_first_locale() {
+		update_option( 'preferred_languages', 'de_CH,fr_FR' );
+		$this->assertSame( 'de_CH', preferred_languages_filter_locale( 'de_DE' ) );
+	}
 }
