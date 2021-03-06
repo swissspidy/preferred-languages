@@ -1,4 +1,4 @@
-( ( ( wp, settings, $ ) => {
+( ( wp, settings, $ ) => {
 	const $document = $( document );
 	const $activeLocales = $( '.active-locales-list' );
 	const $activeLocalesControls = $( '.active-locales-controls' );
@@ -24,22 +24,29 @@
 	function changeButtonState( activeLocale ) {
 		const activeLocalesList = $activeLocales.find( '.active-locale' );
 
-		$activeLocalesControls.find( '.locales-move-up' ).attr(
-			'disabled',
-			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.first().is( activeLocale )
-		);
-		$activeLocalesControls.find( '.locales-move-down' ).attr(
-			'disabled',
-			$activeLocales.hasClass( 'empty-list' ) || activeLocalesList.last().is( activeLocale )
-		);
-		$activeLocalesControls.find( '.locales-remove' ).attr(
-			'disabled',
-			$activeLocales.hasClass( 'empty-list' )
-		);
-		$inactiveLocalesControls.find( '.locales-add' ).attr(
-			'disabled',
-			'disabled' === $inactiveLocales.attr( 'disabled' )
-		);
+		$activeLocalesControls
+			.find( '.locales-move-up' )
+			.attr(
+				'disabled',
+				$activeLocales.hasClass( 'empty-list' ) ||
+					activeLocalesList.first().is( activeLocale )
+			);
+		$activeLocalesControls
+			.find( '.locales-move-down' )
+			.attr(
+				'disabled',
+				$activeLocales.hasClass( 'empty-list' ) ||
+					activeLocalesList.last().is( activeLocale )
+			);
+		$activeLocalesControls
+			.find( '.locales-remove' )
+			.attr( 'disabled', $activeLocales.hasClass( 'empty-list' ) );
+		$inactiveLocalesControls
+			.find( '.locales-add' )
+			.attr(
+				'disabled',
+				'disabled' === $inactiveLocales.attr( 'disabled' )
+			);
 	}
 
 	/**
@@ -65,7 +72,10 @@
 		if ( true === newState ) {
 			$selectedLocale = $locale;
 
-			$activeLocales.attr( 'aria-activedescendant', $selectedLocale.attr( 'id' ) );
+			$activeLocales.attr(
+				'aria-activedescendant',
+				$selectedLocale.attr( 'id' )
+			);
 		}
 
 		changeButtonState( $locale );
@@ -168,7 +178,9 @@
 		}
 
 		// 3. Make visible in dropdown again.
-		$inactiveLocales.find( `option[value="${ locale }"]` ).removeClass( 'hidden' );
+		$inactiveLocales
+			.find( `option[value="${ locale }"]` )
+			.removeClass( 'hidden' );
 		$inactiveLocales.attr( 'disabled', false );
 
 		// 4. Update hidden input field.
@@ -224,7 +236,13 @@
 			toggleEmptyListMessage();
 		}
 
-		const $newLocale = $( '<li/>', { text: option.text(), role: 'option', 'aria-selected': false, id: locale, class: 'active-locale' } );
+		const $newLocale = $( '<li/>', {
+			text: option.text(),
+			role: 'option',
+			'aria-selected': false,
+			id: locale,
+			class: 'active-locale',
+		} );
 
 		// 4. Add to list.
 		$activeLocales.append( $newLocale );
@@ -233,7 +251,10 @@
 
 		// 5. Scroll into view.
 		$activeLocales.animate( {
-			scrollTop: $newLocale.offset().top - $activeLocales.offset().top + $activeLocales.scrollTop(),
+			scrollTop:
+				$newLocale.offset().top -
+				$activeLocales.offset().top +
+				$activeLocales.scrollTop(),
 		} );
 
 		// 5. Update hidden input field.
@@ -244,11 +265,19 @@
 	}
 
 	// Replace original language settings.
-	$( '.user-language-wrap' ).replaceWith( $( '.user-preferred-languages-wrap' ) );
-	$( '#WPLANG' ).parent().parent().replaceWith( $( '.site-preferred-languages-wrap' ) );
+	$( '.user-language-wrap' ).replaceWith(
+		$( '.user-preferred-languages-wrap' )
+	);
+	$( '#WPLANG' )
+		.parent()
+		.parent()
+		.replaceWith( $( '.site-preferred-languages-wrap' ) );
 
 	// Remove en_US as an option from the dropdown.
-	$inactiveLocalesWrap.filter( '[data-show-en_US="false"]' ).find( '[lang="en"][value=""]' ).remove();
+	$inactiveLocalesWrap
+		.filter( '[data-show-en_US="false"]' )
+		.find( '[lang="en"][value=""]' )
+		.remove();
 
 	// Change initial button state.
 	changeButtonState( $selectedLocale );
@@ -264,7 +293,9 @@
 			$option.removeAttr( 'selected' ).addClass( 'hidden' );
 		} );
 
-		const $firstInactiveLocale = $inactiveLocales.find( 'option:not(.hidden):first' );
+		const $firstInactiveLocale = $inactiveLocales.find(
+			'option:not(.hidden):first'
+		);
 
 		$firstInactiveLocale.attr( 'selected', true );
 		$inactiveLocalesControls.val( $firstInactiveLocale.val() );
@@ -273,7 +304,9 @@
 	// Disable controls if there are no more languages that could be added.
 	if ( $inactiveLocales.find( ':not(.hidden)' ).length === 0 ) {
 		$inactiveLocales.attr( 'disabled', true );
-		$inactiveLocalesControls.find( '.locales-add' ).attr( 'disabled', true );
+		$inactiveLocalesControls
+			.find( '.locales-add' )
+			.attr( 'disabled', true );
 	}
 
 	function onSortableUpdate() {
@@ -291,7 +324,12 @@
 
 	// Active locales keyboard shortcuts.
 	$document.on( 'keydown', ( e ) => {
-		if ( ! document.querySelector( '.preferred-languages' ).contains( document.activeElement ) ) {
+		if (
+			! document
+				.querySelector( '.preferred-languages' )
+				// eslint-disable-next-line @wordpress/no-global-active-element
+				.contains( document.activeElement )
+		) {
 			return;
 		}
 
@@ -324,7 +362,9 @@
 
 			case KEY_A:
 				if ( e.altKey ) {
-					makeLocaleActive( $inactiveLocales.find( 'option:selected' ) );
+					makeLocaleActive(
+						$inactiveLocales.find( 'option:selected' )
+					);
 				}
 
 				e.preventDefault();
@@ -348,10 +388,16 @@
 		toggleLocale( $( e.currentTarget ) );
 	} );
 
-	$activeLocalesControls.find( '.locales-move-up' ).on( 'click', moveLocaleUp );
+	$activeLocalesControls
+		.find( '.locales-move-up' )
+		.on( 'click', moveLocaleUp );
 
-	$activeLocalesControls.find( '.locales-move-down' ).on( 'click', moveLocaleDown );
+	$activeLocalesControls
+		.find( '.locales-move-down' )
+		.on( 'click', moveLocaleDown );
 
 	// Remove locale from list.
-	$activeLocalesControls.find( '.locales-remove' ).on( 'click', makeLocaleInactive );
-} ) )( wp, preferredLanguages, jQuery );
+	$activeLocalesControls
+		.find( '.locales-remove' )
+		.on( 'click', makeLocaleInactive );
+} )( wp, preferredLanguages, jQuery );
