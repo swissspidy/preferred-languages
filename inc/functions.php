@@ -325,14 +325,11 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
  * @since 1.0.0
  *
  * @param string $mofile Path to the MO file.
+ * @param string $domain Text domain. Unique identifier for retrieving translated strings.
  *
  * @return string The modified MO file path.
  */
-function preferred_languages_load_textdomain_mofile( $mofile ) {
-	if ( is_readable( $mofile ) ) {
-		return $mofile;
-	}
-
+function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 	$preferred_locales = preferred_languages_get_list();
 
 	if ( empty( $preferred_locales ) ) {
@@ -346,12 +343,32 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 		return $mofile;
 	}
 
+	$first_mofile = null;
+
+	remove_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
+
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
+
 	foreach ( $preferred_locales as $locale ) {
 		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
 
 		if ( is_readable( $preferred_mofile ) ) {
-			return $preferred_mofile;
+			if( !$merge_translations ) {
+				return $preferred_mofile;
+			}
+
+			load_textdomain( $domain, $preferred_mofile );
+
+			if ( null === $first_mofile ) {
+				$first_mofile = $preferred_mofile;
+			}
 		}
+	}
+
+	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10, 2 );
+
+	if( null !== $first_mofile ) {
+		return $first_mofile;
 	}
 
 	return $mofile;
