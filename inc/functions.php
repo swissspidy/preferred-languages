@@ -260,6 +260,8 @@ function preferred_languages_download_language_packs( $locales ) {
 	/**
 	 * Fires when downloading language packs upon updating preferences.
 	 *
+	 * @since 1.7.0
+	 *
 	 * @param array $locales             List of locales to install language packs for.
 	 * @param array $installed_languages List of language packs that were successfully installed.
 	 */
@@ -358,6 +360,8 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 
 	/**
 	 * Filters whether translations should be merged with existing ones.
+	 *
+	 * @since 1.7.0
 	 *
 	 * @param bool   $merge          Whether translations should be merged.
 	 * @param string $domain         The text domain
