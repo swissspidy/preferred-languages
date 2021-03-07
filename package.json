@@ -1,6 +1,6 @@
 {
   "name": "preferred-languages",
-  "version": "1.6.0",
+  "private": true,
   "description": "Choose languages for displaying WordPress in, in order of preference.",
   "repository": {
     "type": "git",
@@ -13,24 +13,14 @@
   },
   "homepage": "https://github.com/swissspidy/preferred-languages#readme",
   "devDependencies": {
-    "@babel/cli": "^7.13.0",
-    "@babel/core": "^7.13.8",
-    "@babel/preset-env": "^7.13.9",
-    "@wordpress/browserslist-config": "^3.0.1",
-    "@wordpress/eslint-plugin": "^8.0.2",
-    "autoprefixer": "^10.2.5",
-    "cssnano": "^4.1.10",
-    "eslint": "^7.21.0",
-    "postcss-cli": "^8.3.1",
-    "rtlcss": "^3.1.2",
-    "uglify-js": "^3.13.0"
+    "@wordpress/scripts": "^13.0.3",
+    "rtlcss-webpack-plugin": "^4.0.6"
   },
   "scripts": {
-    "uglifyjs": "find js -type f -name '*.js' ! -name '*.min.js' -maxdepth 1 | while read FILE ; do uglifyjs \"${FILE}\" -o \"${FILE%.js}.min.js\" ; done",
-    "rtlcss": "rtlcss css/preferred-languages.css css/preferred-languages-rtl.css",
-    "build:css": "postcss css/src/preferred-languages.css -o css/preferred-languages.css && npm run rtlcss",
-    "build:js": "babel js/src -d js && npm run uglifyjs",
-    "build": "npm run build:css && npm run build:js",
-    "lint": "eslint ."
+    "build": "wp-scripts build src/preferred-languages",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:md:docs": "wp-scripts lint-md-docs",
+    "lint:md:js": "wp-scripts lint-md-js"
   }
 }

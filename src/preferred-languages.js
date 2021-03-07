@@ -1,3 +1,5 @@
+import './preferred-languages.css';
+
 ( ( wp, settings, $ ) => {
 	const $document = $( document );
 	const $activeLocales = $( '.active-locales-list' );
