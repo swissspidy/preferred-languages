@@ -23,6 +23,7 @@
 }
 
 @media screen and (min-width: 510px) {
+
 	.active-locales-controls {
 		clear: none;
 	}
@@ -106,6 +107,7 @@
 /* Tooltips inspired by https://github.com/primer/primer */
 
 @keyframes tooltip-appear {
+
 	from {
 		opacity: 0;
 	}
@@ -119,12 +121,12 @@
 	position: relative;
 }
 
-.tooltipped:hover:before,
-.tooltipped:active:before,
-.tooltipped:focus:before,
-.tooltipped:hover:after,
-.tooltipped:active:after,
-.tooltipped:focus:after {
+.tooltipped:hover::before,
+.tooltipped:active::before,
+.tooltipped:focus::before,
+.tooltipped:hover::after,
+.tooltipped:active::after,
+.tooltipped:focus::after {
 	opacity: 1;
 	display: inline-block;
 	text-decoration: none;
@@ -135,13 +137,13 @@
 	animation-delay: .4s;
 }
 
-.tooltipped:before {
+.tooltipped::before {
 	position: absolute;
 	z-index: 1000001;
 	display: none;
 	width: 0;
 	height: 0;
-	color: #191E23;
+	color: #191e23;
 	pointer-events: none;
 	content: "";
 	border: 6px solid transparent;
@@ -150,15 +152,15 @@
 	right: 50%;
 	bottom: auto;
 	margin-right: -6px;
-	border-top-color: #191E23;
+	border-top-color: #191e23;
 }
 
-.tooltipped:after {
+.tooltipped::after {
 	position: absolute;
 	z-index: 1000000;
 	display: none;
 	padding: .5em .75em;
-	font: normal normal 11px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+	font: normal normal 11px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	-webkit-font-smoothing: subpixel-antialiased;
 	color: #fff;
 	text-align: center;
@@ -170,7 +172,7 @@
 	white-space: pre;
 	pointer-events: none;
 	content: attr(data-tooltip);
-	background: #191E23;
+	background: #191e23;
 	border-radius: 3px;
 	opacity: 0;
 	right: auto;

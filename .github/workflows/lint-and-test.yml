@@ -36,7 +36,10 @@ jobs:
       run: npm ci
 
     - name: Lint JS
-      run: npm run lint
+      run: npm run lint:js
+
+    - name: Lint CSS
+      run: npm run lint:css
 
   lint-php:
     name: PHP Lints
