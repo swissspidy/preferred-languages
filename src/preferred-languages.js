@@ -274,13 +274,23 @@ import './preferred-languages.css';
 	}
 
 	// Replace original language settings.
+
+	// User Profile.
 	$( '.user-language-wrap' ).replaceWith(
 		$( '.user-preferred-languages-wrap' )
 	);
-	$( '#WPLANG' )
+
+	// Settings -> General.
+	$( '.options-general-php #WPLANG' )
 		.parent()
 		.parent()
 		.replaceWith( $( '.site-preferred-languages-wrap' ) );
+
+	// Network Settings.
+	$( '.network-admin.settings-php #WPLANG' )
+		.parent()
+		.parent()
+		.replaceWith( $( '.network-preferred-languages-wrap' ) );
 
 	// Remove en_US as an option from the dropdown.
 	$inactiveLocalesWrap

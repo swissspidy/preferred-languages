@@ -37,7 +37,7 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 = 1.7.0 =
 
-This release contains a new `preferred_languages_merge_translations` filter that allows merging translations.
+This release improves Multisite support and contains a new `preferred_languages_merge_translations` filter that allows merging translations.
 
 = 1.6.0 =
 

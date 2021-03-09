@@ -137,6 +137,9 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertNotEmpty( $output );
 	}
 
+	/**
+	 * @group ms-excluded
+	 */
 	public function test_personal_options_no_languages() {
 		$user_id = self::factory()->user->create( [
 			'role' => 'administrator',
@@ -160,7 +163,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertNotEmpty( $output );
 	}
 
-
 	public function test_personal_options_no_languages_and_no_capability() {
 		add_filter( 'get_available_languages', '__return_empty_array' );
 
@@ -170,5 +172,4 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$this->assertEmpty( $output );
 	}
-
 }

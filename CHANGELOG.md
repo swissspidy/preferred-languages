@@ -6,6 +6,8 @@
 * Adds a new `preferred_languages_download_language_packs` action for plugins to hook in.
 * Minimum PHP version requirement has been increased to 5.6.
 * Minimum WordPress version requirement has been increased to 5.3.
+* Improves Multisite support by hooking into Network settings screen.
+* Adds polyglots icon next to form labels to match core styling.
 
 ## 1.6.0
 

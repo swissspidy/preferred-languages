@@ -149,15 +149,19 @@ jobs:
 #        run: composer update --ignore-platform-reqs
 
       - name: Run tests
-        run: composer test
+        run: |
+          composer test
+          composer test:multisites
         if: ${{ ! matrix.coverage }}
 
       - name: Run tests with coverage
-        run: composer test -- --coverage-clover coverage.xml
+        run: |
+          composer test -- --coverage-clover coverage.xml
+          composer test:multisite -- --coverage-clover coverage-multisite.xml
         if: ${{ matrix.coverage }}
 
       - name: Upload code coverage report
         uses: codecov/codecov-action@v1
         with:
-          file: coverage.xml
+          file: cover*.xml
         if: ${{ matrix.coverage }}

@@ -96,6 +96,18 @@ function preferred_languages_get_site_list() {
 }
 
 /**
+ * Returns the list of preferred languages of the current site.
+ *
+ * @since 1.7.0
+ *
+ * @return array Preferred languages.
+ */
+function preferred_languages_get_network_list() {
+	$preferred_languages = get_site_option( 'preferred_languages', '' );
+	return array_filter( explode( ',', $preferred_languages ) );
+}
+
+/**
  * Returns the list of preferred languages.
  *
  * If in the admin area, this returns the data for the current user.
@@ -117,7 +129,14 @@ function preferred_languages_get_list() {
 	}
 
 	// Fall back to site setting.
-	return preferred_languages_get_site_list();
+	$preferred_languages = preferred_languages_get_site_list();
+
+	if ( ! empty( $preferred_languages ) ) {
+		return $preferred_languages;
+	}
+
+	// Fallback to network setting.
+	return preferred_languages_get_network_list();
 }
 
 /**
@@ -225,6 +244,30 @@ function preferred_languages_update_option( $old_value, $value ) {
 }
 
 /**
+ * Downloads language packs upon updating the network option.
+ *
+ * @since 1.7.0
+ *
+ * @param string $old_value The old option value.
+ * @param string $value     The new option value.
+ */
+function preferred_languages_update_site_option( $old_value, $value ) {
+	remove_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option' );
+
+	$locales             = array_filter( explode( ',', $value ) );
+	$installed_languages = preferred_languages_download_language_packs( $locales );
+
+	// Only store actually installed languages in option.
+	update_site_option( 'preferred_languages', implode( ',', $installed_languages ) );
+
+	add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
+
+	// Reload translations after save.
+	$preferred_languages_list = preferred_languages_get_network_list();
+	load_default_textdomain( reset( $preferred_languages_list ) );
+}
+
+/**
  * Downloads language packs upon updating the option.
  *
  * @since 1.0.0
@@ -296,6 +339,10 @@ function preferred_languages_sanitize_list( $preferred_languages ) {
  */
 function preferred_languages_filter_locale( $locale ) {
 	$preferred_languages = preferred_languages_get_site_list();
+
+	if ( empty( $preferred_languages ) && is_multisite() ) {
+		$preferred_languages = preferred_languages_get_network_list();
+	}
 
 	if ( empty( $preferred_languages ) ) {
 		return $locale;
@@ -476,7 +523,7 @@ function preferred_languages_register_scripts() {
 function preferred_languages_settings_field() {
 	add_settings_field(
 		'preferred_languages',
-		'<span id="preferred-languages-label">' . __( 'Site Language', 'preferred-languages' ) . '<span/>',
+		'<span id="preferred-languages-label">' . __( 'Site Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>',
 		'preferred_languages_display_form',
 		'general',
 		'default',
@@ -485,6 +532,55 @@ function preferred_languages_settings_field() {
 			'selected' => preferred_languages_get_site_list(),
 		)
 	);
+
+	if ( is_multisite() ) {
+		add_settings_section(
+			'preferred_languages',
+			'',
+			'__return_empty_string',
+			'preferred_languages_network_settings'
+		);
+
+		add_settings_field(
+			'preferred_languages',
+			'<span id="preferred-languages-label">' . __( 'Default Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>',
+			'preferred_languages_display_form',
+			'preferred_languages_network_settings',
+			'preferred_languages',
+			array(
+				'class'    => 'network-preferred-languages-wrap',
+				'selected' => preferred_languages_get_network_list(),
+			)
+		);
+	}
+}
+
+/**
+ * Adds a settings field for the preferred languages option.
+ *
+ * @since 1.7.0
+ */
+function preferred_languages_network_settings_field() {
+	wp_nonce_field( 'preferred_languages_network_settings', 'preferred_languages_network_settings_nonce' );
+	do_settings_sections( 'preferred_languages' );
+	do_settings_sections( 'preferred_languages_network_settings' );
+}
+
+/**
+ * Updates the preferred languages network settings.
+ *
+ * @since 1.7.0
+ */
+function preferred_languages_update_network_settings() {
+	$nonce = isset( $_POST['preferred_languages_network_settings_nonce'] ) ? wp_unslash( $_POST['preferred_languages_network_settings_nonce'] ) : null;
+
+	if ( ! wp_verify_nonce( $nonce, 'preferred_languages_network_settings' ) ) {
+		return;
+	}
+
+	if ( isset( $_POST['preferred_languages'] ) ) {
+		update_site_option( 'preferred_languages', wp_unslash( $_POST['preferred_languages'] ) );
+	}
 }
 
 /**
@@ -503,7 +599,10 @@ function preferred_languages_personal_options( $user ) {
 	?>
 	<tr class="user-preferred-languages-wrap">
 		<th scope="row">
-			<span id="preferred-languages-label"><?php _e( 'Language', 'preferred-languages' ); ?></span>
+			<span id="preferred-languages-label">
+				<?php _e( 'Language', 'preferred-languages' ); ?>
+			</span>
+			<span class="dashicons dashicons-translation" aria-hidden="true"></span>
 		</th>
 		<td>
 			<?php
