@@ -24,12 +24,150 @@ class Plugin_Test extends WP_UnitTestCase {
 		);
 	}
 
-	public function test_preferred_languages_filter_locale_returns_locale_unchanged() {
+	public function test_update_user_option() {
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+
+		$_POST['preferred_languages'] = 'de_DE,fr_FR';
+		preferred_languages_update_user_option( $user_id );
+		$actual = get_user_meta( $user_id, 'preferred_languages', true );
+		$this->assertSame( 'de_DE,fr_FR', $actual );
+	}
+
+	public function test_get_user_list() {
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+
+		wp_set_current_user( $user_id );
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+
+		$expected = [
+			'de_DE',
+			'fr_FR',
+		];
+
+		$this->assertSame( $expected, preferred_languages_get_user_list() );
+	}
+
+	public function get_site_list() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$expected = [
+			'de_DE',
+			'fr_FR',
+		];
+
+		$this->assertSame( $expected, preferred_languages_get_site_list() );
+	}
+
+	public function test_get_list() {
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+
+		wp_set_current_user( $user_id );
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', 'es_ES' );
+
+		$expected = [ 'es_ES' ];
+
+		$this->assertSame( $expected, preferred_languages_get_list() );
+	}
+
+	public function test_get_list_admin() {
+		set_current_screen( 'index.php' );
+
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+
+		wp_set_current_user( $user_id );
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', 'es_ES' );
+
+		$expected = [
+			'de_DE',
+			'fr_FR',
+		];
+
+		$this->assertSame( $expected, preferred_languages_get_list() );
+	}
+
+	public function test_get_list_admin_fallback() {
+		set_current_screen( 'index.php' );
+
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+
+		wp_set_current_user( $user_id );
+		update_user_meta( $user_id, 'preferred_languages', '' );
+		update_option( 'preferred_languages', 'es_ES' );
+
+		$expected = [ 'es_ES' ];
+
+		$this->assertSame( $expected, preferred_languages_get_list() );
+	}
+
+	public function test_filter_locale_returns_locale_unchanged() {
 		$this->assertSame( 'de_CH', preferred_languages_filter_locale( 'de_CH' ) );
 	}
 
-	public function test_preferred_languages_filter_locale_returns_first_locale() {
+	public function test_filter_locale_returns_first_locale() {
 		update_option( 'preferred_languages', 'de_CH,fr_FR' );
 		$this->assertSame( 'de_CH', preferred_languages_filter_locale( 'de_DE' ) );
 	}
+
+	public function test_init_registry() {
+		preferred_languages_init_registry();
+		$this->assertInstanceOf( Preferred_Languages_Textdomain_Registry::class, $GLOBALS['preferred_languages_textdomain_registry'] );
+	}
+
+	public function test_personal_options() {
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+		wp_set_current_user( $user_id );
+
+		$output = get_echo( 'preferred_languages_personal_options', [ wp_get_current_user() ] );
+
+		$this->assertNotEmpty( $output );
+	}
+
+	public function test_personal_options_no_languages() {
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+		wp_set_current_user( $user_id );
+
+		add_filter( 'get_available_languages', '__return_empty_array' );
+
+		$output = get_echo( 'preferred_languages_personal_options', [ wp_get_current_user() ] );
+
+		remove_filter( 'get_available_languages', '__return_empty_array' );
+
+		wp_set_current_user(0 );
+
+		$this->assertNotEmpty( $output );
+	}
+
+	public function test_personal_options_no_capability() {
+		$output = get_echo( 'preferred_languages_personal_options', [ wp_get_current_user() ] );
+
+		$this->assertNotEmpty( $output );
+	}
+
+
+	public function test_personal_options_no_languages_and_no_capability() {
+		add_filter( 'get_available_languages', '__return_empty_array' );
+
+		$output = get_echo( 'preferred_languages_personal_options', [ wp_get_current_user() ] );
+
+		remove_filter( 'get_available_languages', '__return_empty_array' );
+
+		$this->assertEmpty( $output );
+	}
+
 }
