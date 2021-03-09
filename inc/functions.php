@@ -438,42 +438,34 @@ function preferred_languages_load_script_translation_file( $file ) {
  * @since 1.0.0
  */
 function preferred_languages_register_scripts() {
-	$suffix = SCRIPT_DEBUG ? '' : '.min';
+	$asset_file = dirname( __DIR__ ) . '/build/preferred-languages.asset.php';
+	$asset      = is_readable( $asset_file ) ? require $asset_file : array();
+
+	$asset['dependencies'] = isset( $asset['dependencies'] ) ? $asset['dependencies'] : array();
+	$asset['version']      = isset( $asset['version'] ) ? $asset['version'] : '';
+
+	$asset['dependencies'][] = 'jquery';
+	$asset['dependencies'][] = 'jquery-ui-sortable';
 
 	wp_register_script(
-		'preferred-languages',
-		plugin_dir_url( __DIR__ ) . 'js/preferred-languages' . $suffix . '.js',
-		array(
-			'jquery',
-			'jquery-ui-sortable',
-			'wp-a11y',
-		),
-		'20190319',
-		true
+			'preferred-languages',
+			plugins_url( 'build/preferred-languages.js', __DIR__ ),
+			$asset['dependencies'],
+			$asset['version'],
+			true
 	);
 
-	wp_localize_script(
-		'preferred-languages',
-		'preferredLanguages',
-		array(
-			'l10n' => array(
-				'localeAdded'   => __( 'Locale added to list', 'preferred-languages' ),
-				'localeRemoved' => __( 'Locale removed from list', 'preferred-languages' ),
-				'movedUp'       => __( 'Locale moved up', 'preferred-languages' ),
-				'movedDown'     => __( 'Locale moved down', 'preferred-languages' ),
-			),
-		)
-	);
+	wp_set_script_translations( 'preferred-languages', 'preferred-languages' );
 
 	wp_register_style(
-		'preferred-languages',
-		plugin_dir_url( __DIR__ ) . 'css/preferred-languages.css',
-		array(),
-		'20190107',
-		'screen'
+			'preferred-languages',
+			plugins_url( 'build/preferred-languages.css', __DIR__ ),
+			array(),
+			$asset['version'],
+			'screen'
 	);
 
-	wp_styles()->add_data( 'preferred-languages', 'rtl', true );
+	wp_style_add_data( 'preferred-languages', 'rtl', 'replace' );
 }
 
 /**

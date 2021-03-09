@@ -13,14 +13,17 @@
   },
   "homepage": "https://github.com/swissspidy/preferred-languages#readme",
   "devDependencies": {
+    "@wordpress/a11y": "^2.14.3",
+    "@wordpress/i18n": "^3.18.0",
     "@wordpress/scripts": "^13.0.3",
     "rtlcss-webpack-plugin": "^4.0.6"
   },
   "scripts": {
-    "build": "wp-scripts build src/preferred-languages",
+    "build": "wp-scripts build src/preferred-languages.js",
     "lint:css": "wp-scripts lint-style",
     "lint:js": "wp-scripts lint-js",
     "lint:md:docs": "wp-scripts lint-md-docs",
-    "lint:md:js": "wp-scripts lint-md-js"
+    "lint:md:js": "wp-scripts lint-md-js",
+    "start": "wp-scripts start src/preferred-languages.js"
   }
 }

@@ -1,6 +1,9 @@
+import { speak } from '@wordpress/a11y';
+import { __ } from '@wordpress/i18n';
+
 import './preferred-languages.css';
 
-( ( wp, settings, $ ) => {
+( ( $ ) => {
 	const $document = $( document );
 	const $activeLocales = $( '.active-locales-list' );
 	const $activeLocalesControls = $( '.active-locales-controls' );
@@ -114,7 +117,7 @@ import './preferred-languages.css';
 		changeButtonState( $selectedLocale );
 
 		// 4. Announce to assistive technologies.
-		wp.a11y.speak( settings.l10n.movedUp );
+		speak( __( 'Locale moved up', 'preferred-languages' ) );
 	}
 
 	/**
@@ -133,7 +136,7 @@ import './preferred-languages.css';
 		changeButtonState( $selectedLocale );
 
 		// 4. Announce to assistive technologies.
-		wp.a11y.speak( settings.l10n.movedDown );
+		speak( __( 'Locale moved down', 'preferred-languages' ) );
 	}
 
 	/**
@@ -150,7 +153,7 @@ import './preferred-languages.css';
 			$activeLocales.attr( 'aria-activedescendant', '' );
 			$emptyMessage.removeClass( 'hidden' );
 
-			wp.a11y.speak( $emptyMessage.data( 'a11y-message' ) );
+			speak( $emptyMessage.data( 'a11y-message' ) );
 		}
 	}
 
@@ -192,7 +195,7 @@ import './preferred-languages.css';
 		changeButtonState( $selectedLocale );
 
 		// 6. Announce to assistive technologies.
-		wp.a11y.speak( settings.l10n.localeRemoved );
+		speak( __( 'Locale removed from list', 'preferred-languages' ) );
 	}
 
 	/**
@@ -263,7 +266,7 @@ import './preferred-languages.css';
 		updateHiddenInput();
 
 		// 6. Announce to assistive technologies.
-		wp.a11y.speak( settings.l10n.localeAdded );
+		speak( __( 'Locale added to list', 'preferred-languages' ) );
 	}
 
 	// Replace original language settings.
@@ -402,4 +405,4 @@ import './preferred-languages.css';
 	$activeLocalesControls
 		.find( '.locales-remove' )
 		.on( 'click', makeLocaleInactive );
-} )( wp, preferredLanguages, jQuery );
+} )( jQuery );
