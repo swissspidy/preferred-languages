@@ -151,7 +151,7 @@ jobs:
       - name: Run tests
         run: |
           composer test
-          composer test:multisites
+          composer test:multisite
         if: ${{ ! matrix.coverage }}
 
       - name: Run tests with coverage
