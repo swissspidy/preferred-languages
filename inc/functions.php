@@ -448,21 +448,21 @@ function preferred_languages_register_scripts() {
 	$asset['dependencies'][] = 'jquery-ui-sortable';
 
 	wp_register_script(
-			'preferred-languages',
-			plugins_url( 'build/preferred-languages.js', __DIR__ ),
-			$asset['dependencies'],
-			$asset['version'],
-			true
+		'preferred-languages',
+		plugins_url( 'build/preferred-languages.js', __DIR__ ),
+		$asset['dependencies'],
+		$asset['version'],
+		true
 	);
 
 	wp_set_script_translations( 'preferred-languages', 'preferred-languages' );
 
 	wp_register_style(
-			'preferred-languages',
-			plugins_url( 'build/preferred-languages.css', __DIR__ ),
-			array(),
-			$asset['version'],
-			'screen'
+		'preferred-languages',
+		plugins_url( 'build/preferred-languages.css', __DIR__ ),
+		array(),
+		$asset['version'],
+		'screen'
 	);
 
 	wp_style_add_data( 'preferred-languages', 'rtl', 'replace' );
