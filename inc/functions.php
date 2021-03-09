@@ -469,15 +469,6 @@ function preferred_languages_register_scripts() {
 }
 
 /**
- * Enqueues the stylesheet in the admin.
- *
- * @since 1.4.0
- */
-function preferred_languages_enqueue_scripts() {
-	wp_enqueue_style( 'preferred-languages' );
-}
-
-/**
  * Adds a settings field for the preferred languages option.
  *
  * @since 1.0.0
@@ -539,6 +530,7 @@ function preferred_languages_personal_options( $user ) {
  */
 function preferred_languages_display_form( $args = array() ) {
 	wp_enqueue_script( 'preferred-languages' );
+	wp_enqueue_style( 'preferred-languages' );
 
 	$args = (array) wp_parse_args(
 		$args,
