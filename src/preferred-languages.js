@@ -3,6 +3,10 @@ import { __ } from '@wordpress/i18n';
 
 import './preferred-languages.css';
 
+/**
+ * @typedef jQuery
+ */
+
 ( ( $ ) => {
 	const $document = $( document );
 	const $activeLocales = $( '.active-locales-list' );
@@ -405,4 +409,4 @@ import './preferred-languages.css';
 	$activeLocalesControls
 		.find( '.locales-remove' )
 		.on( 'click', makeLocaleInactive );
-} )( jQuery );
+} )( window.jQuery );
