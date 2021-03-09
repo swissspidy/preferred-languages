@@ -1,3 +1,7 @@
 vendor/
 node_modules/
 build/
+.wp-env.override.json
+phpcs.xml
+phpunit.xml
+phpunit-multisite.xml
