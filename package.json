@@ -16,7 +16,7 @@
     "@wordpress/a11y": "^2.15.0",
     "@wordpress/e2e-test-utils": "^5.1.0",
     "@wordpress/env": "^4.0.1-next.645224df70.0",
-    "@wordpress/i18n": "^3.18.0",
+    "@wordpress/i18n": "^3.19.1",
     "@wordpress/scripts": "^14.0.1",
     "rtlcss-webpack-plugin": "^4.0.6"
   },
