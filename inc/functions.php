@@ -374,7 +374,12 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
 		return reset( $preferred_languages );
 	}
 
-	return $value;
+	/**
+	 * Returning an empty string will force WordPress to fall back to {@see get_locale},
+	 * which is filtered by {@see preferred_languages_filter_locale} to use the site's
+	 * preferred languages list.
+	 */
+	return '';
 }
 
 /**
