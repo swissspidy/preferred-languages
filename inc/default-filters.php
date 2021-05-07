@@ -26,7 +26,7 @@ add_filter( 'pre_update_site_option', 'preferred_languages_pre_update_option', 1
 add_filter( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
 add_filter( 'update_user_metadata', 'preferred_languages_pre_update_user_meta', 10, 5 );
-add_filter( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
+add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
 add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
 add_filter( 'locale', 'preferred_languages_filter_locale', 5 ); // Before WP_Locale_Switcher.
 add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10, 2 );
