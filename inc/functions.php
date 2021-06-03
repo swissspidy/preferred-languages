@@ -646,6 +646,9 @@ function preferred_languages_display_form( $args = array() ) {
 		)
 	);
 
+	// Filter 'false' being passed here.
+	$selected = array_filter( (array) $args['selected'] );
+
 	require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 	$translations = wp_get_available_translations();
 
@@ -653,7 +656,7 @@ function preferred_languages_display_form( $args = array() ) {
 
 	$preferred_languages = array();
 
-	foreach ( (array) $args['selected'] as $locale ) {
+	foreach ( $selected as $locale ) {
 		if ( isset( $translations[ $locale ] ) ) {
 			$translation = $translations[ $locale ];
 
@@ -691,7 +694,7 @@ function preferred_languages_display_form( $args = array() ) {
 
 	?>
 	<div class="preferred-languages">
-		<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $args['selected'] ) ); ?>"/>
+		<input type="hidden" name="preferred_languages" value="<?php echo esc_attr( implode( ',', $selected ) ); ?>"/>
 		<p><?php _e( 'Choose languages for displaying WordPress in, in order of preference.', 'preferred-languages' ); ?></p>
 		<div class="active-locales wp-clearfix">
 			<?php
