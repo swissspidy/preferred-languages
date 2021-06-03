@@ -80,7 +80,17 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
 	}
 
 	$preferred_languages = get_user_meta( $user->ID, 'preferred_languages', true );
-	return array_filter( explode( ',', $preferred_languages ) );
+	$preferred_languages = array_filter( explode( ',', $preferred_languages ) );
+
+	if ( ! empty( $preferred_languages ) ) {
+		return $preferred_languages;
+	}
+
+	remove_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale' );
+	$locale = get_user_meta( $user->ID, 'locale', true );
+	add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
+
+	return empty( $locale ) ? false : [ $locale ];
 }
 
 /**

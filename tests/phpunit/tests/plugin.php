@@ -46,7 +46,22 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertSame( $expected, preferred_languages_get_user_list() );
 	}
 
-	public function get_site_list() {
+	public function test_get_user_list_falls_back_to_locale_user_meta() {
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+
+		wp_set_current_user( $user_id );
+		update_user_meta( $user_id, 'locale', 'de_DE' );
+
+		$expected = [
+			'de_DE',
+		];
+
+		$this->assertSame( $expected, preferred_languages_get_user_list() );
+	}
+
+	public function test_get_site_list() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
 		$expected = [
