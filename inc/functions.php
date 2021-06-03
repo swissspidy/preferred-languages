@@ -90,7 +90,7 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
 	$locale = get_user_meta( $user->ID, 'locale', true );
 	add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
 
-	return empty( $locale ) ? false : [ $locale ];
+	return empty( $locale ) ? false : array( $locale );
 }
 
 /**
