@@ -179,7 +179,11 @@ function preferred_languages_pre_update_user_meta( $check, $user_id, $meta_key, 
 }
 
 /**
- * Downloads language pack when updating user meta.
+ * Hooks into user meta updates.
+ *
+ * Downloads language pack when updating list of preferred languages.
+ *
+ * Also updates the 'locale' user meta if the list is empty.
  *
  * @since 1.3.0
  *
@@ -690,6 +694,8 @@ function preferred_languages_display_form( $args = array() ) {
 		}
 	}
 
+	$current_locale = determine_locale();
+
 	/* translators: accessibility text */
 	$label_up = __( 'Move up (Alt+Up)', 'preferred-languages' );
 
@@ -731,13 +737,13 @@ function preferred_languages_display_form( $args = array() ) {
 				role="listbox"
 				aria-labelledby="preferred-languages-label"
 				tabindex="0"
-				aria-activedescendant="<?php echo empty( $preferred_languages ) ? '' : esc_attr( get_locale() ); ?>"
+				aria-activedescendant="<?php echo empty( $preferred_languages ) ? '' : esc_attr( $current_locale ); ?>"
 				id="preferred_languages"
 				class="active-locales-list <?php echo empty( $preferred_languages ) ? 'empty-list' : ''; ?>">
 				<?php foreach ( $preferred_languages as $language ) : ?>
 					<li
 						role="option"
-						aria-selected="<?php echo get_locale() === $language['language'] ? 'true' : 'false'; ?>"
+						aria-selected="<?php echo $current_locale === $language['language'] ? 'true' : 'false'; ?>"
 						id="<?php echo esc_attr( $language['language'] ); ?>"
 						class="active-locale">
 						<?php echo esc_html( $language['native_name'] ); ?>
