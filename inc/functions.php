@@ -197,6 +197,12 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 		return;
 	}
 
+	// Clearing the preferred languages list should also clear the 'locale' user meta
+	// to prevent stale data.
+	if ( empty( $meta_value ) ) {
+		update_user_meta( $object_id, 'locale', '' );
+	}
+
 	remove_filter( 'update_user_meta', 'preferred_languages_update_user_meta' );
 
 	$locales             = array_filter( explode( ',', $meta_value ) );
