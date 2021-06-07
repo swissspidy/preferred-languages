@@ -214,8 +214,9 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 	add_filter( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
 
 	// Reload translations after save.
-	$preferred_languages_list = preferred_languages_get_user_list( $object_id );
-	load_default_textdomain( reset( $preferred_languages_list ) );
+	if ( get_current_user_id() === $object_id ) {
+		load_default_textdomain( determine_locale() );
+	}
 }
 
 /**
@@ -259,8 +260,7 @@ function preferred_languages_update_option( $old_value, $value ) {
 	add_filter( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 
 	// Reload translations after save.
-	$preferred_languages_list = preferred_languages_get_site_list();
-	load_default_textdomain( reset( $preferred_languages_list ) );
+	load_default_textdomain( determine_locale() );
 }
 
 /**
@@ -283,8 +283,7 @@ function preferred_languages_update_site_option( $old_value, $value ) {
 	add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 
 	// Reload translations after save.
-	$preferred_languages_list = preferred_languages_get_network_list();
-	load_default_textdomain( reset( $preferred_languages_list ) );
+	load_default_textdomain( determine_locale() );
 }
 
 /**
