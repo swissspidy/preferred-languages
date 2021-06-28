@@ -23,7 +23,7 @@
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "phpcompatibility/phpcompatibility-wp": "^2.0",
     "wp-coding-standards/wpcs": "^2.1",
-    "yoast/phpunit-polyfills": "^0.2.0"
+    "yoast/phpunit-polyfills": "^1.0.0"
   },
   "scripts": {
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
