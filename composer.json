@@ -11,11 +11,6 @@
       "role": "Developer"
     }
   ],
-  "config": {
-    "platform": {
-      "php": "5.6.20"
-    }
-  },
   "require": {
     "php": ">=5.6.20",
     "ext-json": "*"
@@ -25,6 +20,11 @@
     "phpcompatibility/phpcompatibility-wp": "^2.0",
     "wp-coding-standards/wpcs": "^2.1",
     "yoast/phpunit-polyfills": "^1.0.0"
+  },
+  "config": {
+    "platform": {
+      "php": "5.6.20"
+    }
   },
   "scripts": {
     "format": "vendor/bin/phpcbf --report-summary --report-source .",
