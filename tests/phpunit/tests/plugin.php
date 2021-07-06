@@ -364,11 +364,11 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	public function data_test_sanitize_list() {
-		 return array(
-			 array( 'de_DE,fr_FR', 'de_DE,fr_FR' ),
-			 array( ' de_DE , fr_FR ', 'de_DE,fr_FR' ),
-			 array( '<b>de_DE</b>,fr_FR ', 'de_DE,fr_FR' ),
-		 );
+		return array(
+			array( 'de_DE,fr_FR', 'de_DE,fr_FR' ),
+			array( ' de_DE , fr_FR ', 'de_DE,fr_FR' ),
+			array( '<b>de_DE</b>,fr_FR ', 'de_DE,fr_FR' ),
+		);
 	}
 
 	/**

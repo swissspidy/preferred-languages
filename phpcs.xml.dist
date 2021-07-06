@@ -3,7 +3,11 @@
 	<description>A custom set of code standard rules for Preferred Languages.</description>
 
 	<rule ref="WordPress-Core" />
-	<rule ref="WordPress-Docs" />
+
+	<rule ref="WordPress-Docs">
+		<exclude-pattern>*/tests/*</exclude-pattern>
+	</rule>
+
 	<rule ref="WordPress.WP.I18n">
 		<properties>
 			<property name="text_domain" value="preferred-languages" />
@@ -44,4 +48,5 @@
 	<exclude-pattern>*/build/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/tests/*/bootstrap.php</exclude-pattern>
 </ruleset>
