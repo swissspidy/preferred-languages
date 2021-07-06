@@ -1,8 +1,8 @@
 === Preferred Languages ===
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, l10n, language, locale, translation
-Tested up to: 5.7
-Stable tag: 1.7.0
+Tested up to: 5.8
+Stable tag: 1.7.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,6 +32,10 @@ If you want to get involved, check out [open issues](https://github.com/swissspi
 For the plugin's changelog, please head over to [the GitHub repository](https://github.com/swissspidy/preferred-languages).
 
 == Upgrade Notice ==
+
+= 1.7.1 = 
+
+This release contains improvements to translation merging and fixes issues with the user language not being correctly applied.
 
 = 1.7.0 =
 

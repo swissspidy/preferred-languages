@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.7.1
+
+* Fixes an issue where the profile language was not overriding the site language.
+* Fixes an issue where merging translations was not actually working.
+* Adds support for merging script translations.
+* Improves ecosystem compatibility by falling back to `locale` user meta and updating it.
+
 ## 1.7.0
 
 * Adds a new `preferred_languages_merge_translations` filter that allows merging translations (off by default).
