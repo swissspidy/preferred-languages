@@ -496,7 +496,7 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 	foreach ( $preferred_locales as $locale ) {
 		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
 
-		if ( is_readable( $preferred_mofile ) ) {
+		if ( 'en_US' === $locale || is_readable( $preferred_mofile ) ) {
 			return $preferred_mofile;
 		}
 	}
@@ -614,7 +614,7 @@ function preferred_languages_load_script_translation_file( $file ) {
 	foreach ( $preferred_locales as $locale ) {
 		$preferred_file = str_replace( $current_locale, $locale, $file );
 
-		if ( is_readable( $preferred_file ) ) {
+		if ( 'en_US' === $locale || is_readable( $preferred_file ) ) {
 			return $preferred_file;
 		}
 	}
