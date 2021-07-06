@@ -411,6 +411,7 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
  * @param bool   $override Whether to override the .mo file loading. Default false.
  * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
  * @param string $mofile   Path to the MO file.
+ * @return bool Whether to override the .mo file loading.
  */
 function preferred_languages_override_load_textdomain( $override, $domain, $mofile ) {
 	$preferred_locales = preferred_languages_get_list();
@@ -514,6 +515,7 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
  * @param string|false      $file         Path to the translation file to load. False if there isn't one.
  * @param string            $handle       Name of the script to register a translation domain to.
  * @param string            $domain       The text domain.
+ * @return string|false|null JSON-encoded translation data.
  */
 function preferred_languages_pre_load_script_translations( $translations, $file, $handle, $domain ) {
 	$preferred_locales = preferred_languages_get_list();
