@@ -20,7 +20,7 @@
 	<!-- We only support the latest major WordPress release. -->
 	<rule ref="WordPress.WP.DeprecatedFunctions">
 		<properties>
-			<property name="minimum_supported_version" value="4.9" />
+			<property name="minimum_supported_version" value="5.3" />
 		</properties>
 	</rule>
 
@@ -44,5 +44,4 @@
 	<exclude-pattern>*/build/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
-	<exclude-pattern>*/tests/*</exclude-pattern>
 </ruleset>
