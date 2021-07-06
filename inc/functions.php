@@ -418,7 +418,7 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 		return $mofile;
 	}
 
-	$current_locale = get_locale();
+	$current_locale = determine_locale();
 
 	// Locale has been filtered by something else.
 	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
@@ -897,7 +897,7 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		$preferred_locales = preferred_languages_get_list();
 
 		// Locale has been filtered by something else.
-		if ( ! in_array( get_locale(), $preferred_locales, true ) ) {
+		if ( ! in_array( determine_locale(), $preferred_locales, true ) ) {
 			return $translation;
 		}
 
