@@ -61,6 +61,13 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_get_user_list
 	 */
+	public function test_get_user_list_no_current_user() {
+		$this->assertFalse( preferred_languages_get_user_list() );
+	}
+
+	/**
+	 * @covers ::preferred_languages_get_user_list
+	 */
 	public function test_get_user_list_falls_back_to_locale_user_meta() {
 		$user_id = self::factory()->user->create( [
 			'role' => 'administrator',
@@ -235,5 +242,47 @@ class Plugin_Test extends WP_UnitTestCase {
 		remove_filter( 'get_available_languages', '__return_empty_array' );
 
 		$this->assertEmpty( $output );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_user_locale
+	 */
+	public function test_get_user_locale() {
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+
+		$locale = get_user_locale( $user_id );
+		$this->assertSame( 'de_DE', $locale );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_user_meta
+	 */
+	public function test_update_user_meta_empty_list() {
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+		update_user_meta( $user_id, 'locale', 'de_DE' );
+		update_user_meta( $user_id, 'preferred_languages', 'fr_FR,es_ES' );
+		update_user_meta( $user_id, 'preferred_languages', '' );
+
+		$locale = get_user_meta( $user_id, 'locale', true );
+		$this->assertSame( '', $locale );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_user_meta
+	 */
+	public function test_update_user_meta() {
+		$user_id = self::factory()->user->create( [
+			'role' => 'administrator',
+		]);
+		update_user_meta( $user_id, 'locale', 'de_DE' );
+		update_user_meta( $user_id, 'preferred_languages', 'fr_FR,es_ES' );
+
+		$locale = get_user_meta( $user_id, 'locale', true );
+		$this->assertSame( 'fr_FR', $locale );
 	}
 }
