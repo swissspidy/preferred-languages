@@ -529,15 +529,7 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 		return $translations;
 	}
 
-	/**
-	 * Filters whether translations should be merged with existing ones.
-	 *
-	 * @since 1.7.0
-	 *
-	 * @param bool   $merge          Whether translations should be merged.
-	 * @param string $domain         The text domain
-	 * @param string $current_locale The current locale.
-	 */
+	/** This filter is documented in inc/functions.php */
 	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
 
 	if ( ! $merge_translations ) {
