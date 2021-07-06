@@ -544,10 +544,10 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	$all_translations = null;
 
 	foreach ( $preferred_locales as $locale ) {
-		$preferred_translation_file = str_replace( $current_locale, $locale, $file );
+		$preferred_file = str_replace( $current_locale, $locale, $file );
 
-		if ( is_readable( $preferred_translation_file ) ) {
-			$translations = load_script_translations( $preferred_translation_file, $handle, $domain );
+		if ( is_readable( $preferred_file ) ) {
+			$translations = load_script_translations( $preferred_file, $handle, $domain );
 
 			if ( ! $translations ) {
 				continue;
