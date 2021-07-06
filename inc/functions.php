@@ -208,7 +208,7 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 	$locales             = array_filter( explode( ',', $meta_value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
 
-	// Only store actually installed languages in option.
+	// Only store actually installed languages in user meta.
 	update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
 
 	add_filter( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
