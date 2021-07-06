@@ -402,6 +402,73 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
 }
 
 /**
+ * Filters whether to override the .mo file loading.
+ *
+ * Used for supporting translation merging.
+ *
+ * @since 1.7.1
+ *
+ * @param bool   $override Whether to override the .mo file loading. Default false.
+ * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
+ * @param string $mofile   Path to the MO file.
+ */
+function preferred_languages_override_load_textdomain( $override, $domain, $mofile ) {
+	$preferred_locales = preferred_languages_get_list();
+
+	if ( empty( $preferred_locales ) ) {
+		return $override;
+	}
+
+	$current_locale = determine_locale();
+
+	// Locale has been filtered by something else.
+	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+		return $override;
+	}
+
+	/**
+	 * Filters whether translations should be merged with existing ones.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param bool   $merge          Whether translations should be merged.
+	 * @param string $domain         The text domain
+	 * @param string $current_locale The current locale.
+	 */
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
+
+	if ( ! $merge_translations ) {
+		return $override;
+	}
+
+	$first_mofile = null;
+
+	remove_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain' );
+	remove_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
+
+	foreach ( $preferred_locales as $locale ) {
+		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
+
+		if ( is_readable( $preferred_mofile ) ) {
+			$loaded = load_textdomain( $domain, $preferred_mofile );
+
+			if ( null === $first_mofile && $loaded ) {
+				$first_mofile = $preferred_mofile;
+			}
+		}
+	}
+
+	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 3 );
+	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10, 2 );
+
+	if ( null !== $first_mofile ) {
+		return true;
+	}
+
+	return $override;
+}
+
+/**
  * Filters load_textdomain() calls to respect the list of preferred languages.
  *
  * @since 1.0.0
@@ -425,9 +492,42 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 		return $mofile;
 	}
 
-	$first_mofile = null;
+	foreach ( $preferred_locales as $locale ) {
+		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
 
-	remove_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
+		if ( is_readable( $preferred_mofile ) ) {
+			return $preferred_mofile;
+		}
+	}
+
+	return $mofile;
+}
+
+/**
+ * Pre-filters script translations for the given file, script handle and text domain.
+ *
+ * Used for supporting translation merging.
+ *
+ * @since 1.7.1
+ *
+ * @param string|false|null $translations JSON-encoded translation data. Default null.
+ * @param string|false      $file         Path to the translation file to load. False if there isn't one.
+ * @param string            $handle       Name of the script to register a translation domain to.
+ * @param string            $domain       The text domain.
+ */
+function preferred_languages_pre_load_script_translations( $translations, $file, $handle, $domain ) {
+	$preferred_locales = preferred_languages_get_list();
+
+	if ( empty( $preferred_locales ) ) {
+		return $translations;
+	}
+
+	$current_locale = determine_locale();
+
+	// Locale has been filtered by something else.
+	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+		return $translations;
+	}
 
 	/**
 	 * Filters whether translations should be merged with existing ones.
@@ -440,29 +540,54 @@ function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
 	 */
 	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
 
+	if ( ! $merge_translations ) {
+		return $translations;
+	}
+
+	remove_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations' );
+	remove_filter( 'load_script_translation_file', 'preferred_languages_load_script_translation_file' );
+
+	$all_translations = null;
+
 	foreach ( $preferred_locales as $locale ) {
-		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
+		$preferred_translation_file = str_replace( $current_locale, $locale, $file );
 
-		if ( is_readable( $preferred_mofile ) ) {
-			if ( ! $merge_translations ) {
-				return $preferred_mofile;
+		if ( is_readable( $preferred_translation_file ) ) {
+			$translations = load_script_translations( $preferred_translation_file, $handle, $domain );
+
+			if ( ! $translations ) {
+				continue;
 			}
 
-			load_textdomain( $domain, $preferred_mofile );
-
-			if ( null === $first_mofile ) {
-				$first_mofile = $preferred_mofile;
+			if ( ! $all_translations ) {
+				$all_translations = $translations;
+				continue;
 			}
+
+			// Some translations have already been loaded before, merge them.
+			$all_translations_json = json_decode( $all_translations, true );
+			$translations_json     = json_decode( $translations, true );
+
+			foreach ( $translations_json['locale_data']['messages'] as $key => $translation ) {
+				if ( isset( $all_translations_json['locale_data']['messages'][ $key ] ) ) {
+					continue;
+				}
+
+				$all_translations_json['locale_data']['messages'][ $key ] = $translation;
+			}
+
+			$all_translations = wp_json_encode( $all_translations_json );
 		}
 	}
 
-	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10, 2 );
+	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 4 );
+	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_script_translation_file' );
 
-	if ( null !== $first_mofile ) {
-		return $first_mofile;
+	if ( $all_translations ) {
+		return $all_translations;
 	}
 
-	return $mofile;
+	return $translations;
 }
 
 /**
