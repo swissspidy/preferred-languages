@@ -11,7 +11,7 @@ describe( 'User Profile', () => {
 		await expect( page ).toMatch( 'Falling back to Site Default.' );
 
 		const inactiveLocales = await page.$(
-			'preferred-languages-inactive-locales'
+			'#preferred-languages-inactive-locales'
 		);
 
 		// On the profile page, en_US is the first item in the dropdown by default, which has an empty value.

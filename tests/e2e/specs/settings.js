@@ -33,13 +33,13 @@ describe( 'Settings Page', () => {
 		);
 
 		const inactiveLocales = await page.$(
-			'preferred-languages-inactive-locales'
+			'#preferred-languages-inactive-locales'
 		);
 
 		// Afrikaans is the first item in the dropdown by default.
 		expect( inactiveLocales.value ).toStrictEqual( 'af' );
 
-		await expect( page ).toClick( '.preferred-languages button[disabled]', {
+		await expect( page ).toClick( '.preferred-languages button', {
 			text: 'Add',
 		} );
 
@@ -64,9 +64,68 @@ describe( 'Settings Page', () => {
 				text: 'Remove',
 			}
 		);
-
 		await expect( page ).toMatchElement( '.preferred-languages button', {
 			text: 'Remove',
+		} );
+
+		await expect( page ).toClick( '.preferred-languages button', {
+			text: 'Add',
+		} );
+		await expect( page ).toClick( '.preferred-languages button', {
+			text: 'Add',
+		} );
+
+		// After adding two more locales, the last one should be selected.
+
+		await expect( page ).not.toMatchElement(
+			'.preferred-languages button[disabled]',
+			{
+				text: 'Move Up',
+			}
+		);
+		await expect( page ).toMatchElement( '.preferred-languages button', {
+			text: 'Move Up',
+		} );
+		await expect( page ).toMatchElement(
+			'.preferred-languages button[disabled]',
+			{
+				text: 'Move Down',
+			}
+		);
+		await expect( page ).not.toMatchElement(
+			'.preferred-languages button[disabled]',
+			{
+				text: 'Remove',
+			}
+		);
+		await expect( page ).toMatchElement( '.preferred-languages button', {
+			text: 'Remove',
+		} );
+
+		// After moving one up, none of the buttons should be disabled anymore.
+		await page.keyboard.press( 'ArrowUp' );
+
+		await expect( page ).not.toMatchElement(
+			'.preferred-languages button[disabled]',
+			{
+				text: 'Move Down',
+			}
+		);
+		await expect( page ).toMatchElement( '.preferred-languages button', {
+			text: 'Move Down',
+		} );
+
+		// After moving one up again, the "Move Up" button should be disabled because we reached the top.
+		await page.keyboard.press( 'ArrowUp' );
+
+		await expect( page ).not.toMatchElement(
+			'.preferred-languages button[disabled]',
+			{
+				text: 'Move Up',
+			}
+		);
+		await expect( page ).toMatchElement( '.preferred-languages button', {
+			text: 'Move Up',
 		} );
 	} );
 } );
