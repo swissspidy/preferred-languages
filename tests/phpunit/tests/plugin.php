@@ -562,16 +562,8 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_override_load_textdomain_no_merge() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
-		$filter = static function() {
-			return 'de_DE';
-		};
-
-		add_filter( 'determine_locale', $filter );
-
 		$actual1 = preferred_languages_override_load_textdomain( false, 'default', '' );
 		$actual2 = preferred_languages_override_load_textdomain( true, 'default', '' );
-
-		remove_filter( 'determine_locale', $filter );
 
 		$this->assertFalse( $actual1 );
 		$this->assertTrue( $actual2 );
@@ -579,33 +571,26 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_override_load_textdomain
+	 *
+	 * @todo Provide actual translation files to demonstrate merging
 	 */
 	public function test_override_load_textdomain_merge() {
-		$this->markTestIncomplete( 'Provide actual MO files to demonstrate merging' );
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
-		$filter = static function() {
-			return 'de_DE';
-		};
-
-		add_filter( 'determine_locale', $filter );
 		add_filter( 'preferred_languages_merge_translations', '__return_true' );
 
-		$actual1 = preferred_languages_override_load_textdomain( false, 'default', '' );
-		$actual2 = preferred_languages_override_load_textdomain( true, 'default', '' );
+		$actual = preferred_languages_override_load_textdomain( true, 'default', '' );
 
 		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
-		remove_filter( 'determine_locale', $filter );
 
-		$this->assertFalse( $actual1 );
-		$this->assertTrue( $actual2 );
+		$this->assertTrue( $actual );
 	}
 
 	/**
 	 * @covers ::preferred_languages_load_textdomain_mofile
 	 */
 	public function test_load_textdomain_mofile_no_preferred_locales() {
-		$actual = preferred_languages_load_textdomain_mofile( 'foo', 'default' );
+		$actual = preferred_languages_load_textdomain_mofile( 'foo' );
 		$this->assertSame( 'foo', $actual );
 	}
 
@@ -621,11 +606,119 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		add_filter( 'determine_locale', $filter );
 
-		$actual = preferred_languages_load_textdomain_mofile( 'foo', 'default' );
+		$actual = preferred_languages_load_textdomain_mofile( 'foo' );
 
 		remove_filter( 'determine_locale', $filter );
 
 		$this->assertSame( 'foo', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_load_textdomain_mofile
+	 */
+	public function test_load_textdomain_mofile() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$actual = preferred_languages_load_textdomain_mofile( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo' );
+
+		$this->assertSame( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_pre_load_script_translations
+	 */
+	public function test_pre_load_script_translations_no_preferred_locales() {
+		$this->assertFalse( preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' ) );
+		$this->assertTrue( preferred_languages_pre_load_script_translations( true, 'file', 'handle', 'default' ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_pre_load_script_translations
+	 */
+	public function test_pre_load_script_translations_already_filtered() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$filter = static function() {
+			return 'es_ES';
+		};
+
+		add_filter( 'determine_locale', $filter );
+
+		$actual1 = preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' );
+		$actual2 = preferred_languages_pre_load_script_translations( true, 'file', 'handle', 'default' );
+
+		remove_filter( 'determine_locale', $filter );
+
+		$this->assertFalse( $actual1 );
+		$this->assertTrue( $actual2 );
+	}
+
+	/**
+	 * @covers ::preferred_languages_pre_load_script_translations
+	 */
+	public function test_pre_load_script_translations_no_merge() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$actual1 = preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' );
+		$actual2 = preferred_languages_pre_load_script_translations( true, 'file', 'handle', 'default' );
+
+		$this->assertFalse( $actual1 );
+		$this->assertTrue( $actual2 );
+	}
+
+	/**
+	 * @covers ::preferred_languages_pre_load_script_translations
+	 *
+	 * @todo Provide actual translation files to demonstrate merging
+	 */
+	public function test_pre_load_script_translations_merge() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		add_filter( 'preferred_languages_merge_translations', '__return_true' );
+
+		$actual = preferred_languages_pre_load_script_translations( null, 'file', 'handle', 'default' );
+
+		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
+
+		$this->assertNull( $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_load_script_translation_file
+	 */
+	public function test_load_script_translation_file_no_preferred_locales() {
+		$actual = preferred_languages_load_script_translation_file( 'foo' );
+		$this->assertSame( 'foo', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_load_script_translation_file
+	 */
+	public function test_load_script_translation_file_already_filtered() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$filter = static function() {
+			return 'es_ES';
+		};
+
+		add_filter( 'determine_locale', $filter );
+
+		$actual = preferred_languages_load_script_translation_file( 'foo' );
+
+		remove_filter( 'determine_locale', $filter );
+
+		$this->assertSame( 'foo', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_load_script_translation_file
+	 */
+	public function test_load_script_translation_file() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$actual = preferred_languages_load_script_translation_file( WP_LANG_DIR . '/plugins/internationalized-plugin-en_US-2f86cb96a0233e7cb3b6f03ad573be0b.json' );
+
+		$this->assertSame( WP_LANG_DIR . '/plugins/internationalized-plugin-en_US-2f86cb96a0233e7cb3b6f03ad573be0b.json', $actual );
 	}
 
 	/**
@@ -721,5 +814,57 @@ class Plugin_Test extends WP_UnitTestCase {
 		remove_filter( 'get_available_languages', '__return_empty_array' );
 
 		$this->assertContains( 'Some of the languages are not installed.', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_network_settings
+	 *
+	 * @group ms-required
+	 */
+	public function test_update_network_settings_no_nonce() {
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		preferred_languages_update_network_settings();
+
+		$this->assertSame( 'de_DE,fr_FR', get_site_option( 'preferred_languages' ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_network_settings
+	 *
+	 * @group ms-required
+	 */
+	public function test_update_network_settings_wrong_nonce() {
+		$_POST['preferred_languages_network_settings_nonce'] = 'foo';
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		preferred_languages_update_network_settings();
+
+		$this->assertSame( 'de_DE,fr_FR', get_site_option( 'preferred_languages' ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_network_settings
+	 *
+	 * @group ms-required
+	 */
+	public function test_update_network_settings_no_post_data() {
+		$_POST['preferred_languages_network_settings_nonce'] = wp_slash( wp_create_nonce( 'preferred_languages_network_settings' ) );
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		preferred_languages_update_network_settings();
+
+		$this->assertSame( 'de_DE,fr_FR', get_site_option( 'preferred_languages' ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_network_settings
+	 *
+	 * @group ms-required
+	 */
+	public function test_update_network_settings_post_data_sanitized() {
+		$_POST['preferred_languages_network_settings_nonce'] = wp_slash( wp_create_nonce( 'preferred_languages_network_settings' ) );
+		$_POST['preferred_languages']                        = wp_slash( 'es_ES , <b>en_GB</b>' );
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		preferred_languages_update_network_settings();
+
+		$this->assertSame( 'es_ES,en_GB', get_site_option( 'preferred_languages' ) );
 	}
 }
