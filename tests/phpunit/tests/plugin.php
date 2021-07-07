@@ -458,9 +458,9 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertSameSets( $expected, $actual );
 	}
 
-
 	/**
 	 * @covers ::preferred_languages_download_language_packs
+	 * @group ms-excluded
 	 */
 	public function test_download_language_packs_no_available() {
 		$user_id = self::factory()->user->create(
@@ -470,6 +470,52 @@ class Plugin_Test extends WP_UnitTestCase {
 		);
 
 		wp_set_current_user( $user_id );
+
+		add_filter( 'get_available_languages', '__return_empty_array' );
+
+		$expected = array( 'de_DE', 'fr_FR' );
+		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		remove_filter( 'get_available_languages', '__return_empty_array' );
+
+		$this->assertSameSets( $expected, $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_download_language_packs
+	 * @group ms-required
+	 */
+	public function test_download_language_packs_no_available_multisite_no_super_admin() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+
+		add_filter( 'get_available_languages', '__return_empty_array' );
+
+		$actual = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		remove_filter( 'get_available_languages', '__return_empty_array' );
+
+		$this->assertEmpty( $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_download_language_packs
+	 * @group ms-required
+	 */
+	public function test_download_language_packs_no_available_multisite() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+		grant_super_admin( $user_id );
 
 		add_filter( 'get_available_languages', '__return_empty_array' );
 
