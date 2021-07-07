@@ -1,6 +1,26 @@
 <?php
 
 class Plugin_Test extends WP_UnitTestCase {
+	public function setUp() {
+		/**
+		 * @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry
+		 */
+		global $preferred_languages_textdomain_registry;
+		$preferred_languages_textdomain_registry->reset();
+
+		parent::setUp();
+	}
+
+	public function tearDown() {
+		parent::tearDown();
+
+		/**
+		 * @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry
+		 */
+		global $preferred_languages_textdomain_registry;
+		$preferred_languages_textdomain_registry->reset();
+	}
+
 	/**
 	 * @covers ::preferred_languages_register_setting
 	 */
@@ -62,6 +82,40 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertSame( $expected, preferred_languages_get_user_list() );
 	}
 
+	/**
+	 * @covers ::preferred_languages_get_user_list
+	 */
+	public function test_get_user_list_user_id() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+
+		$expected = array(
+			'de_DE',
+			'fr_FR',
+		);
+
+		$this->assertSame( $expected, preferred_languages_get_user_list( $user_id ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_get_user_list
+	 */
+	public function test_get_user_list_user_id_wrong() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+
+		$this->assertFalse( preferred_languages_get_user_list( PHP_INT_MAX ) );
+	}
 
 	/**
 	 * @covers ::preferred_languages_get_user_list
@@ -616,10 +670,21 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_load_textdomain_mofile
 	 */
-	public function test_load_textdomain_mofile() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+	public function test_load_textdomain_mofile_no_match() {
+		update_option( 'preferred_languages', 'fr_FR' );
 
 		$actual = preferred_languages_load_textdomain_mofile( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo' );
+
+		$this->assertSame( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_load_textdomain_mofile
+	 */
+	public function test_load_textdomain_mofile() {
+		update_option( 'preferred_languages', 'fr_FR,de_DE' );
+
+		$actual = preferred_languages_load_textdomain_mofile( WP_LANG_DIR . '/plugins/internationalized-plugin-fr_FR.mo' );
 
 		$this->assertSame( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo', $actual );
 	}
@@ -668,10 +733,8 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_pre_load_script_translations
-	 *
-	 * @todo Provide actual translation files to demonstrate merging
 	 */
-	public function test_pre_load_script_translations_merge() {
+	public function test_pre_load_script_translations_merge_invalid_file() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
 		add_filter( 'preferred_languages_merge_translations', '__return_true' );
@@ -681,6 +744,31 @@ class Plugin_Test extends WP_UnitTestCase {
 		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
 
 		$this->assertNull( $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_pre_load_script_translations
+	 *
+	 * @todo Provide actual translation files to demonstrate merging
+	 */
+	public function test_pre_load_script_translations_merge() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		add_filter( 'preferred_languages_merge_translations', '__return_true' );
+
+		$actual = preferred_languages_pre_load_script_translations(
+			null,
+			WP_LANG_DIR . '/plugins/internationalized-plugin-en_US-2f86cb96a0233e7cb3b6f03ad573be0b.json',
+			'internationalized-plugin',
+			'default'
+		);
+
+		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
+
+		$this->assertNotNull( $actual );
+		$this->assertNotEmpty( $actual );
+		$this->assertContains( 'translation-revision-data', $actual );
+		$this->assertNotNull( json_decode( $actual, true ) );
 	}
 
 	/**
@@ -866,5 +954,60 @@ class Plugin_Test extends WP_UnitTestCase {
 		preferred_languages_update_network_settings();
 
 		$this->assertSame( 'es_ES,en_GB', get_site_option( 'preferred_languages' ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_gettext
+	 */
+	public function test_filter_gettext_default() {
+		$actual = preferred_languages_filter_gettext( 'Hello World', 'Hello World', 'default' );
+		$this->assertSame( 'Hello World', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_gettext
+	 */
+	public function test_filter_gettext_plugin_no_preferred_languages() {
+		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
+		$this->assertSame( 'This is a dummy plugin', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_gettext
+	 */
+	public function test_filter_gettext_plugin_already_filtered() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$filter = static function() {
+			return 'es_ES';
+		};
+
+		add_filter( 'determine_locale', $filter );
+
+		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
+
+		remove_filter( 'determine_locale', $filter );
+
+		$this->assertSame( 'This is a dummy plugin', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_gettext
+	 */
+	public function test_filter_gettext_plugin() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
+
+		$this->assertSame( 'Das ist ein Dummy Plugin', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_gettext
+	 */
+	public function test_filter_gettext_plugin_filter() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$this->assertSame( 'Das ist ein Dummy Plugin', __( 'This is a dummy plugin', 'internationalized-plugin' ) );
 	}
 }
