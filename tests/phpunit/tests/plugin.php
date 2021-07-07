@@ -627,4 +627,54 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$this->assertSame( 'foo', $actual );
 	}
+
+	/**
+	 * @covers ::preferred_languages_settings_field
+	 */
+	public function test_settings_field() {
+		global $wp_settings_fields;
+
+		preferred_languages_settings_field();
+
+		$expected = array(
+			'id'       => 'preferred_languages',
+			'title'    => '<span id="preferred-languages-label">' . __( 'Site Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>',
+			'callback' => 'preferred_languages_display_form',
+			'args'     => array(
+				'class'    => 'site-preferred-languages-wrap',
+				'selected' => preferred_languages_get_site_list(),
+			),
+		);
+
+		$this->assertEqualSetsWithIndex( $expected, $wp_settings_fields['general']['default']['preferred_languages'] );
+	}
+
+	/**
+	 * @covers ::preferred_languages_settings_field
+	 * @group ms-required
+	 */
+	public function test_settings_field_multisite() {
+		global $wp_settings_fields, $wp_settings_sections;
+
+		preferred_languages_settings_field();
+
+		$expected_section = array(
+			'id'       => 'preferred_languages',
+			'title'    => '',
+			'callback' => '__return_empty_string',
+		);
+
+		$expected_field = array(
+			'id'       => 'preferred_languages',
+			'title'    => '<span id="preferred-languages-label">' . __( 'Default Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>',
+			'callback' => 'preferred_languages_display_form',
+			'args'     => array(
+				'class'    => 'network-preferred-languages-wrap',
+				'selected' => preferred_languages_get_site_list(),
+			),
+		);
+
+		$this->assertEqualSetsWithIndex( $expected_section, $wp_settings_sections['preferred_languages_network_settings']['preferred_languages'] );
+		$this->assertEqualSetsWithIndex( $expected_field, $wp_settings_fields['preferred_languages_network_settings']['preferred_languages']['preferred_languages'] );
+	}
 }
