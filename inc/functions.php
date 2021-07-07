@@ -460,7 +460,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	}
 
 	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 3 );
-	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10, 2 );
+	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
 
 	if ( null !== $first_mofile ) {
 		return true;
@@ -475,11 +475,10 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
  * @since 1.0.0
  *
  * @param string $mofile Path to the MO file.
- * @param string $domain Text domain. Unique identifier for retrieving translated strings.
  *
  * @return string The modified MO file path.
  */
-function preferred_languages_load_textdomain_mofile( $mofile, $domain ) {
+function preferred_languages_load_textdomain_mofile( $mofile ) {
 	$preferred_locales = preferred_languages_get_list();
 
 	if ( empty( $preferred_locales ) ) {
