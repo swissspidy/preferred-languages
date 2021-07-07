@@ -16,19 +16,19 @@ describe( 'Settings Page', () => {
 		await expect( page ).toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Move Up',
+				text: /Move Up/i,
 			}
 		);
 		await expect( page ).toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Move Down',
+				text: /Move Down/i,
 			}
 		);
 		await expect( page ).toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Remove',
+				text: /Remove/i,
 			}
 		);
 
@@ -50,23 +50,23 @@ describe( 'Settings Page', () => {
 		await expect( page ).toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Move Up',
+				text: /Move Up/i,
 			}
 		);
 		await expect( page ).toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Move Down',
+				text: /Move Down/i,
 			}
 		);
 		await expect( page ).not.toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Remove',
+				text: /Remove/i,
 			}
 		);
 		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: 'Remove',
+			text: /Remove/i,
 		} );
 
 		await expect( page ).toClick( '.preferred-languages button', {
@@ -81,26 +81,26 @@ describe( 'Settings Page', () => {
 		await expect( page ).not.toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Move Up',
+				text: /Move Up/i,
 			}
 		);
 		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: 'Move Up',
+			text: /Move Up/i,
 		} );
 		await expect( page ).toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Move Down',
+				text: /Move Down/i,
 			}
 		);
 		await expect( page ).not.toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Remove',
+				text: /Remove/i,
 			}
 		);
 		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: 'Remove',
+			text: /Remove/i,
 		} );
 
 		// After moving one up, none of the buttons should be disabled anymore.
@@ -109,11 +109,11 @@ describe( 'Settings Page', () => {
 		await expect( page ).not.toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Move Down',
+				text: /Move Down/i,
 			}
 		);
 		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: 'Move Down',
+			text: /Move Down/i,
 		} );
 
 		// After moving one up again, the "Move Up" button should be disabled because we reached the top.
@@ -122,11 +122,11 @@ describe( 'Settings Page', () => {
 		await expect( page ).not.toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
-				text: 'Move Up',
+				text: /Move Up/i,
 			}
 		);
 		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: 'Move Up',
+			text: /Move Up/i,
 		} );
 	} );
 } );
