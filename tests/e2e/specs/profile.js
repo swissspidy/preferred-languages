@@ -10,11 +10,12 @@ describe( 'User Profile', () => {
 		);
 		await expect( page ).toMatch( 'Falling back to Site Default.' );
 
-		const inactiveLocales = await page.$(
-			'#preferred-languages-inactive-locales'
+		const inactiveLocale = await page.$eval(
+			'#preferred-languages-inactive-locales',
+			( el ) => el.value
 		);
 
 		// On the profile page, en_US is the first item in the dropdown by default, which has an empty value.
-		expect( inactiveLocales.value ).toStrictEqual( '' );
+		expect( inactiveLocale ).toStrictEqual( '' );
 	} );
 } );

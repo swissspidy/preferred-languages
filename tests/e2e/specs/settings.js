@@ -32,12 +32,13 @@ describe( 'Settings Page', () => {
 			}
 		);
 
-		const inactiveLocales = await page.$(
-			'#preferred-languages-inactive-locales'
+		const inactiveLocale = await page.$eval(
+			'#preferred-languages-inactive-locales',
+			( el ) => el.value
 		);
 
 		// Afrikaans is the first item in the dropdown by default.
-		expect( inactiveLocales.value ).toStrictEqual( 'af' );
+		expect( inactiveLocale ).toStrictEqual( 'af' );
 
 		await expect( page ).toClick( '.preferred-languages button', {
 			text: 'Add',
