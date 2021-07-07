@@ -382,4 +382,203 @@ class Plugin_Test extends WP_UnitTestCase {
 		$actual = preferred_languages_sanitize_list( $input );
 		$this->assertSame( $expected, $actual );
 	}
+
+	/**
+	 * @covers ::preferred_languages_download_language_packs
+	 */
+	public function test_download_language_packs_no_capability() {
+		add_filter( 'user_has_cap', '__return_false' );
+
+		$actual = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		remove_filter( 'user_has_cap', '__return_false' );
+
+		$this->assertSameSets( array_intersect( get_available_languages(), array( 'de_DE', 'fr_FR' ) ), $actual );
+	}
+
+
+	/**
+	 * @covers ::preferred_languages_download_language_packs
+	 */
+	public function test_download_language_packs_no_capability_no_available() {
+		add_filter( 'get_available_languages', '__return_empty_array' );
+		add_filter( 'user_has_cap', '__return_false' );
+
+		$actual = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		remove_filter( 'user_has_cap', '__return_false' );
+		remove_filter( 'get_available_languages', '__return_empty_array' );
+
+		$this->assertEmpty( $actual );
+	}
+
+
+	/**
+	 * @covers ::preferred_languages_download_language_packs
+	 */
+	public function test_download_language_packs() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+
+		$expected = array( 'de_DE', 'fr_FR' );
+		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		$this->assertSameSets( $expected, $actual );
+	}
+
+
+	/**
+	 * @covers ::preferred_languages_download_language_packs
+	 */
+	public function test_download_language_packs_available() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+
+		$filter = static function () {
+			return array( 'de_DE', 'fr_FR' );
+		};
+
+		add_filter( 'get_available_languages', $filter );
+
+		$expected = array( 'de_DE', 'fr_FR' );
+		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		remove_filter( 'get_available_languages', $filter );
+
+		$this->assertSameSets( $expected, $actual );
+	}
+
+
+	/**
+	 * @covers ::preferred_languages_download_language_packs
+	 */
+	public function test_download_language_packs_no_available() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+
+		add_filter( 'get_available_languages', '__return_empty_array' );
+
+		$expected = array( 'de_DE', 'fr_FR' );
+		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		remove_filter( 'get_available_languages', '__return_empty_array' );
+
+		$this->assertSameSets( $expected, $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_override_load_textdomain
+	 */
+	public function test_override_load_textdomain_no_preferred_locales() {
+		$this->assertFalse( preferred_languages_override_load_textdomain( false, 'default', '' ) );
+		$this->assertTrue( preferred_languages_override_load_textdomain( true, 'default', '' ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_override_load_textdomain
+	 */
+	public function test_override_load_textdomain_already_filtered() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$filter = static function() {
+			return 'es_ES';
+		};
+
+		add_filter( 'determine_locale', $filter );
+
+		$actual1 = preferred_languages_override_load_textdomain( false, 'default', '' );
+		$actual2 = preferred_languages_override_load_textdomain( true, 'default', '' );
+
+		remove_filter( 'determine_locale', $filter );
+
+		$this->assertFalse( $actual1 );
+		$this->assertTrue( $actual2 );
+	}
+
+	/**
+	 * @covers ::preferred_languages_override_load_textdomain
+	 */
+	public function test_override_load_textdomain_no_merge() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$filter = static function() {
+			return 'de_DE';
+		};
+
+		add_filter( 'determine_locale', $filter );
+
+		$actual1 = preferred_languages_override_load_textdomain( false, 'default', '' );
+		$actual2 = preferred_languages_override_load_textdomain( true, 'default', '' );
+
+		remove_filter( 'determine_locale', $filter );
+
+		$this->assertFalse( $actual1 );
+		$this->assertTrue( $actual2 );
+	}
+
+	/**
+	 * @covers ::preferred_languages_override_load_textdomain
+	 */
+	public function test_override_load_textdomain_merge() {
+		$this->markTestIncomplete( 'Provide actual MO files to demonstrate merging' );
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$filter = static function() {
+			return 'de_DE';
+		};
+
+		add_filter( 'determine_locale', $filter );
+		add_filter( 'preferred_languages_merge_translations', '__return_true' );
+
+		$actual1 = preferred_languages_override_load_textdomain( false, 'default', '' );
+		$actual2 = preferred_languages_override_load_textdomain( true, 'default', '' );
+
+		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
+		remove_filter( 'determine_locale', $filter );
+
+		$this->assertFalse( $actual1 );
+		$this->assertTrue( $actual2 );
+	}
+
+	/**
+	 * @covers ::preferred_languages_load_textdomain_mofile
+	 */
+	public function test_load_textdomain_mofile_no_preferred_locales() {
+		$actual = preferred_languages_load_textdomain_mofile( 'foo', 'default' );
+		$this->assertSame( 'foo', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_load_textdomain_mofile
+	 */
+	public function test_load_textdomain_mofile_already_filtered() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$filter = static function() {
+			return 'es_ES';
+		};
+
+		add_filter( 'determine_locale', $filter );
+
+		$actual = preferred_languages_load_textdomain_mofile( 'foo', 'default' );
+
+		remove_filter( 'determine_locale', $filter );
+
+		$this->assertSame( 'foo', $actual );
+	}
 }
