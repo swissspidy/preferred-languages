@@ -677,4 +677,48 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertEqualSetsWithIndex( $expected_section, $wp_settings_sections['preferred_languages_network_settings']['preferred_languages'] );
 		$this->assertEqualSetsWithIndex( $expected_field, $wp_settings_fields['preferred_languages_network_settings']['preferred_languages']['preferred_languages'] );
 	}
+
+	/**
+	 * @covers ::preferred_languages_network_settings_field
+	 * @group ms-required
+	 */
+	public function test_network_settings_field() {
+		$actual = get_echo( 'preferred_languages_network_settings_field' );
+
+		$this->assertContains( '<span id="preferred-languages-label">' . __( 'Default Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_display_form
+	 */
+	public function test_display_form() {
+		get_echo( 'preferred_languages_display_form' );
+		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
+		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
+	}
+	/**
+	 * @covers ::preferred_languages_display_form
+	 * @group ms-excluded
+	 */
+	public function test_display_form_missing_language_packs_warning() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+
+		add_filter( 'get_available_languages', '__return_empty_array' );
+
+		$actual = get_echo(
+			static function() {
+				preferred_languages_display_form( array( 'selected' => array( 'de_DE', 'fr_FR' ) ) );
+			}
+		);
+
+		remove_filter( 'get_available_languages', '__return_empty_array' );
+
+		$this->assertContains( 'Some of the languages are not installed.', $actual );
+	}
 }
