@@ -83,6 +83,9 @@ describe( 'Settings Page', () => {
 			'.preferred-languages button.locales-remove:not([disabled])'
 		);
 
+		// Focusing on the listbox ensures that keyboard navigation works as expected.
+		await page.focus( '.active-locales-list' );
+
 		// After moving one position up, none of the buttons should be disabled anymore.
 		await page.keyboard.press( 'ArrowUp' );
 
