@@ -41,11 +41,13 @@ describe( 'Settings Page', () => {
 		expect( inactiveLocale ).toStrictEqual( 'af' );
 
 		await expect( page ).toClick( '.preferred-languages button', {
-			text: 'Add',
+			text: /Add/i,
 		} );
 
 		// After adding Afrikaans to the list, only the "Remove" button should be active.
-		await expect( page ).toMatch( '.active-locale', { text: 'Afrikaans' } );
+		await expect( page ).toMatchElement( '.active-locale', {
+			text: /Afrikaans/i,
+		} );
 
 		await expect( page ).toMatchElement(
 			'.preferred-languages button[disabled]',
@@ -59,74 +61,59 @@ describe( 'Settings Page', () => {
 				text: /Move Down/i,
 			}
 		);
-		await expect( page ).not.toMatchElement(
-			'.preferred-languages button[disabled]',
+		await expect( page ).toMatchElement(
+			'.preferred-languages button:not([disabled])',
 			{
 				text: /Remove/i,
 			}
 		);
-		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: /Remove/i,
-		} );
 
 		await expect( page ).toClick( '.preferred-languages button', {
-			text: 'Add',
+			text: /Add/i,
 		} );
 		await expect( page ).toClick( '.preferred-languages button', {
-			text: 'Add',
+			text: /Add/i,
 		} );
 
 		// After adding two more locales, the last one should be selected.
 
-		await expect( page ).not.toMatchElement(
-			'.preferred-languages button[disabled]',
+		await expect( page ).toMatchElement(
+			'.preferred-languages button:not([disabled])',
 			{
 				text: /Move Up/i,
 			}
 		);
-		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: /Move Up/i,
-		} );
 		await expect( page ).toMatchElement(
 			'.preferred-languages button[disabled]',
 			{
 				text: /Move Down/i,
 			}
 		);
-		await expect( page ).not.toMatchElement(
-			'.preferred-languages button[disabled]',
+		await expect( page ).toMatchElement(
+			'.preferred-languages button:not([disabled])',
 			{
 				text: /Remove/i,
 			}
 		);
-		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: /Remove/i,
-		} );
 
 		// After moving one up, none of the buttons should be disabled anymore.
 		await page.keyboard.press( 'ArrowUp' );
 
-		await expect( page ).not.toMatchElement(
-			'.preferred-languages button[disabled]',
+		await expect( page ).toMatchElement(
+			'.preferred-languages button:not([disabled])',
 			{
 				text: /Move Down/i,
 			}
 		);
-		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: /Move Down/i,
-		} );
 
 		// After moving one up again, the "Move Up" button should be disabled because we reached the top.
 		await page.keyboard.press( 'ArrowUp' );
 
-		await expect( page ).not.toMatchElement(
-			'.preferred-languages button[disabled]',
+		await expect( page ).toMatchElement(
+			'.preferred-languages button:not([disabled])',
 			{
 				text: /Move Up/i,
 			}
 		);
-		await expect( page ).toMatchElement( '.preferred-languages button', {
-			text: /Move Up/i,
-		} );
 	} );
 } );
