@@ -696,6 +696,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 	}
+
 	/**
 	 * @covers ::preferred_languages_display_form
 	 * @group ms-excluded
