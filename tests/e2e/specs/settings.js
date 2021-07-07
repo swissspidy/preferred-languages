@@ -4,6 +4,11 @@ describe( 'Settings Page', () => {
 	it( 'should display the preferred languages form', async () => {
 		await visitAdminPage( 'options-general.php' );
 
+		await expect( page ).toMatch( 'General Settings' );
+		await page.$eval( '.site-preferred-languages-wrap', ( el ) =>
+			el.scrollIntoView()
+		);
+
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 		await expect( page ).toMatch(
 			'Choose languages for displaying WordPress in, in order of preference.'
