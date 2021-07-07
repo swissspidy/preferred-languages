@@ -593,10 +593,6 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
  * @return string The modified JSON file path.
  */
 function preferred_languages_load_script_translation_file( $file ) {
-	if ( is_readable( $file ) ) {
-		return $file;
-	}
-
 	$preferred_locales = preferred_languages_get_list();
 
 	if ( empty( $preferred_locales ) ) {
