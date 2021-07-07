@@ -29,13 +29,12 @@ class Preferred_Languages_Textdomain_Registry {
 	 *
 	 * @var array
 	 */
-	protected $cached_mofiles;
+	protected $cached_mo_files;
 
 	/**
 	 * Returns the MO file path for a specific domain.
 	 *
 	 * @since  1.1.0
-	 * @access public
 	 *
 	 * @param string $domain Text domain.
 	 *
@@ -43,90 +42,95 @@ class Preferred_Languages_Textdomain_Registry {
 	 *                           Null if none have been fetched yet.
 	 */
 	public function get( $domain ) {
-		return isset( $this->domains[ $domain ] ) ? $this->domains[ $domain ] : null;
+		if ( isset( $this->domains[ $domain ] ) ) {
+			return $this->domains[ $domain ];
+		}
+
+		return $this->get_path_from_lang_dir( $domain );
 	}
 
 	/**
 	 * Sets the MO file path for a specific domain.
 	 *
-	 * @since  1.1.0
-	 * @access public
+	 * @since 1.1.0
 	 *
-	 * @param string $domain Text domain.
-	 * @param string $path   Language directory path.
+	 * @param string       $domain Text domain.
+	 * @param string|false $path Language directory path or false if there is none available.
 	 */
 	public function set( $domain, $path ) {
-		$this->domains[ $domain ] = $path;
+		$this->domains[ $domain ] = $path ? trailingslashit( $path ) : false;
 	}
 
 	/**
 	 * Resets the registry state.
 	 *
-	 * @since  1.1.0
-	 * @access public
+	 * @since 1.1.0
 	 */
 	public function reset() {
-		$this->cached_mofiles = null;
-		$this->domains        = array();
+		$this->cached_mo_files = null;
+		$this->domains         = array();
 	}
 
 	/**
 	 * Gets the path to a translation file in the languages directory for the current locale.
 	 *
-	 * @since  1.1.0
-	 * @access public
+	 * @since 1.8.0
 	 *
-	 * @see    _get_path_to_translation_from_lang_dir()
+	 * @see _get_path_to_translation_from_lang_dir()
 	 *
 	 * @param string $domain Text domain.
+	 * @return string|false MO file path or false if there is none available.
 	 */
-	public function get_translation_from_lang_dir( $domain ) {
-		if ( null === $this->cached_mofiles ) {
-			$this->cached_mofiles = array();
+	private function get_path_from_lang_dir( $domain ) {
+		if ( null === $this->cached_mo_files ) {
+			$this->cached_mo_files = array();
 
-			$this->fetch_available_mofiles();
+			$this->set_cached_mo_files();
 		}
 
 		foreach ( preferred_languages_get_list() as $locale ) {
-			$mofile = "{$domain}-{$locale}.mo";
+			$mo_file = "{$domain}-{$locale}.mo";
 
-			$path = WP_LANG_DIR . '/plugins/' . $mofile;
-			if ( in_array( $path, $this->cached_mofiles, true ) ) {
-				$this->set( $domain, WP_LANG_DIR . '/plugins/' );
+			$path = WP_LANG_DIR . '/plugins/' . $mo_file;
+			if ( in_array( $path, $this->cached_mo_files, true ) ) {
+				$path = WP_LANG_DIR . '/plugins/';
+				$this->set( $domain, $path );
 
-				return;
+				return $path;
 			}
 
-			$path = WP_LANG_DIR . '/themes/' . $mofile;
-			if ( in_array( $path, $this->cached_mofiles, true ) ) {
-				$this->set( $domain, WP_LANG_DIR . '/themes/' );
+			$path = WP_LANG_DIR . '/themes/' . $mo_file;
+			if ( in_array( $path, $this->cached_mo_files, true ) ) {
+				$path = WP_LANG_DIR . '/themes/';
+				$this->set( $domain, $path );
 
-				return;
+				return $path;
 			}
 		}
 
 		$this->set( $domain, false );
+
+		return false;
 	}
 
 	/**
-	 * Fetches all available MO files from the plugins and themes language directories.
+	 * Reads and caches all available MO files from the plugins and themes language directories.
 	 *
-	 * @since  1.1.0
-	 * @access protected
+	 * @since 1.8.0
 	 *
 	 * @see _get_path_to_translation_from_lang_dir()
 	 */
-	protected function fetch_available_mofiles() {
+	protected function set_cached_mo_files() {
 		$locations = array(
 			WP_LANG_DIR . '/plugins',
 			WP_LANG_DIR . '/themes',
 		);
 
 		foreach ( $locations as $location ) {
-			$mofiles = glob( $location . '/*.mo' );
+			$mo_files = glob( $location . '/*.mo' );
 
-			if ( $mofiles ) {
-				$this->cached_mofiles = array_merge( $this->cached_mofiles, $mofiles );
+			if ( $mo_files ) {
+				array_push( $this->cached_mo_files, ...$mo_files );
 			}
 		}
 	}

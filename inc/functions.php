@@ -1003,12 +1003,6 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		$path = $preferred_languages_textdomain_registry->get( $domain );
 
 		if ( ! $path ) {
-			$preferred_languages_textdomain_registry->get_translation_from_lang_dir( $domain );
-		}
-
-		$path = $preferred_languages_textdomain_registry->get( $domain );
-
-		if ( ! $path ) {
 			return $translation;
 		}
 
