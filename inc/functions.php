@@ -160,32 +160,45 @@ function preferred_languages_get_list() {
 }
 
 /**
- * Downloads language packs when saving user meta without any changes.
+ * Hooks into user meta additions.
  *
- * Makes sure the translations are downloaded when it didn't work the first time around.
+ * Downloads language pack when populating list of preferred languages.
  *
- * @since 1.4.0
+ * Also updates the 'locale' user meta if the list is empty.
  *
- * @param null|bool $check     Whether to allow updating metadata for the given type.
- * @param int       $user_id   User ID.
- * @param string    $meta_key  Meta key.
- * @param mixed     $value     Meta value.
- * @param mixed     $old_value The previous meta value.
- * @return mixed
+ * @since 1.7.2
+ *
+ * @param int    $object_id  Object ID.
+ * @param string $meta_key   Meta key.
+ * @param mixed  $meta_value Meta value.
  */
-function preferred_languages_pre_update_user_meta( $check, $user_id, $meta_key, $value, $old_value ) {
-	if ( 'preferred_languages' === $meta_key ) {
-		if ( empty( $old_value ) ) {
-			$old_value = get_user_meta( $user_id, $meta_key, true );
-		}
-
-		if ( $value === $old_value ) {
-			$locales = array_filter( explode( ',', $value ) );
-			preferred_languages_download_language_packs( $locales );
-		}
+function preferred_languages_add_user_meta( $object_id, $meta_key, $meta_value ) {
+	if ( 'preferred_languages' !== $meta_key ) {
+		return;
 	}
 
-	return $check;
+	remove_action( 'add_user_meta', 'preferred_languages_add_user_meta' );
+	remove_action( 'update_user_meta', 'preferred_languages_update_user_meta' );
+
+	// Clearing the preferred languages list should also clear the 'locale' user meta
+	// to prevent stale data.
+	if ( empty( $meta_value ) ) {
+		update_user_meta( $object_id, 'locale', '' );
+	}
+
+	$locales             = array_filter( explode( ',', $meta_value ) );
+	$installed_languages = preferred_languages_download_language_packs( $locales );
+
+	// Only store actually installed languages in user meta.
+	update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+
+	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
+	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
+
+	// Reload translations after save.
+	if ( get_current_user_id() === $object_id ) {
+		load_default_textdomain( determine_locale() );
+	}
 }
 
 /**
@@ -207,13 +220,14 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 		return;
 	}
 
+	remove_action( 'add_user_meta', 'preferred_languages_add_user_meta' );
+	remove_action( 'update_user_meta', 'preferred_languages_update_user_meta' );
+
 	// Clearing the preferred languages list should also clear the 'locale' user meta
 	// to prevent stale data.
 	if ( empty( $meta_value ) ) {
 		update_user_meta( $object_id, 'locale', '' );
 	}
-
-	remove_filter( 'update_user_meta', 'preferred_languages_update_user_meta' );
 
 	$locales             = array_filter( explode( ',', $meta_value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
@@ -221,7 +235,8 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 	// Only store actually installed languages in user meta.
 	update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
 
-	add_filter( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
+	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
+	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
 
 	// Reload translations after save.
 	if ( get_current_user_id() === $object_id ) {
