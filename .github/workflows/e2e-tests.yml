@@ -32,7 +32,7 @@ jobs:
         npm run wp-env start
 
     - name: Run tests
-      run: npm run test:e2e
+      run: npm run test:e2e -- --runInBand
 
     - name: Archive debug artifacts (screenshots, HTML snapshots)
       uses: actions/upload-artifact@v2.2.2
