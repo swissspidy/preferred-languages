@@ -11,6 +11,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		$preferred_languages_textdomain_registry->reset();
 
 		delete_option( 'preferred_languages' );
+		delete_site_option( 'preferred_languages' );
+		delete_metadata( 'user', null, 'preferred_languages', '', true );
 
 		add_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
 
@@ -27,6 +29,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		$preferred_languages_textdomain_registry->reset();
 
 		delete_option( 'preferred_languages' );
+		delete_site_option( 'preferred_languages' );
+		delete_metadata( 'user', null, 'preferred_languages', '', true );
 
 		remove_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
 
