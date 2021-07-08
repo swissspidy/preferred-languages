@@ -1,6 +1,7 @@
 vendor/
 node_modules/
 build/
+artifacts/
 .wp-env.override.json
 phpcs.xml
 phpunit.xml

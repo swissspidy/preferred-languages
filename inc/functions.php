@@ -646,8 +646,7 @@ function preferred_languages_register_scripts() {
 		'preferred-languages',
 		plugins_url( 'build/preferred-languages.css', __DIR__ ),
 		array(),
-		$asset['version'],
-		'screen'
+		$asset['version']
 	);
 
 	wp_style_add_data( 'preferred-languages', 'rtl', 'replace' );
