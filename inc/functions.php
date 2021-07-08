@@ -51,9 +51,19 @@ function preferred_languages_register_meta() {
  * @param int $user_id The user ID.
  */
 function preferred_languages_update_user_option( $user_id ) {
-	if ( isset( $_POST['preferred_languages'] ) ) {
-		update_user_meta( $user_id, 'preferred_languages', $_POST['preferred_languages'] );
+	if ( ! isset( $_POST['_wpnonce'], $_POST['preferred_languages'] ) ) {
+		return;
 	}
+
+	if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'update-user_' . $user_id ) ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_user', $user_id ) ) {
+		return;
+	}
+
+	update_user_meta( $user_id, 'preferred_languages', $_POST['preferred_languages'] );
 }
 
 /**
