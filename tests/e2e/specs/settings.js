@@ -5,10 +5,6 @@ describe( 'Settings Page', () => {
 		await visitAdminPage( 'options-general.php' );
 
 		await expect( page ).toMatch( 'General Settings' );
-		await page.$eval( '.site-preferred-languages-wrap', ( el ) =>
-			el.scrollIntoView()
-		);
-
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 		await expect( page ).toMatch(
 			'Choose languages for displaying WordPress in, in order of preference.'
@@ -16,6 +12,12 @@ describe( 'Settings Page', () => {
 		await expect( page ).toMatch(
 			'Falling back to English (United States).'
 		);
+	} );
+
+	it( 'should disable form buttons initially', async () => {
+		await visitAdminPage( 'options-general.php' );
+
+		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 
 		// Form buttons disabled by default.
 		await expect( page ).toMatchElement(
@@ -35,15 +37,24 @@ describe( 'Settings Page', () => {
 
 		// Afrikaans is the first item in the dropdown by default.
 		expect( inactiveLocale ).toStrictEqual( 'af' );
+	} );
+
+	it( 'should add a language to the list', async () => {
+		await visitAdminPage( 'options-general.php' );
+
+		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
 
-		// After adding Afrikaans to the list, only the "Remove" button should be active.
 		await expect( page ).toMatchElement( '.active-locale', {
 			text: /Afrikaans/i,
 		} );
+
+		await expect( page ).not.toMatch(
+			'Falling back to English (United States).'
+		);
 
 		await expect( page ).toMatchElement(
 			'.preferred-languages button.locales-move-up[disabled]'
@@ -54,7 +65,16 @@ describe( 'Settings Page', () => {
 		await expect( page ).toMatchElement(
 			'.preferred-languages button.locales-remove:not([disabled])'
 		);
+	} );
 
+	it( 'should allow navigation using keyboard', async () => {
+		await visitAdminPage( 'options-general.php' );
+
+		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
+
+		await expect( page ).toClick(
+			'.preferred-languages button.locales-add'
+		);
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
@@ -68,8 +88,6 @@ describe( 'Settings Page', () => {
 		);
 
 		expect( activeLocales ).toStrictEqual( 'af,ar,ary' );
-
-		// After adding two more locales, the last one should be selected.
 
 		await expect( page ).toMatchElement(
 			'.active-locale[aria-selected="true"]',
@@ -102,14 +120,14 @@ describe( 'Settings Page', () => {
 		await page.keyboard.press( 'ArrowUp' );
 
 		await expect( page ).toMatchElement(
+			'.preferred-languages button.locales-move-up[disabled]'
+		);
+
+		await expect( page ).toMatchElement(
 			'.active-locale[aria-selected="true"]',
 			{
 				text: 'Afrikaans',
 			}
-		);
-
-		await expect( page ).toMatchElement(
-			'.preferred-languages button.locales-move-up[disabled]'
 		);
 	} );
 } );
