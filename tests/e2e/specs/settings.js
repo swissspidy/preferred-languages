@@ -7,6 +7,8 @@ describe( 'Settings Page', () => {
 		await visitAdminPage( 'options-general.php' );
 
 		await expect( page ).toMatch( 'General Settings' );
+
+		await expect( page ).not.toMatchElement( '#WPLANG' );
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 		await expect( page ).toMatch(
 			'Choose languages for displaying WordPress in, in order of preference.'
@@ -20,13 +22,30 @@ describe( 'Settings Page', () => {
 	it( 'should disable form buttons initially', async () => {
 		await visitAdminPage( 'options-general.php' );
 
+		await expect( page ).not.toMatchElement( '#WPLANG' );
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 		await expect( page ).toMatch(
 			'Choose languages for displaying WordPress in, in order of preference.'
 		);
 
-		await page.$eval( '.site-preferred-languages-wrap', ( el ) =>
-			el.scrollIntoView()
+		await expect( page ).toMatchElement( '#active-locales-empty-message', {
+			text: 'Nothing set. Falling back to English (United States).',
+			visible: true,
+		} );
+
+		// await page.$eval( '.site-preferred-languages-wrap', ( el ) =>
+		// 	el.scrollIntoView()
+		// );
+
+		const activeLocales = await page.$eval(
+			'input[name="preferred_languages"]',
+			( el ) => el.value
+		);
+
+		expect( activeLocales ).toStrictEqual( '' );
+
+		await expect( page ).toMatchElement(
+			'.preferred-languages button.locales-move-up'
 		);
 
 		// Form buttons disabled by default.
@@ -70,6 +89,13 @@ describe( 'Settings Page', () => {
 			}
 		);
 
+		const activeLocales = await page.$eval(
+			'input[name="preferred_languages"]',
+			( el ) => el.value
+		);
+
+		expect( activeLocales ).toStrictEqual( 'af' );
+
 		await expect( page ).toMatchElement( '.active-locale', {
 			text: /Afrikaans/i,
 		} );
@@ -100,19 +126,19 @@ describe( 'Settings Page', () => {
 			'.preferred-languages button.locales-add'
 		);
 
-		await expect( page ).toMatchElement(
-			'.active-locale[aria-selected="true"]',
-			{
-				text: /العربية المغربية/i,
-			}
-		);
-
 		const activeLocales = await page.$eval(
 			'input[name="preferred_languages"]',
 			( el ) => el.value
 		);
 
 		expect( activeLocales ).toStrictEqual( 'af,ar,ary' );
+
+		await expect( page ).toMatchElement(
+			'.active-locale[aria-selected="true"]',
+			{
+				text: /العربية المغربية/i,
+			}
+		);
 
 		await expect( page ).toMatchElement(
 			'.preferred-languages button.locales-move-up:not([disabled])'
