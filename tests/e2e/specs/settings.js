@@ -142,14 +142,17 @@ describe( 'Settings Page', () => {
 			'.preferred-languages button.locales-remove:not([disabled])'
 		);
 
-		// Focusing on the listbox ensures that keyboard navigation works as expected.
-		await page.focus( '.active-locales-list' );
-
 		// After moving one position up, none of the buttons should be disabled anymore.
 		await page.keyboard.press( 'ArrowUp' );
 
 		await expect( page ).toMatchElement(
+			'.preferred-languages button.locales-move-up:not([disabled])'
+		);
+		await expect( page ).toMatchElement(
 			'.preferred-languages button.locales-move-down:not([disabled])'
+		);
+		await expect( page ).toMatchElement(
+			'.preferred-languages button.locales-remove:not([disabled])'
 		);
 
 		// After moving one up again, the "Move Up" button should be disabled because we reached the top.
@@ -157,6 +160,12 @@ describe( 'Settings Page', () => {
 
 		await expect( page ).toMatchElement(
 			'.preferred-languages button.locales-move-up[disabled]'
+		);
+		await expect( page ).toMatchElement(
+			'.preferred-languages button.locales-move-down:not([disabled])'
+		);
+		await expect( page ).toMatchElement(
+			'.preferred-languages button.locales-remove:not([disabled])'
 		);
 
 		await expect( page ).toMatchElement(
