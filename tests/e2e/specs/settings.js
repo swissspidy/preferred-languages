@@ -3,10 +3,21 @@ import { visitAdminPage } from '@wordpress/e2e-test-utils';
 jest.setTimeout( 10000 );
 
 describe( 'Settings Page', () => {
+	beforeAll( async () => {
+		await page.setJavaScriptEnabled( true );
+	} );
+
 	it( 'should display the preferred languages form', async () => {
 		await visitAdminPage( 'options-general.php' );
 
 		await expect( page ).toMatch( 'General Settings' );
+
+		const bodyClasses = await page.evaluate( () => {
+			return document.body.className;
+		} );
+
+		console.log( bodyClasses );
+		expect( bodyClasses ).toContain( ' js ' );
 
 		await expect( page ).not.toMatchElement( '#WPLANG' );
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
