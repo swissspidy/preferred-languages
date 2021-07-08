@@ -30,3 +30,10 @@ jobs:
 
     - name: Run tests
       run: npm run test:e2e
+
+    - name: Archive debug artifacts (screenshots, HTML snapshots)
+      uses: actions/upload-artifact@v2.2.2
+      if: always()
+      with:
+        name: failures-artifacts
+        path: artifacts

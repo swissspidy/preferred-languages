@@ -3,23 +3,12 @@ import { visitAdminPage } from '@wordpress/e2e-test-utils';
 jest.setTimeout( 10000 );
 
 describe( 'Settings Page', () => {
-	beforeAll( async () => {
-		await page.setJavaScriptEnabled( true );
-	} );
-
 	it( 'should display the preferred languages form', async () => {
 		await visitAdminPage( 'options-general.php' );
 
 		await expect( page ).toMatch( 'General Settings' );
 
-		const bodyClasses = await page.evaluate( () => {
-			return document.body.className;
-		} );
-
-		console.log( bodyClasses );
-		expect( bodyClasses ).toContain( ' js ' );
-
-		await expect( page ).not.toMatchElement( '#WPLANG' );
+		await expect( page ).not.toMatchElement( '#WPLANG', { visible: true } );
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 		await expect( page ).toMatch(
 			'Choose languages for displaying WordPress in, in order of preference.'
@@ -43,10 +32,6 @@ describe( 'Settings Page', () => {
 			text: 'Nothing set. Falling back to English (United States).',
 			visible: true,
 		} );
-
-		// await page.$eval( '.site-preferred-languages-wrap', ( el ) =>
-		// 	el.scrollIntoView()
-		// );
 
 		const activeLocales = await page.$eval(
 			'input[name="preferred_languages"]',
@@ -83,10 +68,6 @@ describe( 'Settings Page', () => {
 		await visitAdminPage( 'options-general.php' );
 
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
-
-		await page.$eval( '.site-preferred-languages-wrap', ( el ) =>
-			el.scrollIntoView()
-		);
 
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
