@@ -483,6 +483,23 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_add_user_meta
 	 */
+	public function test_add_user_meta_empty_list() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		update_user_meta( $user_id, 'locale', 'de_DE' );
+		add_user_meta( $user_id, 'preferred_languages', '' );
+
+		$locale = get_user_meta( $user_id, 'locale', true );
+		$this->assertSame( '', $locale );
+	}
+
+	/**
+	 * @covers ::preferred_languages_add_user_meta
+	 */
 	public function test_add_user_meta_downloads_language_packs() {
 		$user_id = self::factory()->user->create(
 			array(
@@ -584,6 +601,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_update_option
+	 * @covers ::preferred_languages_pre_update_option
 	 */
 	public function test_update_option_unchanged_downloads_language_packs_again() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
@@ -614,6 +632,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_update_site_option
+	 * @covers ::preferred_languages_pre_update_option
 	 * @group ms-required
 	 */
 	public function test_update_site_option_unchanged_downloads_language_packs_again() {

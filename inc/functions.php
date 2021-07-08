@@ -299,6 +299,10 @@ function preferred_languages_update_option( $old_value, $value ) {
  * @param string $value     The new option value.
  */
 function preferred_languages_update_site_option( $old_value, $value ) {
+	if ( ! is_multisite() ) {
+		return;
+	}
+
 	remove_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option' );
 
 	$locales             = array_filter( explode( ',', $value ) );
@@ -736,6 +740,10 @@ function preferred_languages_network_settings_field() {
  * @since 1.7.0
  */
 function preferred_languages_update_network_settings() {
+	if ( ! is_multisite() ) {
+		return;
+	}
+
 	$nonce = isset( $_POST['preferred_languages_network_settings_nonce'] ) ? wp_unslash( $_POST['preferred_languages_network_settings_nonce'] ) : null;
 
 	if ( ! wp_verify_nonce( $nonce, 'preferred_languages_network_settings' ) ) {
