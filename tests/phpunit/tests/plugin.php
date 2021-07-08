@@ -967,6 +967,18 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_filter_gettext
 	 */
+	public function test_filter_gettext_plugin_instantiates_registry() {
+		unset( $GLOBALS['preferred_languages_textdomain_registry'] );
+
+		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
+
+		$this->assertInstanceOf( 'Preferred_Languages_Textdomain_Registry', $GLOBALS['preferred_languages_textdomain_registry'] );
+		$this->assertSame( 'This is a dummy plugin', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_gettext
+	 */
 	public function test_filter_gettext_plugin_no_preferred_languages() {
 		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
 		$this->assertSame( 'This is a dummy plugin', $actual );
