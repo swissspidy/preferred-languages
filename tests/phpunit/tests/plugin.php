@@ -10,10 +10,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		global $preferred_languages_textdomain_registry;
 		$preferred_languages_textdomain_registry->reset();
 
-		update_option( 'preferred_languages', '' );
-		update_site_option( 'preferred_languages', '' );
-		delete_metadata( 'user', null, 'preferred_languages', '', true );
-
 		add_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
 
 		parent::setUp();
@@ -30,7 +26,6 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		update_option( 'preferred_languages', '' );
 		update_site_option( 'preferred_languages', '' );
-		delete_metadata( 'user', null, 'preferred_languages', '', true );
 
 		remove_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
 
@@ -362,8 +357,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_filter_locale
 	 */
 	public function test_get_locale_returns_first_preferred_locale() {
-		update_option( 'preferred_languages', 'de_CH,fr_FR' );
-		$this->assertSame( 'de_CH', get_locale() );
+		update_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
+		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
+		$first = explode(',', get_option('preferred_languages'))[0];
+		$this->assertSame( $first, get_locale() );
 	}
 
 	/**
@@ -371,8 +368,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @group ms-required
 	 */
 	public function test_get_locale_returns_first_preferred_locale_from_network() {
-		update_site_option( 'preferred_languages', 'de_CH,fr_FR' );
-		$this->assertSame( 'de_CH', get_locale() );
+		update_site_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
+		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
+		$first = explode(',', get_site_option('preferred_languages'))[0];
+		$this->assertSame( $first, get_locale() );
 	}
 
 	/**

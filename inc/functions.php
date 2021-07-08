@@ -390,11 +390,11 @@ function preferred_languages_filter_locale( $locale ) {
 		$preferred_languages = preferred_languages_get_network_list();
 	}
 
-	if ( empty( $preferred_languages ) ) {
-		return $locale;
+	if ( ! empty( $preferred_languages ) ) {
+		return reset( $preferred_languages );
 	}
 
-	return reset( $preferred_languages );
+	return $locale;
 }
 
 /**
