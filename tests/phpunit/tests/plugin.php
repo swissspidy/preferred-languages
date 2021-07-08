@@ -10,6 +10,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		global $preferred_languages_textdomain_registry;
 		$preferred_languages_textdomain_registry->reset();
 
+		delete_option( 'preferred_languages' );
+
 		add_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
 
 		parent::setUp();
@@ -23,6 +25,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		 */
 		global $preferred_languages_textdomain_registry;
 		$preferred_languages_textdomain_registry->reset();
+
+		delete_option( 'preferred_languages' );
 
 		remove_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
 
@@ -532,6 +536,65 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$locale = get_user_meta( $user_id, 'locale', true );
 		$this->assertSame( 'fr_FR', $locale );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_option
+	 */
+	public function test_add_option_downloads_language_packs() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		$this->assertCount( 2, $this->download_language_packs_calls );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_option
+	 */
+	public function test_update_option_downloads_language_packs_again() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', 'de_DE,es_ES,fr_FR' );
+		// TODO: Shouldn't this only be 2?
+		$this->assertCount( 4, $this->download_language_packs_calls );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_option
+	 */
+	public function test_update_option_unchanged_downloads_language_packs_again() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		// TODO: Shouldn't this only be 2?
+		$this->assertCount( 3, $this->download_language_packs_calls );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_site_option
+	 * @group ms-required
+	 */
+	public function test_add_site_option_downloads_language_packs() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		$this->assertCount( 2, $this->download_language_packs_calls );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_site_option
+	 * @group ms-required
+	 */
+	public function test_update_site_option_downloads_language_packs_again() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', 'de_DE,es_ES,fr_FR' );
+		// TODO: Shouldn't this only be 2?
+		$this->assertCount( 4, $this->download_language_packs_calls );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_site_option
+	 * @group ms-required
+	 */
+	public function test_update_site_option_unchanged_downloads_language_packs_again() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		// TODO: Shouldn't this only be 2?
+		$this->assertCount( 3, $this->download_language_packs_calls );
 	}
 
 	public function data_test_sanitize_list() {

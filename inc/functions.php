@@ -274,6 +274,7 @@ function preferred_languages_pre_update_option( $value, $option, $old_value ) {
  * @param string $value     The new option value.
  */
 function preferred_languages_update_option( $old_value, $value ) {
+	remove_filter( 'add_option_preferred_languages', 'preferred_languages_update_option' );
 	remove_filter( 'update_option_preferred_languages', 'preferred_languages_update_option' );
 
 	$locales             = array_filter( explode( ',', $value ) );
@@ -282,6 +283,7 @@ function preferred_languages_update_option( $old_value, $value ) {
 	// Only store actually installed languages in option.
 	update_option( 'preferred_languages', implode( ',', $installed_languages ) );
 
+	add_filter( 'add_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 	add_filter( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 
 	// Reload translations after save.
