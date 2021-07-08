@@ -359,7 +359,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_get_locale_returns_first_preferred_locale() {
 		update_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
 		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
-		$first = explode(',', get_option('preferred_languages'))[0];
+		$first = explode( ',', get_option( 'preferred_languages' ) )[0];
 		$this->assertSame( $first, get_locale() );
 	}
 
@@ -370,7 +370,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_get_locale_returns_first_preferred_locale_from_network() {
 		update_site_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
 		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
-		$first = explode(',', get_site_option('preferred_languages'))[0];
+		$first = explode( ',', get_site_option( 'preferred_languages' ) )[0];
 		$this->assertSame( $first, get_locale() );
 	}
 
