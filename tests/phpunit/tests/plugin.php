@@ -10,8 +10,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		global $preferred_languages_textdomain_registry;
 		$preferred_languages_textdomain_registry->reset();
 
-		delete_option( 'preferred_languages' );
-		delete_site_option( 'preferred_languages' );
+		update_option( 'preferred_languages', '' );
+		update_site_option( 'preferred_languages', '' );
 		delete_metadata( 'user', null, 'preferred_languages', '', true );
 
 		add_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
@@ -28,8 +28,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		global $preferred_languages_textdomain_registry;
 		$preferred_languages_textdomain_registry->reset();
 
-		delete_option( 'preferred_languages' );
-		delete_site_option( 'preferred_languages' );
+		update_option( 'preferred_languages', '' );
+		update_site_option( 'preferred_languages', '' );
 		delete_metadata( 'user', null, 'preferred_languages', '', true );
 
 		remove_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
@@ -353,16 +353,26 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_filter_locale
 	 */
-	public function test_filter_locale_returns_locale_unchanged() {
-		$this->assertSame( 'de_CH', preferred_languages_filter_locale( 'de_CH' ) );
+	public function test_get_locale_returns_locale_unchanged() {
+		update_option( 'preferred_languages', '' );
+		$this->assertSame( get_locale(), get_locale() );
 	}
 
 	/**
 	 * @covers ::preferred_languages_filter_locale
 	 */
-	public function test_filter_locale_returns_first_locale() {
+	public function test_get_locale_returns_first_preferred_locale() {
 		update_option( 'preferred_languages', 'de_CH,fr_FR' );
-		$this->assertSame( 'de_CH', preferred_languages_filter_locale( 'de_DE' ) );
+		$this->assertSame( 'de_CH', get_locale() );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_locale
+	 * @group ms-required
+	 */
+	public function test_get_locale_returns_first_preferred_locale_from_network() {
+		update_site_option( 'preferred_languages', 'de_CH,fr_FR' );
+		$this->assertSame( 'de_CH', get_locale() );
 	}
 
 	/**
@@ -446,6 +456,20 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_filter_user_locale
 	 */
+	public function test_get_user_local_returns_locale_unchanged() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+		update_user_meta( $user_id, 'preferred_languages', '' );
+
+		$this->assertSame( get_user_locale( $user_id ), get_user_locale( $user_id ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_user_locale
+	 */
 	public function test_get_user_locale() {
 		$user_id = self::factory()->user->create(
 			array(
@@ -454,8 +478,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		);
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
 
-		$locale = get_user_locale( $user_id );
-		$this->assertSame( 'de_DE', $locale );
+		$this->assertSame( 'de_DE', get_user_locale( $user_id ) );
 	}
 
 	/**
