@@ -303,6 +303,7 @@ function preferred_languages_update_site_option( $old_value, $value ) {
 		return;
 	}
 
+	remove_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_option' );
 	remove_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option' );
 
 	$locales             = array_filter( explode( ',', $value ) );
@@ -311,6 +312,7 @@ function preferred_languages_update_site_option( $old_value, $value ) {
 	// Only store actually installed languages in option.
 	update_site_option( 'preferred_languages', implode( ',', $installed_languages ) );
 
+	add_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 	add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 
 	// Reload translations after save.

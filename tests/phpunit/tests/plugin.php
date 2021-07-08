@@ -615,8 +615,8 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @group ms-required
 	 */
 	public function test_add_site_option_downloads_language_packs() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
-		$this->assertCount( 2, $this->download_language_packs_calls );
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		$this->assertCount( 1, $this->download_language_packs_calls );
 	}
 
 	/**
@@ -624,10 +624,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @group ms-required
 	 */
 	public function test_update_site_option_downloads_language_packs_again() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
-		update_option( 'preferred_languages', 'de_DE,es_ES,fr_FR' );
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_site_option( 'preferred_languages', 'de_DE,es_ES,fr_FR' );
 		// TODO: Shouldn't this only be 2?
-		$this->assertCount( 4, $this->download_language_packs_calls );
+		$this->assertCount( 3, $this->download_language_packs_calls );
 	}
 
 	/**
@@ -636,10 +636,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @group ms-required
 	 */
 	public function test_update_site_option_unchanged_downloads_language_packs_again() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
-		// TODO: Shouldn't this only be 2?
-		$this->assertCount( 3, $this->download_language_packs_calls );
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		$this->assertCount( 1, $this->download_language_packs_calls );
 	}
 
 	public function data_test_sanitize_list() {
