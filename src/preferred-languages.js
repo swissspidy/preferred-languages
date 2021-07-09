@@ -167,7 +167,11 @@ import './preferred-languages.css';
 	 * @since 1.0.0
 	 */
 	function makeLocaleInactive() {
-		const locale = $selectedLocale.attr( 'id' );
+		// en_US has an empty value in the inactive locales dropdown.
+		const locale =
+			'en_US' !== $selectedLocale.attr( 'id' )
+				? $selectedLocale.attr( 'id' )
+				: '';
 		let $successor;
 
 		$successor = $selectedLocale.prevAll( ':first' );
@@ -191,6 +195,19 @@ import './preferred-languages.css';
 			.find( `option[value="${ locale }"]` )
 			.removeClass( 'hidden' );
 		$inactiveLocales.attr( 'disabled', false );
+
+		// 3.1. Change selected value in dropdown.
+		if (
+			$inactiveLocales
+				.children()
+				.eq( $inactiveLocales.prop( 'selectedIndex' ) )
+				.is( ':hidden' )
+		) {
+			$inactiveLocales.prop(
+				'selectedIndex',
+				$inactiveLocales.find( 'option:not(.hidden):first' ).index()
+			);
+		}
 
 		// 4. Update hidden input field.
 		updateHiddenInput();
@@ -229,11 +246,12 @@ import './preferred-languages.css';
 
 		if ( ! $successor.length ) {
 			$inactiveLocales.attr( 'disabled', true );
+		} else {
+			// 2. Change selected value in dropdown.
+			$successor.attr( 'selected', true );
+			$inactiveLocales.val( $successor.val() );
+			$inactiveLocales.prop( 'selectedIndex', $successor.index() );
 		}
-
-		// 2. Change selected value in dropdown.
-		$successor.attr( 'selected', true );
-		$inactiveLocalesControls.val( $successor.val() );
 
 		// It's already in the list of active locales, stop here.
 		if ( $activeLocales.find( `#${ locale }` ).length ) {
@@ -276,9 +294,9 @@ import './preferred-languages.css';
 	// Replace original language settings.
 
 	// User Profile.
-	$( '.user-language-wrap' ).first().replaceWith(
-		$( '.user-preferred-languages-wrap' )
-	);
+	$( '.user-language-wrap' )
+		.first()
+		.replaceWith( $( '.user-preferred-languages-wrap' ) );
 
 	// Settings -> General.
 	$( '.options-general-php #WPLANG' )
