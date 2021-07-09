@@ -276,7 +276,7 @@ import './preferred-languages.css';
 	// Replace original language settings.
 
 	// User Profile.
-	$( '.user-language-wrap' ).replaceWith(
+	$( '.user-language-wrap' ).first().replaceWith(
 		$( '.user-preferred-languages-wrap' )
 	);
 
