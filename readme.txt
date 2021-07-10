@@ -33,6 +33,10 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
+= 1.8.0 =
+
+This release contains various smaller bugfixes, as well as improved compatibility with other plugins such as WPML.
+
 = 1.7.1 = 
 
 This release contains improvements to translation merging and fixes issues with the user language not being correctly applied.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.8.0
+
+* Improves compatibility with plugins such as WPML which also modify the language selection UI.
+* Improves robustness of language pack downloading after saving changes.
+* Improves test coverage and fixes many smaller bugs.
+* Fixes UI issue where locales where not appearing in the dropdown anymore.
+
 ## 1.7.1
 
 * Fixes an issue where the profile language was not overriding the site language.
