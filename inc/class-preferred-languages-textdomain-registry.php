@@ -37,16 +37,17 @@ class Preferred_Languages_Textdomain_Registry {
 	 * @since  1.1.0
 	 *
 	 * @param string $domain Text domain.
+	 * @param string $locale Locale.
 	 *
 	 * @return string|false|null MO file path or false if there is none available.
 	 *                           Null if none have been fetched yet.
 	 */
-	public function get( $domain ) {
-		if ( isset( $this->domains[ $domain ] ) ) {
-			return $this->domains[ $domain ];
+	public function get( $domain, $locale ) {
+		if ( isset( $this->domains[ $domain ][ $locale ] ) ) {
+			return $this->domains[ $domain ][ $locale ];
 		}
 
-		return $this->get_path_from_lang_dir( $domain );
+		return $this->get_path_from_lang_dir( $domain, $locale );
 	}
 
 	/**
@@ -55,10 +56,11 @@ class Preferred_Languages_Textdomain_Registry {
 	 * @since 1.1.0
 	 *
 	 * @param string       $domain Text domain.
+	 * @param string       $locale Locale.
 	 * @param string|false $path Language directory path or false if there is none available.
 	 */
-	public function set( $domain, $path ) {
-		$this->domains[ $domain ] = $path ? trailingslashit( $path ) : false;
+	public function set( $domain, $locale, $path ) {
+		$this->domains[ $domain ][ $locale ] = $path ? trailingslashit( $path ) : false;
 	}
 
 	/**
@@ -79,22 +81,24 @@ class Preferred_Languages_Textdomain_Registry {
 	 * @see _get_path_to_translation_from_lang_dir()
 	 *
 	 * @param string $domain Text domain.
+	 * @param string $locale Locale.
+	 *
 	 * @return string|false MO file path or false if there is none available.
 	 */
-	private function get_path_from_lang_dir( $domain ) {
+	private function get_path_from_lang_dir( $domain, $locale ) {
 		if ( null === $this->cached_mo_files ) {
 			$this->cached_mo_files = array();
 
 			$this->set_cached_mo_files();
 		}
 
-		foreach ( preferred_languages_get_list() as $locale ) {
-			$mo_file = "{$domain}-{$locale}.mo";
+		foreach ( preferred_languages_get_list() as $_locale ) {
+			$mo_file = "{$domain}-{$_locale}.mo";
 
 			$path = WP_LANG_DIR . '/plugins/' . $mo_file;
 			if ( in_array( $path, $this->cached_mo_files, true ) ) {
 				$path = WP_LANG_DIR . '/plugins/';
-				$this->set( $domain, $path );
+				$this->set( $domain, $_locale, $path );
 
 				return $path;
 			}
@@ -102,13 +106,15 @@ class Preferred_Languages_Textdomain_Registry {
 			$path = WP_LANG_DIR . '/themes/' . $mo_file;
 			if ( in_array( $path, $this->cached_mo_files, true ) ) {
 				$path = WP_LANG_DIR . '/themes/';
-				$this->set( $domain, $path );
+				$this->set( $domain, $_locale, $path );
 
 				return $path;
 			}
 		}
 
-		$this->set( $domain, false );
+		if ( ! isset( $this->domains[ $domain ][ $locale ] ) ) {
+			$this->set( $domain, $locale, false );
+		}
 
 		return false;
 	}
