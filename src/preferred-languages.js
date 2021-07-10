@@ -291,150 +291,152 @@ import './preferred-languages.css';
 		speak( __( 'Locale added to list', 'preferred-languages' ) );
 	}
 
-	// Replace original language settings.
+	$document.ready( () => {
+		// Replace original language settings.
 
-	// User Profile.
-	$( '.user-language-wrap' )
-		.first()
-		.replaceWith( $( '.user-preferred-languages-wrap' ) );
+		// User Profile.
+		$( '.user-language-wrap' )
+			.first()
+			.replaceWith( $( '.user-preferred-languages-wrap' ) );
 
-	// Settings -> General.
-	$( '.options-general-php #WPLANG' )
-		.parent()
-		.parent()
-		.replaceWith( $( '.site-preferred-languages-wrap' ) );
+		// Settings -> General.
+		$( '.options-general-php #WPLANG' )
+			.parent()
+			.parent()
+			.replaceWith( $( '.site-preferred-languages-wrap' ) );
 
-	// Network Settings.
-	$( '.network-admin.settings-php #WPLANG' )
-		.parent()
-		.parent()
-		.replaceWith( $( '.network-preferred-languages-wrap' ) );
+		// Network Settings.
+		$( '.network-admin.settings-php #WPLANG' )
+			.parent()
+			.parent()
+			.replaceWith( $( '.network-preferred-languages-wrap' ) );
 
-	// Remove en_US as an option from the dropdown.
-	$inactiveLocalesWrap
-		.filter( '[data-show-en_US="false"]' )
-		.find( '[lang="en"][value=""]' )
-		.remove();
+		// Remove en_US as an option from the dropdown.
+		$inactiveLocalesWrap
+			.filter( '[data-show-en_US="false"]' )
+			.find( '[lang="en"][value=""]' )
+			.remove();
 
-	// Change initial button state.
-	changeButtonState( $selectedLocale );
+		// Change initial button state.
+		changeButtonState( $selectedLocale );
 
-	// Initially hide already active locales from dropdown.
-	if ( $inputField.val().length ) {
-		$.each( $inputField.val().split( ',' ), ( index, value ) => {
-			value = 'en_US' === value ? '' : value;
+		// Initially hide already active locales from dropdown.
+		if ( $inputField.val().length ) {
+			$.each( $inputField.val().split( ',' ), ( index, value ) => {
+				value = 'en_US' === value ? '' : value;
 
-			const $option = $inactiveLocales.find( `[value="${ value }"]` );
+				const $option = $inactiveLocales.find( `[value="${ value }"]` );
 
-			// 2. Hide from dropdown.
-			$option.removeAttr( 'selected' ).addClass( 'hidden' );
+				// 2. Hide from dropdown.
+				$option.removeAttr( 'selected' ).addClass( 'hidden' );
+			} );
+
+			const $firstInactiveLocale = $inactiveLocales.find(
+				'option:not(.hidden):first'
+			);
+
+			$firstInactiveLocale.attr( 'selected', true );
+			$inactiveLocalesControls.val( $firstInactiveLocale.val() );
+		}
+
+		// Disable controls if there are no more languages that could be added.
+		if ( $inactiveLocales.find( ':not(.hidden)' ).length === 0 ) {
+			$inactiveLocales.attr( 'disabled', true );
+			$inactiveLocalesControls
+				.find( '.locales-add' )
+				.attr( 'disabled', true );
+		}
+
+		function onSortableUpdate() {
+			updateHiddenInput();
+			changeButtonState( $selectedLocale );
+		}
+
+		// Enabling sorting locales using drag and drop.
+		$activeLocales.sortable( {
+			axis: 'y',
+			cursor: 'move',
+			items: ':not(#active-locales-list-empty-message)',
+			update: onSortableUpdate,
 		} );
 
-		const $firstInactiveLocale = $inactiveLocales.find(
-			'option:not(.hidden):first'
-		);
+		// Active locales keyboard shortcuts.
+		$document.on( 'keydown', ( e ) => {
+			if (
+				! document
+					.querySelector( '.preferred-languages' )
+					// eslint-disable-next-line @wordpress/no-global-active-element
+					.contains( document.activeElement )
+			) {
+				return;
+			}
 
-		$firstInactiveLocale.attr( 'selected', true );
-		$inactiveLocalesControls.val( $firstInactiveLocale.val() );
-	}
+			switch ( e.which ) {
+				case KEY_UP:
+					if ( e.altKey ) {
+						moveLocaleUp();
+					} else if ( $selectedLocale.prev().length ) {
+						toggleLocale( $selectedLocale.prev() );
+					} else {
+						// We're at the top of the list.
+						$activeLocales.focus();
+					}
 
-	// Disable controls if there are no more languages that could be added.
-	if ( $inactiveLocales.find( ':not(.hidden)' ).length === 0 ) {
-		$inactiveLocales.attr( 'disabled', true );
-		$inactiveLocalesControls
-			.find( '.locales-add' )
-			.attr( 'disabled', true );
-	}
+					e.preventDefault();
+					break;
 
-	function onSortableUpdate() {
-		updateHiddenInput();
-		changeButtonState( $selectedLocale );
-	}
+				case KEY_DOWN:
+					if ( e.altKey ) {
+						moveLocaleDown();
+					} else if ( $selectedLocale.next().length ) {
+						toggleLocale( $selectedLocale.next() );
+					} else {
+						// We're at the bottom of the list.
+						$activeLocales.focus();
+					}
 
-	// Enabling sorting locales using drag and drop.
-	$activeLocales.sortable( {
-		axis: 'y',
-		cursor: 'move',
-		items: ':not(#active-locales-list-empty-message)',
-		update: onSortableUpdate,
+					e.preventDefault();
+					break;
+
+				case KEY_A:
+					if ( e.altKey ) {
+						makeLocaleActive(
+							$inactiveLocales.find( 'option:selected' )
+						);
+					}
+
+					e.preventDefault();
+					break;
+
+				case KEY_BACKSPACE:
+					makeLocaleInactive();
+
+					e.preventDefault();
+					break;
+			}
+		} );
+
+		// Add new locale to list.
+		$inactiveLocalesControls.find( '.locales-add' ).on( 'click', () => {
+			makeLocaleActive( $inactiveLocales.find( 'option:selected' ) );
+		} );
+
+		// Select a locale.
+		$activeLocales.on( 'click', '.active-locale', ( e ) => {
+			toggleLocale( $( e.currentTarget ) );
+		} );
+
+		$activeLocalesControls
+			.find( '.locales-move-up' )
+			.on( 'click', moveLocaleUp );
+
+		$activeLocalesControls
+			.find( '.locales-move-down' )
+			.on( 'click', moveLocaleDown );
+
+		// Remove locale from list.
+		$activeLocalesControls
+			.find( '.locales-remove' )
+			.on( 'click', makeLocaleInactive );
 	} );
-
-	// Active locales keyboard shortcuts.
-	$document.on( 'keydown', ( e ) => {
-		if (
-			! document
-				.querySelector( '.preferred-languages' )
-				// eslint-disable-next-line @wordpress/no-global-active-element
-				.contains( document.activeElement )
-		) {
-			return;
-		}
-
-		switch ( e.which ) {
-			case KEY_UP:
-				if ( e.altKey ) {
-					moveLocaleUp();
-				} else if ( $selectedLocale.prev().length ) {
-					toggleLocale( $selectedLocale.prev() );
-				} else {
-					// We're at the top of the list.
-					$activeLocales.focus();
-				}
-
-				e.preventDefault();
-				break;
-
-			case KEY_DOWN:
-				if ( e.altKey ) {
-					moveLocaleDown();
-				} else if ( $selectedLocale.next().length ) {
-					toggleLocale( $selectedLocale.next() );
-				} else {
-					// We're at the bottom of the list.
-					$activeLocales.focus();
-				}
-
-				e.preventDefault();
-				break;
-
-			case KEY_A:
-				if ( e.altKey ) {
-					makeLocaleActive(
-						$inactiveLocales.find( 'option:selected' )
-					);
-				}
-
-				e.preventDefault();
-				break;
-
-			case KEY_BACKSPACE:
-				makeLocaleInactive();
-
-				e.preventDefault();
-				break;
-		}
-	} );
-
-	// Add new locale to list.
-	$inactiveLocalesControls.find( '.locales-add' ).on( 'click', () => {
-		makeLocaleActive( $inactiveLocales.find( 'option:selected' ) );
-	} );
-
-	// Select a locale.
-	$activeLocales.on( 'click', '.active-locale', ( e ) => {
-		toggleLocale( $( e.currentTarget ) );
-	} );
-
-	$activeLocalesControls
-		.find( '.locales-move-up' )
-		.on( 'click', moveLocaleUp );
-
-	$activeLocalesControls
-		.find( '.locales-move-down' )
-		.on( 'click', moveLocaleDown );
-
-	// Remove locale from list.
-	$activeLocalesControls
-		.find( '.locales-remove' )
-		.on( 'click', makeLocaleInactive );
 } )( window.jQuery );
