@@ -1059,3 +1059,24 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 
 	return $translation;
 }
+
+/**
+ * Filters debug information to include Preferred Languages data.
+ *
+ * @since 1.8.0
+ *
+ * @param array $args The debug information to be added to the core information page.
+ *
+ * @return array Filtered debug information.
+ */
+function preferred_languages_filter_debug_information( $args ) {
+	if ( isset( $args['wp-core']['fields']['site_language']['value'] ) ) {
+		$args['wp-core']['fields']['site_language']['value'] = implode( ', ', preferred_languages_get_site_list() );
+	}
+
+	if ( isset( $args['wp-core']['fields']['user_language']['value'] ) ) {
+		$args['wp-core']['fields']['user_language']['value'] = implode( ', ', preferred_languages_get_list() );
+	}
+
+	return $args;
+}

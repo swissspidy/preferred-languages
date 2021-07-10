@@ -35,3 +35,5 @@ add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textd
 add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10 );
 add_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations', 10, 4 );
 add_filter( 'load_script_translation_file', 'preferred_languages_load_script_translation_file' );
+
+add_filter( 'debug_information', 'preferred_languages_filter_debug_information' );

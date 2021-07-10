@@ -1257,4 +1257,31 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$this->assertSame( 'Das ist ein Dummy Plugin', __( 'This is a dummy plugin', 'internationalized-plugin' ) );
 	}
+
+	/**
+	 * @covers ::preferred_languages_filter_debug_information
+	 */
+	public function test_filter_debug_information() {
+		if ( ! class_exists( 'WP_Debug_Data' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
+		}
+
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		update_user_meta( $user_id, 'preferred_languages', 'fr_FR,es_ES' );
+
+		wp_set_current_user( $user_id );
+
+		$site_list = preferred_languages_get_site_list();
+		$user_list = preferred_languages_get_user_list();
+		$data      = WP_Debug_Data::debug_data();
+		$this->assertSame( implode( ', ', $site_list ), $data['wp-core']['fields']['site_language']['value'] );
+		$this->assertSame( implode( ', ', $user_list ), $data['wp-core']['fields']['user_language']['value'] );
+	}
 }

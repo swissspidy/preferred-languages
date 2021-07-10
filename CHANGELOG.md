@@ -2,6 +2,7 @@
 
 ## 1.8.0
 
+* Adds Preferred Languages to Site Health debug data.
 * Improves compatibility with plugins such as WPML which also modify the language selection UI.
 * Improves robustness of language pack downloading after saving changes.
 * Improves test coverage and fixes many smaller bugs.

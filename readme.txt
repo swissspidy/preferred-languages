@@ -35,7 +35,7 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 = 1.8.0 =
 
-This release contains various smaller bugfixes, as well as improved compatibility with other plugins such as WPML.
+This release contains various smaller bugfixes, Site Health integration, as well as improved compatibility with other plugins such as WPML.
 
 = 1.7.1 = 
 
