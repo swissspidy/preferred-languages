@@ -619,6 +619,8 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 /**
  * Filters load_script_translation_file() calls to respect the list of preferred languages.
  *
+ * @todo Combine with preferred_languages_load_textdomain_mofile?
+ *
  * @since 1.6.0
  *
  * @param string|false $file Path to the translation file to load. False if there isn't one.
@@ -1032,21 +1034,23 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 			preferred_languages_init_registry();
 		}
 
-		$path = $preferred_languages_textdomain_registry->get( $domain );
-
-		if ( ! $path ) {
-			return $translation;
-		}
-
 		$preferred_locales = preferred_languages_get_list();
 
+		$locale = determine_locale();
+
 		// Locale has been filtered by something else.
-		if ( ! in_array( determine_locale(), $preferred_locales, true ) ) {
+		if ( ! in_array( $locale, $preferred_locales, true ) ) {
 			return $translation;
 		}
 
-		foreach ( $preferred_locales as $locale ) {
-			$mofile = "{$path}/{$domain}-{$locale}.mo";
+		foreach ( $preferred_locales as $_locale ) {
+			$path = $preferred_languages_textdomain_registry->get( $domain, $_locale );
+
+			if ( ! $path ) {
+				continue;
+			}
+
+			$mofile = "{$path}/{$domain}-{$_locale}.mo";
 
 			if ( load_textdomain( $domain, $mofile ) ) {
 				$translations = get_translations_for_domain( $domain );
