@@ -13,11 +13,11 @@
   },
   "homepage": "https://github.com/swissspidy/preferred-languages#readme",
   "devDependencies": {
-    "@wordpress/a11y": "^3.2.0",
-    "@wordpress/e2e-test-utils": "^5.4.0",
+    "@wordpress/a11y": "^3.2.1",
+    "@wordpress/e2e-test-utils": "^5.4.1",
     "@wordpress/env": "^4.1.0",
-    "@wordpress/i18n": "^4.1.1",
-    "@wordpress/scripts": "^17.0.0",
+    "@wordpress/i18n": "^4.2.1",
+    "@wordpress/scripts": "^17.1.0",
     "rtlcss-webpack-plugin": "^4.0.6"
   },
   "scripts": {
