@@ -1894,7 +1894,6 @@
                 "issues": "https://github.com/sebastianbergmann/resource-operations/issues",
                 "source": "https://github.com/sebastianbergmann/resource-operations/tree/master"
             },
-            "abandoned": true,
             "time": "2015-07-28T20:34:47+00:00"
         },
         {
@@ -2256,16 +2255,16 @@
         },
         {
             "name": "yoast/phpunit-polyfills",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Yoast/PHPUnit-Polyfills.git",
-                "reference": "5d257d5a6977137016f3df440ce640ce72ffd61a"
+                "reference": "f014fb21c2b0038fd329515d59025af42fb98715"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Yoast/PHPUnit-Polyfills/zipball/5d257d5a6977137016f3df440ce640ce72ffd61a",
-                "reference": "5d257d5a6977137016f3df440ce640ce72ffd61a",
+                "url": "https://api.github.com/repos/Yoast/PHPUnit-Polyfills/zipball/f014fb21c2b0038fd329515d59025af42fb98715",
+                "reference": "f014fb21c2b0038fd329515d59025af42fb98715",
                 "shasum": ""
             },
             "require": {
@@ -2315,7 +2314,7 @@
                 "issues": "https://github.com/Yoast/PHPUnit-Polyfills/issues",
                 "source": "https://github.com/Yoast/PHPUnit-Polyfills"
             },
-            "time": "2021-06-21T03:13:22+00:00"
+            "time": "2021-08-09T16:28:08+00:00"
         }
     ],
     "aliases": [],
