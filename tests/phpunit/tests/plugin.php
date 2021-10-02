@@ -3,7 +3,9 @@
 class Plugin_Test extends WP_UnitTestCase {
 	protected $download_language_packs_calls = array();
 
-	public function setUp() {
+	public function set_up() {
+		parent::set_up();
+
 		/**
 		 * @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry
 		 */
@@ -11,13 +13,9 @@ class Plugin_Test extends WP_UnitTestCase {
 		$preferred_languages_textdomain_registry->reset();
 
 		add_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
-
-		parent::setUp();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		/**
 		 * @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry
 		 */
@@ -30,6 +28,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		remove_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
 
 		$this->download_language_packs_calls = array();
+
+		parent::tear_down();
 	}
 
 	public function _increment_count( $locales ) {
