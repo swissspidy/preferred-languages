@@ -1090,6 +1090,8 @@ class Plugin_Test extends WP_UnitTestCase {
 			),
 		);
 
+		$this->assertArrayHasKey( 'preferred_languages_network_settings', $wp_settings_sections );
+		$this->assertArrayHasKey( 'preferred_languages', $wp_settings_sections['preferred_languages_network_settings'] );
 		$this->assertEqualSetsWithIndex( $expected_section, $wp_settings_sections['preferred_languages_network_settings']['preferred_languages'] );
 		$this->assertEqualSetsWithIndex( $expected_field, $wp_settings_fields['preferred_languages_network_settings']['preferred_languages']['preferred_languages'] );
 	}
