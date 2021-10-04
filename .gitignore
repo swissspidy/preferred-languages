@@ -6,3 +6,4 @@ artifacts/
 phpcs.xml
 phpunit.xml
 phpunit-multisite.xml
+.phpunit.result.cache
