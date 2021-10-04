@@ -16,7 +16,7 @@
 	</php>
 
 	<testsuites>
-		<testsuite name="Preferred Languages Integration Test Suite">
+		<testsuite name="Integration Test Suite">
 			<directory suffix=".php">./tests/phpunit/tests</directory>
 		</testsuite>
 	</testsuites>
