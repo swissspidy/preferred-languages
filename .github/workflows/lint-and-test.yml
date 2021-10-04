@@ -82,11 +82,11 @@ jobs:
     strategy:
       matrix:
         php: ['5.6']
-        wp: ['latest']
+        wp: ['5.8']
         coverage: [false]
         include:
         - php: '7.4'
-          wp: 'latest'
+          wp: '5.8'
           coverage: true
 
         - php: '7.4'
