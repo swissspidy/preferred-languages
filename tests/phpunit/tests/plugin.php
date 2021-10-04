@@ -991,7 +991,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$this->assertNotNull( $actual );
 		$this->assertNotEmpty( $actual );
-		$this->assertContains( 'translation-revision-data', $actual );
+		$this->assertStringContainsString( 'translation-revision-data', $actual );
 		$this->assertNotNull( json_decode( $actual, true ) );
 	}
 
@@ -1090,6 +1090,7 @@ class Plugin_Test extends WP_UnitTestCase {
 			),
 		);
 
+		$this->assertNotNull( $wp_settings_sections );
 		$this->assertArrayHasKey( 'preferred_languages_network_settings', $wp_settings_sections );
 		$this->assertArrayHasKey( 'preferred_languages', $wp_settings_sections['preferred_languages_network_settings'] );
 		$this->assertEqualSetsWithIndex( $expected_section, $wp_settings_sections['preferred_languages_network_settings']['preferred_languages'] );
@@ -1103,7 +1104,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_network_settings_field() {
 		$actual = get_echo( 'preferred_languages_network_settings_field' );
 
-		$this->assertContains( '<span id="preferred-languages-label">' . __( 'Default Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>', $actual );
+		$this->assertStringContainsString( '<span id="preferred-languages-label">' . __( 'Default Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>', $actual );
 	}
 
 	/**
@@ -1138,7 +1139,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		remove_filter( 'get_available_languages', '__return_empty_array' );
 
-		$this->assertContains( 'Some of the languages are not installed.', $actual );
+		$this->assertStringContainsString( 'Some of the languages are not installed.', $actual );
 	}
 
 	/**
