@@ -15,7 +15,7 @@
   "devDependencies": {
     "@wordpress/a11y": "^3.2.3",
     "@wordpress/e2e-test-utils": "^5.4.4",
-    "@wordpress/env": "^4.1.1",
+    "@wordpress/env": "^4.1.2",
     "@wordpress/i18n": "^4.2.3",
     "@wordpress/scripts": "^18.0.1",
     "rtlcss-webpack-plugin": "^4.0.6"
