@@ -3,7 +3,9 @@
 class Plugin_Test extends WP_UnitTestCase {
 	protected $download_language_packs_calls = array();
 
-	public function setUp() {
+	public function set_up() {
+		parent::set_up();
+
 		/**
 		 * @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry
 		 */
@@ -11,13 +13,9 @@ class Plugin_Test extends WP_UnitTestCase {
 		$preferred_languages_textdomain_registry->reset();
 
 		add_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
-
-		parent::setUp();
 	}
 
-	public function tearDown() {
-		parent::tearDown();
-
+	public function tear_down() {
 		/**
 		 * @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry
 		 */
@@ -30,6 +28,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		remove_filter( 'preferred_languages_download_language_packs', array( $this, '_increment_count' ) );
 
 		$this->download_language_packs_calls = array();
+
+		parent::tear_down();
 	}
 
 	public function _increment_count( $locales ) {
@@ -991,7 +991,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$this->assertNotNull( $actual );
 		$this->assertNotEmpty( $actual );
-		$this->assertContains( 'translation-revision-data', $actual );
+		$this->assertStringContainsString( 'translation-revision-data', $actual );
 		$this->assertNotNull( json_decode( $actual, true ) );
 	}
 
@@ -1090,6 +1090,9 @@ class Plugin_Test extends WP_UnitTestCase {
 			),
 		);
 
+		$this->assertNotNull( $wp_settings_sections );
+		$this->assertArrayHasKey( 'preferred_languages_network_settings', $wp_settings_sections );
+		$this->assertArrayHasKey( 'preferred_languages', $wp_settings_sections['preferred_languages_network_settings'] );
 		$this->assertEqualSetsWithIndex( $expected_section, $wp_settings_sections['preferred_languages_network_settings']['preferred_languages'] );
 		$this->assertEqualSetsWithIndex( $expected_field, $wp_settings_fields['preferred_languages_network_settings']['preferred_languages']['preferred_languages'] );
 	}
@@ -1101,7 +1104,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_network_settings_field() {
 		$actual = get_echo( 'preferred_languages_network_settings_field' );
 
-		$this->assertContains( '<span id="preferred-languages-label">' . __( 'Default Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>', $actual );
+		$this->assertStringContainsString( '<span id="preferred-languages-label">' . __( 'Default Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>', $actual );
 	}
 
 	/**
@@ -1136,7 +1139,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		remove_filter( 'get_available_languages', '__return_empty_array' );
 
-		$this->assertContains( 'Some of the languages are not installed.', $actual );
+		$this->assertStringContainsString( 'Some of the languages are not installed.', $actual );
 	}
 
 	/**

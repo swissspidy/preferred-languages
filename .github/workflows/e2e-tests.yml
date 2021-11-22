@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup Node
-      uses: actions/setup-node@v2.2.0
+      uses: actions/setup-node@v2.4.1
       with:
         node-version: 15
         cache: npm
@@ -35,7 +35,7 @@ jobs:
       run: npm run test:e2e -- --runInBand
 
     - name: Archive debug artifacts (screenshots, HTML snapshots)
-      uses: actions/upload-artifact@v2.2.2
+      uses: actions/upload-artifact@v2.2.4
       if: always()
       with:
         name: failures-artifacts
