@@ -112,7 +112,7 @@ describe('Settings Page', () => {
 			(el) => el.value
 		);
 
-		expect(activeLocales).toStrictEqual('af,ar,ary');
+		expect(activeLocales).toStrictEqual('af,am,ar');
 
 		await expect(page).toMatchElement(
 			'.active-locale[aria-selected="true"]',
