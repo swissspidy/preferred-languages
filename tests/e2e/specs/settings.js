@@ -117,7 +117,7 @@ describe('Settings Page', () => {
 		await expect(page).toMatchElement(
 			'.active-locale[aria-selected="true"]',
 			{
-				text: /العربية المغربية/i,
+				text: /العربية/i,
 			}
 		);
 
