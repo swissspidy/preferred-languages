@@ -1,8 +1,8 @@
 {
   "name": "swissspidy/preferred-languages",
-  "type": "wordpress-plugin",
   "description": "Choose languages for displaying WordPress in, in order of preference.",
   "license": "GPL-2.0-or-later",
+  "type": "wordpress-plugin",
   "authors": [
     {
       "name": "Pascal Birchler",
@@ -18,11 +18,14 @@
   "require-dev": {
     "dealerdirect/phpcodesniffer-composer-installer": "^0.7.0",
     "phpcompatibility/phpcompatibility-wp": "^2.0",
-	"roave/security-advisories": "dev-latest",
+    "roave/security-advisories": "dev-latest",
     "wp-coding-standards/wpcs": "^2.1",
     "yoast/phpunit-polyfills": "^1.0.1"
   },
   "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    },
     "platform": {
       "php": "5.6.20"
     }

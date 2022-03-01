@@ -15,7 +15,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Setup Node
-      uses: actions/setup-node@v2.4.1
+      uses: actions/setup-node@v3
       with:
         node-version: 15
         cache: npm
@@ -73,21 +73,23 @@ jobs:
         image: mariadb:latest
         env:
           MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_ROOT_PASSWORD:
+          MYSQL_ROOT_PASSWORD: ''
           MYSQL_DATABASE: wordpress_test
         ports:
         - 3306
         options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-    continue-on-error: ${{ matrix.experimental == true }}
+    continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
         php: ['5.6']
-        wp: ['5.8']
+        wp: ['latest']
         coverage: [false]
+        experimental: [false]
         include:
         - php: '7.4'
-          wp: '5.8'
+          wp: 'latest'
           coverage: true
+          experimental: false
 
         - php: '7.4'
           wp: 'trunk'
@@ -95,6 +97,10 @@ jobs:
 
         - php: '8.0'
           wp: 'latest'
+          experimental: true
+
+        - php: '8.1'
+          wp: 'trunk'
           experimental: true
 
     steps:
