@@ -17,7 +17,7 @@
     "@wordpress/e2e-test-utils": "^6.0.2",
     "@wordpress/env": "^4.2.2",
     "@wordpress/i18n": "^4.3.1",
-    "@wordpress/scripts": "^22.0.1",
+    "@wordpress/scripts": "^22.1.0",
     "rtlcss-webpack-plugin": "^4.0.6"
   },
   "scripts": {
