@@ -103,8 +103,13 @@ describe('Settings Page', () => {
 
 		await expect(page).toMatchElement('.site-preferred-languages-wrap');
 
+		// Adding Afrikaans (af).
 		await expect(page).toClick('.preferred-languages button.locales-add');
+		// Adding Amharic (am).
 		await expect(page).toClick('.preferred-languages button.locales-add');
+		// Adding Aragonés (arg).
+		await expect(page).toClick('.preferred-languages button.locales-add');
+		// Adding Arabic (ar).
 		await expect(page).toClick('.preferred-languages button.locales-add');
 
 		const activeLocales = await page.$eval(
@@ -112,7 +117,7 @@ describe('Settings Page', () => {
 			(el) => el.value
 		);
 
-		expect(activeLocales).toStrictEqual('af,am,ar');
+		expect(activeLocales).toStrictEqual('af,am,arg,ar');
 
 		await expect(page).toMatchElement(
 			'.active-locale[aria-selected="true"]',
