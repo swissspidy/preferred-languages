@@ -162,7 +162,8 @@ describe( 'Settings Page', () => {
 			'.preferred-languages button.locales-remove:not([disabled])'
 		);
 
-		// After moving one up again, the "Move Up" button should be disabled because we reached the top.
+		// After moving two up again, the "Move Up" button should be disabled because we reached the top.
+		await page.keyboard.press( 'ArrowUp' );
 		await page.keyboard.press( 'ArrowUp' );
 
 		await expect( page ).toMatchElement(
