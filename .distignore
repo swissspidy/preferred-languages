@@ -10,6 +10,7 @@ vendor
 .DS_Store
 .editorconfig
 .git-blame-ignore-revs
+.gitattributes
 .gitignore
 .wp-env.json
 composer.json
