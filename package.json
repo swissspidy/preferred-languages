@@ -21,6 +21,9 @@
 		"prettier": "npm:wp-prettier@^2.6.2",
 		"rtlcss-webpack-plugin": "^4.0.7"
 	},
+	"overrides": {
+		"jest": "28.1.2"
+	},
 	"scripts": {
 		"build": "wp-scripts build src/preferred-languages.js",
 		"lint:css": "wp-scripts lint-style",
