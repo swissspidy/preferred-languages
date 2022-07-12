@@ -1129,6 +1129,24 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_display_form
+	 */
+	public function test_display_form_show_option_site_default() {
+
+		$actual = get_echo(
+			static function() {
+				preferred_languages_display_form(
+					array(
+						'show_option_site_default' => true,
+					)
+				);
+			}
+		);
+
+		$this->assertStringContainsString( 'Falling back to Site Default.', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_display_form
 	 * @group ms-excluded
 	 */
 	public function test_display_form_missing_language_packs_warning() {
