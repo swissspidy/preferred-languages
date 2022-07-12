@@ -13,6 +13,7 @@ vendor
 .gitattributes
 .gitignore
 .wp-env.json
+codecov.yml
 composer.json
 composer.lock
 package.json
