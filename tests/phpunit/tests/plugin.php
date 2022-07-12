@@ -905,6 +905,17 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_load_textdomain_mofile
 	 */
+	public function test_load_textdomain_mofile_non_existent_file() {
+		update_option( 'preferred_languages', 'fr_FR' );
+
+		$actual = preferred_languages_load_textdomain_mofile( WP_LANG_DIR . '/plugins/internationalized-plugin-roh.mo' );
+
+		$this->assertSame( WP_LANG_DIR . '/plugins/internationalized-plugin-roh.mo', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_load_textdomain_mofile
+	 */
 	public function test_load_textdomain_mofile() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE' );
 
