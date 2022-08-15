@@ -17,7 +17,7 @@
 		"@wordpress/e2e-test-utils": "^7.11.0",
 		"@wordpress/env": "^5.0.0",
 		"@wordpress/i18n": "^4.12.0",
-		"@wordpress/scripts": "^23.6.0",
+		"@wordpress/scripts": "^23.7.1",
 		"prettier": "npm:wp-prettier@^2.6.2",
 		"rtlcss-webpack-plugin": "^4.0.7"
 	},
