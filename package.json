@@ -14,7 +14,7 @@
 	"homepage": "https://github.com/swissspidy/preferred-languages#readme",
 	"devDependencies": {
 		"@wordpress/a11y": "^3.14.0",
-		"@wordpress/e2e-test-utils": "^7.10.0",
+		"@wordpress/e2e-test-utils": "^7.11.0",
 		"@wordpress/env": "^5.0.0",
 		"@wordpress/i18n": "^4.12.0",
 		"@wordpress/scripts": "^23.6.0",
