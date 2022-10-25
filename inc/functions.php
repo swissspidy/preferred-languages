@@ -1003,7 +1003,11 @@ function preferred_languages_display_form( $args = array() ) {
 function preferred_languages_init_registry() {
 	global $preferred_languages_textdomain_registry;
 
-	$preferred_languages_textdomain_registry = new Preferred_Languages_Textdomain_Registry();
+	if ( class_exists( 'WP_Textdomain_Registry' ) ) {
+		$preferred_languages_textdomain_registry = new WP_Textdomain_Registry();
+	} else {
+		$preferred_languages_textdomain_registry = new Preferred_Languages_Textdomain_Registry();
+	}
 }
 
 /**
@@ -1025,14 +1029,16 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 	$translations = get_translations_for_domain( $domain );
 
 	if ( $translations instanceof NOOP_Translations ) {
-		/* @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry */
+		/* @var Preferred_Languages_Textdomain_Registry|WP_Textdomain_Registry $preferred_languages_textdomain_registry */
 		global $preferred_languages_textdomain_registry;
 
-		if ( ! $preferred_languages_textdomain_registry instanceof Preferred_Languages_Textdomain_Registry ) {
+		if ( ! $preferred_languages_textdomain_registry ) {
 			preferred_languages_init_registry();
 		}
 
-		$path = $preferred_languages_textdomain_registry->get( $domain );
+		$locale = determine_locale();
+
+		$path = $preferred_languages_textdomain_registry->get( $domain, $locale );
 
 		if ( ! $path ) {
 			return $translation;
@@ -1041,7 +1047,7 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		$preferred_locales = preferred_languages_get_list();
 
 		// Locale has been filtered by something else.
-		if ( ! in_array( determine_locale(), $preferred_locales, true ) ) {
+		if ( ! in_array( $locale, $preferred_locales, true ) ) {
 			return $translation;
 		}
 
