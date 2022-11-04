@@ -1,0 +1,37 @@
+# Copyright (C) 2022 
+# This file is distributed under the same license as the Custom Internationalized Plugin plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Custom Internationalized Plugin 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-internationalized-plugin\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2022-11-04T14:02:43+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.6.0\n"
+"X-Domain: custom-internationalized-plugin\n"
+
+#. Plugin Name of the plugin
+msgid "Custom Internationalized Plugin"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/"
+msgstr ""
+
+#. Description of the plugin
+msgid "For testing purposes only."
+msgstr ""
+
+#: custom-internationalized-plugin.php:12
+#: custom-internationalized-plugin.js:8
+msgid "This is a dummy plugin"
+msgstr ""
+
+#: custom-internationalized-plugin.php:16
+#: custom-internationalized-plugin.js:14
+msgid "This is another dummy plugin"
+msgstr ""
