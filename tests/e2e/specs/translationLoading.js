@@ -49,7 +49,6 @@ describe( 'Translation Loading', () => {
 			( el ) => el.innerText
 		);
 		expect( defaultOutput ).toMatchInlineSnapshot(
-			'Default Output',
 			`
 		"Current Locale: fr_FR
 		Preferred Languages: fr_FR,it_IT,de_CH,de_DE,es_ES
@@ -64,7 +63,6 @@ describe( 'Translation Loading', () => {
 			( el ) => el.innerText
 		);
 		expect( localeSwitching ).toMatchInlineSnapshot(
-			'Locale Switching',
 			`
 		"Current Locale: fr_FR
 		Preferred Languages: fr_FR,it_IT,de_CH,de_DE,es_ES
@@ -104,7 +102,6 @@ describe( 'Translation Loading', () => {
 			( el ) => el.innerText
 		);
 		expect( jsI18n ).toMatchInlineSnapshot(
-			'JavaScript Translation',
 			`
 		"Das ist ein Dummy Plugin
 		This is another dummy plugin"
@@ -129,7 +126,6 @@ describe( 'Translation Loading', () => {
 				( el ) => el.innerText
 			);
 			expect( defaultOutput ).toMatchInlineSnapshot(
-				'Default Output',
 				`
 			"Current Locale: fr_FR
 			Preferred Languages: fr_FR,it_IT,de_CH,de_DE,es_ES
@@ -144,7 +140,6 @@ describe( 'Translation Loading', () => {
 				( el ) => el.innerText
 			);
 			expect( localeSwitching ).toMatchInlineSnapshot(
-				'Locale Switching',
 				`
 			"Current Locale: fr_FR
 			Preferred Languages: fr_FR,it_IT,de_CH,de_DE,es_ES
@@ -184,7 +179,6 @@ describe( 'Translation Loading', () => {
 				( el ) => el.innerText
 			);
 			expect( jsI18n ).toMatchInlineSnapshot(
-				'JavaScript Translation',
 				`
 			"Das ist ein Dummy Plugin
 			Este es otro plugin dummy"
