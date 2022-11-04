@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.9.0
+
+* Improve compatibility with WordPress 6.1 and `WP_Textdomain_Registry`.
+* Minimum WordPress version requirement has been increased to 6.1.
+* Improves robustness when using locale switching.
+* Fixes issue with merging script translations.
+
 ## 1.8.0
 
 * Adds Preferred Languages to Site Health debug data.

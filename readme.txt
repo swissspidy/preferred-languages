@@ -1,8 +1,8 @@
 === Preferred Languages ===
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, l10n, language, locale, translation
-Tested up to: 6.0
-Stable tag: 1.8.0
+Tested up to: 6.1
+Stable tag: 1.9.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -33,46 +33,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 1.8.0 =
+= 1.9.0 =
 
-This release contains various smaller bugfixes, Site Health integration, as well as improved compatibility with other plugins such as WPML.
-
-= 1.7.1 = 
-
-This release contains improvements to translation merging and fixes issues with the user language not being correctly applied.
-
-= 1.7.0 =
-
-This release improves Multisite support and contains a new `preferred_languages_merge_translations` filter that allows merging translations.
-
-= 1.6.0 =
-
-This release adds full support for WordPress 5.0. Block editor support requires WordPress 5.0.3.
-
-= 1.5.0 =
-
-This release addresses an issue with keyboard navigation.
-
-= 1.4.0 =
-
-This release contains improvements regarding translation downloads upon saving.
-
-= 1.3.0 =
-
-Users can now install new languages from their user profile. Also, English (US) can be chosen as a preferred user language.
-
-= 1.2.0 =
-
-This release fixes various bugs when adding and removing multiple languages.
-
-= 1.1.0 =
-
-This release includes some accessibility and usability improvements, as well as support for just-in-time loading of translations.
-
-= 1.0.1 =
-
-This release fixes a bug that prevented saving changes in some cases.
-
-= 1.0.0 =
-
-Initial release.
+This release improves compatibility with locale switching and WordPress 6.1.
