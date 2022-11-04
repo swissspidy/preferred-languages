@@ -44,6 +44,25 @@ function preferred_languages_register_meta() {
 }
 
 /**
+* Determines whether switch_to_locale() is in effect.
+ *
+ * Gracefully handles cases where the function is called to early for
+ * locale switching to be ready.
+ *
+ * @since 1.9.0
+ * @global WP_Locale_Switcher $wp_locale_switcher WordPress locale switcher object.
+ * @see is_locale_switched
+ *
+ * @return bool True if the locale has been switched, false otherwise.
+ */
+function preferred_languages_is_locale_switched() {
+	/* @var WP_Locale_Switcher $wp_locale_switcher */
+	global $wp_locale_switcher;
+
+	return $wp_locale_switcher && $wp_locale_switcher->is_switched();
+}
+
+/**
  * Updates the user's set of preferred languages.
  *
  * @since 1.0.0
@@ -522,6 +541,12 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 
 	// Locale has been filtered by something else.
 	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+		return $mofile;
+	}
+
+	// If locale has been switched to a specific locale,
+	// the right MO file has already been chosen. Bail early.
+	if ( preferred_languages_is_locale_switched() ) {
 		return $mofile;
 	}
 
@@ -1049,6 +1074,18 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		// Locale has been filtered by something else.
 		if ( ! in_array( $locale, $preferred_locales, true ) ) {
 			return $translation;
+		}
+
+		// If locale has been switched to a specific locale, ignore the ones before it.
+		// Example:
+		// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+		// Switched to locale: de_CH
+		// In that case, only check for de_CH, de_DE, es_ES.
+		if ( preferred_languages_is_locale_switched() ) {
+			$preferred_locales = array_slice(
+					$preferred_locales,
+					array_search( $locale, $preferred_locales, true )
+			);
 		}
 
 		foreach ( $preferred_locales as $locale ) {
