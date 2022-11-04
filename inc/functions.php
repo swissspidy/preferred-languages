@@ -1021,21 +1021,6 @@ function preferred_languages_display_form( $args = array() ) {
 }
 
 /**
- * Initializes the class used for registering textdomains.
- *
- * @since 1.1.0
- */
-function preferred_languages_init_registry() {
-	global $preferred_languages_textdomain_registry;
-
-	if ( class_exists( 'WP_Textdomain_Registry' ) ) {
-		$preferred_languages_textdomain_registry = new WP_Textdomain_Registry();
-	} else {
-		$preferred_languages_textdomain_registry = new Preferred_Languages_Textdomain_Registry();
-	}
-}
-
-/**
  * Filters gettext calls to work around limitations in just-in-time loading of translations.
  *
  * @since 1.1.0
@@ -1047,6 +1032,8 @@ function preferred_languages_init_registry() {
  * @return string Translated text.
  */
 function preferred_languages_filter_gettext( $translation, $text, $domain ) {
+	global $wp_textdomain_registry;
+
 	if ( 'default' === $domain ) {
 		return $translation;
 	}
@@ -1054,16 +1041,9 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 	$translations = get_translations_for_domain( $domain );
 
 	if ( $translations instanceof NOOP_Translations ) {
-		/* @var Preferred_Languages_Textdomain_Registry|WP_Textdomain_Registry $preferred_languages_textdomain_registry */
-		global $preferred_languages_textdomain_registry;
-
-		if ( ! $preferred_languages_textdomain_registry ) {
-			preferred_languages_init_registry();
-		}
-
 		$locale = determine_locale();
 
-		$path = $preferred_languages_textdomain_registry->get( $domain, $locale );
+		$path = $wp_textdomain_registry->get( $domain, $locale );
 
 		if ( ! $path ) {
 			return $translation;

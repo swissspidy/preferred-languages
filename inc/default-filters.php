@@ -5,8 +5,6 @@
  * @package PreferredLanguages
  */
 
-add_action( 'plugins_loaded', 'preferred_languages_init_registry' );
-
 add_filter( 'gettext', 'preferred_languages_filter_gettext', 10, 3 );
 
 add_action( 'init', 'preferred_languages_register_setting' );

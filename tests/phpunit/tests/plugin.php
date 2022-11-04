@@ -9,16 +9,12 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function set_up() {
 		parent::set_up();
 
-		preferred_languages_init_registry();
-
 		$this->download_language_packs_action = new MockAction();
 
 		add_filter( 'preferred_languages_download_language_packs', array( $this->download_language_packs_action, 'filter' ) );
 	}
 
 	public function tear_down() {
-		preferred_languages_init_registry();
-
 		update_option( 'preferred_languages', '' );
 		update_site_option( 'preferred_languages', '' );
 
@@ -363,29 +359,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
 		$first = explode( ',', get_site_option( 'preferred_languages' ) )[0];
 		$this->assertSame( $first, get_locale() );
-	}
-
-	/**
-	 * @covers ::preferred_languages_init_registry
-	 */
-	public function test_init_registry_old() {
-		if ( is_wp_version_compatible( '6.1.0-RC1' ) ) {
-			$this->markTestSkipped( 'This test requires WordPress < 6.1' );
-		}
-		preferred_languages_init_registry();
-		$this->assertInstanceOf( Preferred_Languages_Textdomain_Registry::class, $GLOBALS['preferred_languages_textdomain_registry'] );
-	}
-
-	/**
-	 * @covers ::preferred_languages_init_registry
-	 */
-	public function test_init_registry_new() {
-		if ( ! is_wp_version_compatible( '6.1.0-RC1' ) ) {
-			$this->markTestSkipped( 'This test requires WordPress 6.1+' );
-		}
-
-		preferred_languages_init_registry();
-		$this->assertInstanceOf( WP_Textdomain_Registry::class, $GLOBALS['preferred_languages_textdomain_registry'] );
 	}
 
 	/**
@@ -1238,18 +1211,6 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_filter_gettext_default() {
 		$actual = preferred_languages_filter_gettext( 'Hello World', 'Hello World', 'default' );
 		$this->assertSame( 'Hello World', $actual );
-	}
-
-	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 */
-	public function test_filter_gettext_plugin_instantiates_registry() {
-		unset( $GLOBALS['preferred_languages_textdomain_registry'] );
-
-		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
-
-		$this->assertNotNUll( $GLOBALS['preferred_languages_textdomain_registry'] );
-		$this->assertSame( 'This is a dummy plugin', $actual );
 	}
 
 	/**
