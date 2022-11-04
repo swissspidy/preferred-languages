@@ -44,7 +44,7 @@ function preferred_languages_register_meta() {
 }
 
 /**
-* Determines whether switch_to_locale() is in effect.
+ * Determines whether switch_to_locale() is in effect.
  *
  * Gracefully handles cases where the function is called to early for
  * locale switching to be ready.
@@ -1063,8 +1063,8 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		// In that case, only check for de_CH, de_DE, es_ES.
 		if ( preferred_languages_is_locale_switched() ) {
 			$preferred_locales = array_slice(
-					$preferred_locales,
-					array_search( $locale, $preferred_locales, true )
+				$preferred_locales,
+				array_search( $locale, $preferred_locales, true )
 			);
 		}
 

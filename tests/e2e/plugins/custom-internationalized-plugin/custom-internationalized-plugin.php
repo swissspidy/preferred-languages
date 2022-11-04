@@ -24,26 +24,26 @@ add_action(
 );
 
 add_action(
-		'admin_enqueue_scripts',
-		static function( $hook_suffix ) {
-					if ( 'index.php' !== $hook_suffix ) {
-						return;
-					}
+	'admin_enqueue_scripts',
+	static function( $hook_suffix ) {
+		if ( 'index.php' !== $hook_suffix ) {
+			return;
+		}
 
 					wp_enqueue_script(
-							'custom-i18n-script',
-							plugins_url( 'custom-internationalized-plugin.js', __FILE__ ),
-							array( 'wp-i18n' ),
-					'1.0.0',
-					true
+						'custom-i18n-script',
+						plugins_url( 'custom-internationalized-plugin.js', __FILE__ ),
+						array( 'wp-i18n' ),
+						'1.0.0',
+						true
 					);
 
 					wp_set_script_translations(
-							'custom-i18n-script',
-							'custom-internationalized-plugin',
-							__DIR__ . '/languages'
+						'custom-i18n-script',
+						'custom-internationalized-plugin',
+						__DIR__ . '/languages'
 					);
-		}
+	}
 );
 
 add_action(
@@ -77,7 +77,7 @@ add_action(
 					</ul>
 				</li>
 
-				<?php $is_switched = switch_to_locale('it_IT'); ?>
+				<?php $is_switched = switch_to_locale( 'it_IT' ); ?>
 				<li>Switched to it_IT: <?php echo $is_switched ? 'True' : 'False'; ?></li>
 				<li>Current Locale: <?php echo determine_locale(); ?></li>
 				<li>Output:
@@ -87,12 +87,12 @@ add_action(
 					</ul>
 				</li>
 				<?php
-					if ( $is_switched ) {
-						restore_previous_locale();
-					}
+				if ( $is_switched ) {
+					restore_previous_locale();
+				}
 				?>
 
-				<?php $is_switched = switch_to_locale('de_DE'); ?>
+				<?php $is_switched = switch_to_locale( 'de_DE' ); ?>
 				<li>Switched to de_DE: <?php echo $is_switched ? 'True' : 'False'; ?></li>
 				<li>Current Locale: <?php echo determine_locale(); ?></li>
 				<li>Output:
@@ -107,7 +107,7 @@ add_action(
 				}
 				?>
 
-				<?php $is_switched = switch_to_locale('en_US'); ?>
+				<?php $is_switched = switch_to_locale( 'en_US' ); ?>
 				<li>Switched to en_US: <?php echo $is_switched ? 'True' : 'False'; ?></li>
 				<li>Current Locale: <?php echo determine_locale(); ?></li>
 				<li>Output:
@@ -122,7 +122,7 @@ add_action(
 				}
 				?>
 
-				<?php $is_switched = switch_to_locale('de_CH'); ?>
+				<?php $is_switched = switch_to_locale( 'de_CH' ); ?>
 				<li>Switched to de_CH: <?php echo $is_switched ? 'True' : 'False'; ?></li>
 				<li>Current Locale: <?php echo determine_locale(); ?></li>
 				<li>Output:
@@ -137,7 +137,7 @@ add_action(
 				}
 				?>
 
-				<?php $is_switched = switch_to_locale('es_ES'); ?>
+				<?php $is_switched = switch_to_locale( 'es_ES' ); ?>
 				<li>Switched to es_ES: <?php echo $is_switched ? 'True' : 'False'; ?></li>
 				<li>Current Locale: <?php echo determine_locale(); ?></li>
 				<li>Output:
