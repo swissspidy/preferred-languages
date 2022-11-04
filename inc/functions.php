@@ -595,7 +595,7 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 			$translations_json     = json_decode( $translations, true );
 
 			foreach ( $translations_json['locale_data']['messages'] as $key => $translation ) {
-				if ( isset( $all_translations_json['locale_data']['messages'][ $key ] ) ) {
+				if ( ! empty( array_filter( (array) $all_translations_json['locale_data']['messages'][ $key ] ) ) ) {
 					continue;
 				}
 
@@ -606,8 +606,8 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 		}
 	}
 
-	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 4 );
-	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_script_translation_file' );
+	add_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations', 10, 4 );
+	add_filter( 'load_script_translation_file', 'preferred_languages_load_script_translation_file' );
 
 	if ( $all_translations ) {
 		return $all_translations;
