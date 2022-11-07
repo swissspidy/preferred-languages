@@ -211,7 +211,7 @@ function preferred_languages_add_user_meta( $object_id, $meta_key, $meta_value )
 
 	// Only store actually installed languages in user meta and only if the values differ.
 	if ( $meta_value !== $new_meta_value ) {
-		update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+		update_user_meta( $object_id, 'preferred_languages', $new_meta_value );
 	}
 
 	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
@@ -257,7 +257,7 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 
 	// Only store actually installed languages in user meta and only if the values differ.
 	if ( $meta_value !== $new_meta_value ) {
-		update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+		update_user_meta( $object_id, 'preferred_languages', $new_meta_value );
 	}
 
 	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
@@ -304,9 +304,12 @@ function preferred_languages_update_option( $old_value, $value ) {
 
 	$locales             = array_filter( explode( ',', $value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
+	$new_option_value    = implode( ',', $installed_languages );
 
-	// Only store actually installed languages in option.
-	update_option( 'preferred_languages', implode( ',', $installed_languages ) );
+	// Only store actually installed languages in option and only if the values differ..
+	if ( $value !== $new_option_value ) {
+		update_option( 'preferred_languages', $new_option_value );
+	}
 
 	add_filter( 'add_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 	add_filter( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
@@ -333,9 +336,12 @@ function preferred_languages_update_site_option( $old_value, $value ) {
 
 	$locales             = array_filter( explode( ',', $value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
+	$new_option_value    = implode( ',', $installed_languages );
 
-	// Only store actually installed languages in option.
-	update_site_option( 'preferred_languages', implode( ',', $installed_languages ) );
+	// Only store actually installed languages in option and only if the values differ..
+	if ( $value !== $new_option_value ) {
+		update_site_option( 'preferred_languages', $new_option_value );
+	}
 
 	add_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 	add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
