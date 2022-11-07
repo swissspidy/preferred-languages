@@ -3,29 +3,34 @@ import {
 	deactivatePlugin,
 	visitAdminPage,
 	setOption,
+	getOption,
 } from '@wordpress/e2e-test-utils';
 
 jest.setTimeout( 60000 );
 
 describe( 'Translation Loading', () => {
 	beforeAll( async () => {
-		// Just so the preferred_languages option gets saved & setOption() can change it.
 		await visitAdminPage( 'options-general.php' );
-		await page.click( '.preferred-languages button.locales-add' );
-		await Promise.all( [
-			page.click( '#submit' ),
-			page.waitForNavigation( {
-				waitUntil: 'networkidle0',
-			} ),
-		] );
 
-		await setOption(
-			'preferred_languages',
-			'fr_FR,it_IT,de_CH,de_DE,es_ES'
+		const localesDropdown = await page.$(
+			'#preferred-languages-inactive-locales'
 		);
 
-		// To ensure translations are installed.
-		await visitAdminPage( 'options-general.php' );
+		await localesDropdown.select( 'fr_FR' );
+		await page.click( '.preferred-languages button.locales-add' );
+
+		await localesDropdown.select( 'it_IT' );
+		await page.click( '.preferred-languages button.locales-add' );
+
+		await localesDropdown.select( 'de_CH' );
+		await page.click( '.preferred-languages button.locales-add' );
+
+		await localesDropdown.select( 'de_DE' );
+		await page.click( '.preferred-languages button.locales-add' );
+
+		await localesDropdown.select( 'es_ES' );
+		await page.click( '.preferred-languages button.locales-add' );
+
 		await Promise.all( [
 			page.click( '#submit' ),
 			page.waitForNavigation( {
@@ -44,6 +49,12 @@ describe( 'Translation Loading', () => {
 	} );
 
 	it( 'should correctly translate strings', async () => {
+		// Just to ensure the setup in beforeAll() has worked.
+		const installedLocales = await getOption( 'preferred_languages' );
+		await expect( installedLocales ).toStrictEqual(
+			'fr_FR,it_IT,de_CH,de_DE,es_ES'
+		);
+
 		await visitAdminPage( 'index.php' );
 
 		const defaultOutput = await page.$eval(
