@@ -46,7 +46,7 @@ function preferred_languages_register_meta() {
 /**
  * Determines whether switch_to_locale() is in effect.
  *
- * Gracefully handles cases where the function is called to early for
+ * Gracefully handles cases where the function is called too early for
  * locale switching to be ready.
  *
  * @since 1.9.0
