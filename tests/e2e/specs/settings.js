@@ -108,19 +108,25 @@ describe( 'Settings Page', () => {
 
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 
-		// Adding Afrikaans (af).
+		const selectedLocales = [];
+		let activeLocale = '';
+
+		selectedLocales.push(await page.$eval('#preferred-languages-inactive-locales', (el) => el.value));
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
-		// Adding Amharic (am).
+
+		selectedLocales.push(await page.$eval('#preferred-languages-inactive-locales', (el) => el.value));
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
-		// Adding Aragonés (arg).
+
+		selectedLocales.push(await page.$eval('#preferred-languages-inactive-locales', (el) => el.value));
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
-		// Adding Arabic (ar).
+
+		selectedLocales.push(await page.$eval('#preferred-languages-inactive-locales', (el) => el.value));
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
@@ -130,13 +136,10 @@ describe( 'Settings Page', () => {
 			( el ) => el.value
 		);
 
-		expect( activeLocales ).toStrictEqual( 'af,am,arg,ar' );
+		expect( activeLocales ).toStrictEqual( selectedLocales.join( ',' ) );
 
 		await expect( page ).toMatchElement(
-			'.active-locale[aria-selected="true"]',
-			{
-				text: /العربية/i,
-			}
+			`.active-locale[aria-selected="true"][id="${selectedLocales.pop()}"]`,
 		);
 
 		await expect( page ).toMatchElement(
