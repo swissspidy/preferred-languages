@@ -109,24 +109,43 @@ describe( 'Settings Page', () => {
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 
 		const selectedLocales = [];
-		let activeLocale = '';
 
-		selectedLocales.push(await page.$eval('#preferred-languages-inactive-locales', (el) => el.value));
+		selectedLocales.push(
+			await page.$eval(
+				'#preferred-languages-inactive-locales',
+				( el ) => el.value
+			)
+		);
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
 
-		selectedLocales.push(await page.$eval('#preferred-languages-inactive-locales', (el) => el.value));
+		selectedLocales.push(
+			await page.$eval(
+				'#preferred-languages-inactive-locales',
+				( el ) => el.value
+			)
+		);
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
 
-		selectedLocales.push(await page.$eval('#preferred-languages-inactive-locales', (el) => el.value));
+		selectedLocales.push(
+			await page.$eval(
+				'#preferred-languages-inactive-locales',
+				( el ) => el.value
+			)
+		);
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
 
-		selectedLocales.push(await page.$eval('#preferred-languages-inactive-locales', (el) => el.value));
+		selectedLocales.push(
+			await page.$eval(
+				'#preferred-languages-inactive-locales',
+				( el ) => el.value
+			)
+		);
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
@@ -139,7 +158,7 @@ describe( 'Settings Page', () => {
 		expect( activeLocales ).toStrictEqual( selectedLocales.join( ',' ) );
 
 		await expect( page ).toMatchElement(
-			`.active-locale[aria-selected="true"][id="${selectedLocales.pop()}"]`,
+			`.active-locale[aria-selected="true"][id="${ selectedLocales.pop() }"]`
 		);
 
 		await expect( page ).toMatchElement(
