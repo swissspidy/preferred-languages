@@ -31,8 +31,12 @@ jobs:
                   chmod -R 767 ./ # TODO: Possibly integrate in wp-env
                   npm run wp-env start
 
+            # See https://github.com/WordPress/gutenberg/issues/22515 for the file permissions bit.
             - name: Prepare tests
-              run: npm run wp-env run tests-cli "wp language core install de_CH de_DE es_ES fr_FR it_IT"
+              run: |
+                npm run wp-env run tests-cli "mkdir -p /var/www/html/wp-content/languages"
+                npm run wp-env run tests-cli "chmod -R 767 /var/www/html/wp-content/languages"
+                npm run wp-env run tests-cli "wp language core install de_CH de_DE es_ES fr_FR it_IT"
 
             - name: Run tests
               run: npm run test:e2e -- --runInBand
