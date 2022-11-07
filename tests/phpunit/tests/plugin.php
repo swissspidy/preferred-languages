@@ -23,6 +23,11 @@ class Plugin_Test extends WP_UnitTestCase {
 		parent::tear_down();
 	}
 
+	public function grant_do_not_allow( $allcaps ) {
+		$allcaps['do_not_allow'] = true;
+		return $allcaps;
+	}
+
 	/**
 	 * @covers ::preferred_languages_register_setting
 	 */
@@ -644,11 +649,11 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_download_language_packs
 	 */
 	public function test_download_language_packs_no_capability() {
-		add_filter( 'user_has_cap', '__return_false' );
+		add_filter( 'user_has_cap', array( $this, 'grant_do_not_allow' ) );
 
 		$actual = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
 
-		remove_filter( 'user_has_cap', '__return_false' );
+		remove_filter( 'user_has_cap', array( $this, 'grant_do_not_allow' ) );
 
 		$this->assertSameSets( array_intersect( get_available_languages(), array( 'de_DE', 'fr_FR' ) ), $actual );
 	}
@@ -659,11 +664,11 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_download_language_packs_no_capability_no_available() {
 		add_filter( 'get_available_languages', '__return_empty_array' );
-		add_filter( 'user_has_cap', '__return_false' );
+		add_filter( 'user_has_cap', array( $this, 'grant_do_not_allow' ) );
 
 		$actual = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
 
-		remove_filter( 'user_has_cap', '__return_false' );
+		remove_filter( 'user_has_cap', array( $this, 'grant_do_not_allow' ) );
 		remove_filter( 'get_available_languages', '__return_empty_array' );
 
 		$this->assertEmpty( $actual );
