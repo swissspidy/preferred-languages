@@ -207,9 +207,12 @@ function preferred_languages_add_user_meta( $object_id, $meta_key, $meta_value )
 
 	$locales             = array_filter( explode( ',', $meta_value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
+	$new_meta_value      = implode( ',', $installed_languages );
 
-	// Only store actually installed languages in user meta.
-	update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+	// Only store actually installed languages in user meta and only if the values differ.
+	if ( $meta_value !== $new_meta_value ) {
+		update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+	}
 
 	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
 	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
@@ -250,9 +253,12 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 
 	$locales             = array_filter( explode( ',', $meta_value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
+	$new_meta_value      = implode( ',', $installed_languages );
 
-	// Only store actually installed languages in user meta.
-	update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+	// Only store actually installed languages in user meta and only if the values differ.
+	if ( $meta_value !== $new_meta_value ) {
+		update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+	}
 
 	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
 	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );

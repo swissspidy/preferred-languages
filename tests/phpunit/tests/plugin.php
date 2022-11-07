@@ -508,10 +508,11 @@ class Plugin_Test extends WP_UnitTestCase {
 		);
 
 		wp_set_current_user( $user_id );
+
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,es_ES,fr_FR' );
-		// TODO: Shouldn't this only be 2?
-		$this->assertSame( 3, $this->download_language_packs_action->get_call_count() );
+
+		$this->assertSame( 2, $this->download_language_packs_action->get_call_count() );
 	}
 
 	/**
@@ -526,10 +527,14 @@ class Plugin_Test extends WP_UnitTestCase {
 		);
 
 		wp_set_current_user( $user_id );
+
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
-		// TODO: Shouldn't this only be 2?
-		$this->assertSame( 3, $this->download_language_packs_action->get_call_count() );
+
+		// TODO: Revisit. Should this be 2?
+		// In theory a count of 1 looks correct as there's no need to download language packs twice
+		// if things haven't changed and they're still installed.
+		$this->assertSame( 1, $this->download_language_packs_action->get_call_count() );
 	}
 
 	/**
