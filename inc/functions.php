@@ -511,7 +511,11 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		if ( is_readable( $preferred_mofile ) ) {
 			$loaded = load_textdomain( $domain, $preferred_mofile );
 
-			if ( null === $first_mofile && $loaded ) {
+			if ( ! $loaded ) {
+				continue;
+			}
+
+			if ( null === $first_mofile ) {
 				$first_mofile = $preferred_mofile;
 			}
 		}
@@ -609,32 +613,34 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	foreach ( $preferred_locales as $locale ) {
 		$preferred_file = str_replace( $current_locale, $locale, $file );
 
-		if ( is_readable( $preferred_file ) ) {
-			$translations = load_script_translations( $preferred_file, $handle, $domain );
-
-			if ( ! $translations ) {
-				continue;
-			}
-
-			if ( ! $all_translations ) {
-				$all_translations = $translations;
-				continue;
-			}
-
-			// Some translations have already been loaded before, merge them.
-			$all_translations_json = json_decode( $all_translations, true );
-			$translations_json     = json_decode( $translations, true );
-
-			foreach ( $translations_json['locale_data']['messages'] as $key => $translation ) {
-				if ( ! empty( array_filter( (array) $all_translations_json['locale_data']['messages'][ $key ] ) ) ) {
-					continue;
-				}
-
-				$all_translations_json['locale_data']['messages'][ $key ] = $translation;
-			}
-
-			$all_translations = wp_json_encode( $all_translations_json );
+		if ( ! is_readable( $preferred_file ) ) {
+			continue;
 		}
+
+		$translations = load_script_translations( $preferred_file, $handle, $domain );
+
+		if ( ! $translations ) {
+			continue;
+		}
+
+		if ( ! $all_translations ) {
+			$all_translations = $translations;
+			continue;
+		}
+
+		// Some translations have already been loaded before, merge them.
+		$all_translations_json = json_decode( $all_translations, true );
+		$translations_json     = json_decode( $translations, true );
+
+		foreach ( $translations_json['locale_data']['messages'] as $key => $translation ) {
+			if ( ! empty( array_filter( (array) $all_translations_json['locale_data']['messages'][ $key ] ) ) ) {
+				continue;
+			}
+
+			$all_translations_json['locale_data']['messages'][ $key ] = $translation;
+		}
+
+		$all_translations = wp_json_encode( $all_translations_json );
 	}
 
 	add_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations', 10, 4 );
