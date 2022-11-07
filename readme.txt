@@ -10,11 +10,31 @@ Choose languages for displaying WordPress in, in order of preference.
 
 == Description ==
 
-Thanks to language packs it's easier than ever before to change the main language of your site. However, in some cases a single locale is not enough. When WordPress can't find a translation for the active locale, it falls back to the original English strings. That’s a poor user experience for many non-English speakers.
+Thanks to language packs it's easier than ever before to change the main language of your site.
+However, in some cases a single locale is not enough. When WordPress can't find a translation for the active locale, it falls back to the original English strings.
+That’s a poor user experience for many non-English speakers.
 
-This feature project aims to change that by letting users choose multiple languages for displaying WordPress in. That way you can set some sort of "fallback chain" where WordPress tries to load translations in your preferred order.
+This feature project aims to change that by letting users choose multiple languages for displaying WordPress in.
+That way you can set some sort of "fallback chain" where WordPress tries to load translations in your preferred order.
 
 Please help us test this plugin and let us know if something is not working as you think it should.
+
+**Merging Translations**
+
+By default, only the first available translation for a given locale and domain will be loaded.
+However, when translations are incomplete, some strings might still be displayed in English.
+That's a poor user experience as well.
+
+To prevent this, the `preferred_languages_merge_translations` filter can be used to opt into merging incomplete translations.
+It provides three parameters:
+
+1. `$merge` - Whether translations should be merged.
+2. `$domain` - The text domain
+3. `$current_locale` - The current locale.
+
+**Warning**: Since this is a potentially slow/expensive process involving the loading of multiple translation files, it's recommended to use it
+sparingly and only for specific domains.
+
 
 = Get Involved =
 
