@@ -6,8 +6,6 @@ import {
 	getOption,
 } from '@wordpress/e2e-test-utils';
 
-jest.setTimeout( 60000 );
-
 describe( 'Translation Loading', () => {
 	beforeAll( async () => {
 		await visitAdminPage( 'options-general.php' );
