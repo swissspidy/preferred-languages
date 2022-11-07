@@ -154,29 +154,15 @@ jobs:
             # | *   / 8   | 9       |
             #
             # See https://make.wordpress.org/core/handbook/references/phpunit-compatibility-and-wordpress-versions/
-              - name: Update PHPUnit
-                run: |
-                  if [[ $PHP_VERSION == "7.4" || $PHP_VERSION == "8.0" $PHP_VERSION == "8.1" $PHP_VERSION == "8.2" ]]; then
-                    echo "Installing latest version of PHPUnit"
-                    composer update --ignore-platform-reqs --no-interaction --no-scripts yoast/phpunit-polyfills --with-dependencies
-                  fi
-                env:
-                  WP_VERSION: ${{ matrix.wp }}
-                  PHP_VERSION: ${{ matrix.php }}
-
-            # Installs PHPUnit 9.5+ for tests against trunk and PHPUnit 7.5.x for older versions,
-            # because WordPress 5.8 and below don't support newer PHPUnit versions.
-            # PHPUnit 7.5 does support PHP 7.0 though, so we don't run an update there.
             - name: Update PHPUnit
               run: |
-                  if [[ $WP_VERSION == "trunk" ]]; then
-                    composer update --ignore-platform-reqs --no-interaction --no-scripts yoast/phpunit-polyfills --with-dependencies
-                  elif [[ $PHP_VERSION != "7.0" ]] && [[ $PHP_VERSION != "5.6" ]]; then
-                    composer require --ignore-platform-reqs --no-interaction --no-scripts phpunit/phpunit:^7.5 --with-dependencies
-                  fi
+                if [[ $PHP_VERSION == "7.4" || $PHP_VERSION == "8.0" $PHP_VERSION == "8.1" $PHP_VERSION == "8.2" ]]; then
+                  echo "Installing latest version of PHPUnit"
+                  composer update --ignore-platform-reqs --no-interaction --no-scripts yoast/phpunit-polyfills --with-dependencies
+                fi
               env:
-                  WP_VERSION: ${{ matrix.wp }}
-                  PHP_VERSION: ${{ matrix.php }}
+                WP_VERSION: ${{ matrix.wp }}
+                PHP_VERSION: ${{ matrix.php }}
 
             - name: Run tests
               run: |
