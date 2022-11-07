@@ -1248,10 +1248,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_filter_gettext
 	 */
-	public function test_filter_gettext_plugin() {
+	public function test_filter_gettext_plugin_already_translated() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
-		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
+		$actual = preferred_languages_filter_gettext( 'Das ist ein Dummy Plugin', 'This is a dummy plugin', 'internationalized-plugin' );
 
 		$this->assertSame( 'Das ist ein Dummy Plugin', $actual );
 	}
