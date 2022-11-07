@@ -8,8 +8,22 @@ on:
 
 jobs:
   e2e-tests:
-    name: E2E Tests
+    name: "E2E Tests ${{ matrix.wp }} - WP ${{ matrix.browser }}"
     runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.experimental == true }}
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: ["chrome"]
+        wp: ["latest"]
+        experimental: [false]
+#        include:
+#          - browser: "chrome"
+#            wp: "trunk"
+#            experimental: true
+#          - browser: "firefox"
+#            wp: "latest"
+#            experimental: true
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -25,6 +39,15 @@ jobs:
 
       - name: Build plugin
         run: npm run build
+
+      - name: Configure WordPress version
+        run: |
+          if [[ $WP_VERSION == 'trunk' ]]; then
+            echo "Using WordPress trunk"
+            echo "{\"core\":\"WordPress/WordPress#master\"}" >> .wp-env.override.json
+          fi
+        env:
+          WP_VERSION: ${{ matrix.wp }}
 
       - name: Install WordPress
         run: |
@@ -43,6 +66,8 @@ jobs:
 
       - name: Run tests
         run: npm run test:e2e -- --runInBand
+        env:
+          PUPPETEER_PRODUCT: ${{ matrix.browser }}
 
       - name: Archive debug artifacts (screenshots, HTML snapshots)
         uses: actions/upload-artifact@v3
