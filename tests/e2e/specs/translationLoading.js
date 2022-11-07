@@ -5,7 +5,7 @@ import {
 	setOption,
 } from '@wordpress/e2e-test-utils';
 
-jest.setTimeout( 30000 );
+jest.setTimeout( 60000 );
 
 describe( 'Translation Loading', () => {
 	beforeAll( async () => {
