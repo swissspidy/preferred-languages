@@ -9,8 +9,6 @@ jest.setTimeout( 30000 );
 
 describe( 'Translation Loading', () => {
 	beforeAll( async () => {
-		await activatePlugin( 'custom-internationalized-plugin' );
-
 		// Just so the preferred_languages option gets saved & setOption() can change it.
 		await visitAdminPage( 'options-general.php' );
 		await page.click( '.preferred-languages button.locales-add' );
@@ -34,11 +32,15 @@ describe( 'Translation Loading', () => {
 				waitUntil: 'networkidle0',
 			} ),
 		] );
+
+		await activatePlugin( 'custom-internationalized-plugin' );
 	} );
 
 	afterAll( async () => {
 		await deactivatePlugin( 'custom-internationalized-plugin' );
-		await setOption( 'preferred_languages', '' );
+
+		// Extra space just so page.type() types something to clear the input field.
+		await setOption( 'preferred_languages', ' ' );
 	} );
 
 	it( 'should correctly translate strings', async () => {
