@@ -31,6 +31,9 @@ jobs:
                   chmod -R 767 ./ # TODO: Possibly integrate in wp-env
                   npm run wp-env start
 
+            - name: Prepare tests
+              run: npm run wp-env run tests-cli "wp language core install de_CH de_DE es_ES fr_FR it_IT"
+
             - name: Run tests
               run: npm run test:e2e -- --runInBand
 
