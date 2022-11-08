@@ -8,21 +8,16 @@ on:
 
 jobs:
   e2e-tests:
-    name: "E2E Tests (${{ matrix.wp }}, ${{ matrix.browser }})"
+    name: "E2E Tests (${{ matrix.wp }})"
     runs-on: ubuntu-latest
     continue-on-error: ${{ matrix.experimental == true }}
     strategy:
       fail-fast: false
       matrix:
-        browser: ["chrome"]
         wp: ["latest"]
         experimental: [false]
         include:
-          - browser: "chrome"
-            wp: "trunk"
-            experimental: true
-          - browser: "firefox"
-            wp: "latest"
+          - wp: "trunk"
             experimental: true
     steps:
       - name: Checkout
@@ -36,8 +31,6 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
-        env:
-          PUPPETEER_PRODUCT: ${{ matrix.browser }}
 
       - name: Build plugin
         run: npm run build
@@ -70,8 +63,6 @@ jobs:
 
       - name: Run tests
         run: npm run test:e2e -- --runInBand
-        env:
-          PUPPETEER_PRODUCT: ${{ matrix.browser }}
 
       - name: Archive debug artifacts (screenshots, HTML snapshots)
         uses: actions/upload-artifact@v3
