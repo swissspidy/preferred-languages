@@ -276,8 +276,8 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
  *
  * @since 1.4.0
  *
- * @param mixed  $value     The new, unserialized option value.
- * @param mixed  $old_value The old option value.
+ * @param mixed $value     The new, unserialized option value.
+ * @param mixed $old_value The old option value.
  * @return mixed
  */
 function preferred_languages_pre_update_option( $value, $old_value ) {
