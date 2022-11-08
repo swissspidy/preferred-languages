@@ -57,11 +57,16 @@ jobs:
       # See https://github.com/WordPress/gutenberg/issues/22515 for the file permissions bit.
       - name: Prepare tests
         run: |
+          npm run wp-env run tests-cli "whoami"
           npm run wp-env run tests-cli "ls -la /var/www/html"
+          WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -1)
+          cd $WP_ENV_DIR
+          ls -la tests-WordPress/wp-content
+          mkdir -p tests-WordPress/wp-content/languages
+          chmod -R 767 tests-WordPress/wp-content/languages
+          docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language core install de_CH de_DE es_ES fr_FR it_IT
+          cd -
           npm run wp-env run tests-cli "ls -la /var/www/html/wp-content"
-          npm run wp-env run tests-cli "chmod -R 755 /var/www/html/wp-content"
-          npm run wp-env run tests-cli "mkdir -p /var/www/html/wp-content/languages"
-          npm run wp-env run tests-cli "chmod -R 767 /var/www/html/wp-content/languages"
           npm run wp-env run tests-cli "wp language core install de_CH de_DE es_ES fr_FR it_IT"
 
       - name: Run tests
