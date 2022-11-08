@@ -519,7 +519,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_add_user_meta
 	 * @covers ::preferred_languages_update_user_meta
 	 */
-	public function test_update_user_meta_unchanged_downloads_language_packs_again() {
+	public function test_update_user_meta_unchanged_no_prev_value() {
 		$user_id = self::factory()->user->create(
 			array(
 				'role' => 'administrator',
@@ -531,10 +531,28 @@ class Plugin_Test extends WP_UnitTestCase {
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
 
-		// TODO: Revisit. Should this be 2?
-		// In theory a count of 1 looks correct as there's no need to download language packs twice
-		// if things haven't changed and they're still installed.
 		$this->assertSame( 1, $this->download_language_packs_action->get_call_count() );
+	}
+
+	/**
+	 * @covers ::preferred_languages_add_user_meta
+	 * @covers ::preferred_languages_update_user_meta
+	 */
+	public function test_update_user_meta_unchanged_downloads_language_packs_again() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+
+		// update_user_meta() bails early if the meta value has not changed
+		// and no $prev_value has been provided.
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR', 'de_DE,fr_FR' );
+
+		$this->assertSame( 2, $this->download_language_packs_action->get_call_count() );
 	}
 
 	/**

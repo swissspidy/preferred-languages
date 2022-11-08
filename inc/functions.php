@@ -277,12 +277,11 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
  * @since 1.4.0
  *
  * @param mixed  $value     The new, unserialized option value.
- * @param string $option    Name of the option.
  * @param mixed  $old_value The old option value.
  * @return mixed
  */
-function preferred_languages_pre_update_option( $value, $option, $old_value ) {
-	if ( 'preferred_languages' === $option && $value === $old_value ) {
+function preferred_languages_pre_update_option( $value, $old_value ) {
+	if ( $value === $old_value ) {
 		$locales = array_filter( explode( ',', $value ) );
 		preferred_languages_download_language_packs( $locales );
 	}
@@ -323,10 +322,10 @@ function preferred_languages_update_option( $old_value, $value ) {
  *
  * @since 1.7.0
  *
- * @param string $old_value The old option value.
- * @param string $value     The new option value.
+ * @param string $option Name of the network option.
+ * @param string $value  The new option value.
  */
-function preferred_languages_update_site_option( $old_value, $value ) {
+function preferred_languages_update_site_option( $option, $value ) {
 	if ( ! is_multisite() ) {
 		return;
 	}

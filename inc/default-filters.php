@@ -19,8 +19,8 @@ add_action( 'personal_options', 'preferred_languages_personal_options' );
 add_action( 'personal_options_update', 'preferred_languages_update_user_option' );
 add_action( 'edit_user_profile_update', 'preferred_languages_update_user_option' );
 
-add_filter( 'pre_update_option', 'preferred_languages_pre_update_option', 10, 3 );
-add_filter( 'pre_update_site_option', 'preferred_languages_pre_update_option', 10, 3 );
+add_filter( 'pre_update_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 3 );
+add_filter( 'pre_update_site_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 3 );
 add_action( 'add_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 add_action( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 add_action( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
