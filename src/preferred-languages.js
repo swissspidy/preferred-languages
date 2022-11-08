@@ -247,7 +247,8 @@ import './preferred-languages.css';
 			// 2. Change selected value in dropdown.
 			$successor.attr( 'selected', true );
 			$inactiveLocales.val( $successor.val() );
-			$inactiveLocales.prop( 'selectedIndex', $successor.index() );
+			// Not using $successor.index() to get correct index accounting for empty optgroups.
+			$inactiveLocales.prop( 'selectedIndex', $successor.get( 0 ).index );
 		}
 
 		// It's already in the list of active locales, stop here.
