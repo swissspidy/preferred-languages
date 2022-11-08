@@ -613,8 +613,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_update_site_option_downloads_language_packs_again() {
 		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
 		update_site_option( 'preferred_languages', 'de_DE,es_ES,fr_FR' );
-		// TODO: Shouldn't this only be 2?
-		$this->assertSame( 3, $this->download_language_packs_action->get_call_count() );
+		$this->assertSame( 2, $this->download_language_packs_action->get_call_count() );
 	}
 
 	/**
@@ -625,8 +624,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_update_site_option_unchanged_downloads_language_packs_again() {
 		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
 		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
-		// TODO: Revisit. Should this be 2?
-		$this->assertSame( 1, $this->download_language_packs_action->get_call_count() );
+		$this->assertSame( 2, $this->download_language_packs_action->get_call_count() );
 	}
 
 	public function data_test_sanitize_list() {

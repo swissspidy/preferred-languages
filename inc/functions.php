@@ -331,8 +331,8 @@ function preferred_languages_update_site_option( $old_value, $value ) {
 		return;
 	}
 
-	remove_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_option' );
-	remove_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option' );
+	remove_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option' );
+	remove_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option' );
 
 	$locales             = array_filter( explode( ',', $value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
@@ -343,8 +343,8 @@ function preferred_languages_update_site_option( $old_value, $value ) {
 		update_site_option( 'preferred_languages', $new_option_value );
 	}
 
-	add_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
-	add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
+	add_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
+	add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
 
 	// Reload translations after save.
 	load_default_textdomain( determine_locale() );
