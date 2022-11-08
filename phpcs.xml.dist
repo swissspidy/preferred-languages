@@ -49,4 +49,6 @@
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
 	<exclude-pattern>*/vendor/*</exclude-pattern>
 	<exclude-pattern>*/tests/*/bootstrap.php</exclude-pattern>
+	<exclude-pattern>*/tests/e2e/plugins/*</exclude-pattern>
+	<exclude-pattern>*/tests/phpunit/data/*</exclude-pattern>
 </ruleset>

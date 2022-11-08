@@ -44,6 +44,25 @@ function preferred_languages_register_meta() {
 }
 
 /**
+ * Determines whether switch_to_locale() is in effect.
+ *
+ * Gracefully handles cases where the function is called too early for
+ * locale switching to be ready.
+ *
+ * @since 1.9.0
+ * @global WP_Locale_Switcher $wp_locale_switcher WordPress locale switcher object.
+ * @see is_locale_switched
+ *
+ * @return bool True if the locale has been switched, false otherwise.
+ */
+function preferred_languages_is_locale_switched() {
+	/* @var WP_Locale_Switcher $wp_locale_switcher */
+	global $wp_locale_switcher;
+
+	return $wp_locale_switcher && $wp_locale_switcher->is_switched();
+}
+
+/**
  * Updates the user's set of preferred languages.
  *
  * @since 1.0.0
@@ -188,9 +207,12 @@ function preferred_languages_add_user_meta( $object_id, $meta_key, $meta_value )
 
 	$locales             = array_filter( explode( ',', $meta_value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
+	$new_meta_value      = implode( ',', $installed_languages );
 
-	// Only store actually installed languages in user meta.
-	update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+	// Only store actually installed languages in user meta and only if the values differ.
+	if ( $meta_value !== $new_meta_value ) {
+		update_user_meta( $object_id, 'preferred_languages', $new_meta_value );
+	}
 
 	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
 	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
@@ -231,9 +253,12 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 
 	$locales             = array_filter( explode( ',', $meta_value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
+	$new_meta_value      = implode( ',', $installed_languages );
 
-	// Only store actually installed languages in user meta.
-	update_user_meta( $object_id, 'preferred_languages', implode( ',', $installed_languages ) );
+	// Only store actually installed languages in user meta and only if the values differ.
+	if ( $meta_value !== $new_meta_value ) {
+		update_user_meta( $object_id, 'preferred_languages', $new_meta_value );
+	}
 
 	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
 	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
@@ -251,13 +276,12 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
  *
  * @since 1.4.0
  *
- * @param mixed  $value     The new, unserialized option value.
- * @param string $option    Name of the option.
- * @param mixed  $old_value The old option value.
+ * @param mixed $value     The new, unserialized option value.
+ * @param mixed $old_value The old option value.
  * @return mixed
  */
-function preferred_languages_pre_update_option( $value, $option, $old_value ) {
-	if ( 'preferred_languages' === $option && $value === $old_value ) {
+function preferred_languages_pre_update_option( $value, $old_value ) {
+	if ( $value === $old_value ) {
 		$locales = array_filter( explode( ',', $value ) );
 		preferred_languages_download_language_packs( $locales );
 	}
@@ -279,9 +303,12 @@ function preferred_languages_update_option( $old_value, $value ) {
 
 	$locales             = array_filter( explode( ',', $value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
+	$new_option_value    = implode( ',', $installed_languages );
 
-	// Only store actually installed languages in option.
-	update_option( 'preferred_languages', implode( ',', $installed_languages ) );
+	// Only store actually installed languages in option and only if the values differ..
+	if ( $value !== $new_option_value ) {
+		update_option( 'preferred_languages', $new_option_value );
+	}
 
 	add_filter( 'add_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 	add_filter( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
@@ -295,25 +322,28 @@ function preferred_languages_update_option( $old_value, $value ) {
  *
  * @since 1.7.0
  *
- * @param string $old_value The old option value.
- * @param string $value     The new option value.
+ * @param string $option Name of the network option.
+ * @param string $value  The new option value.
  */
-function preferred_languages_update_site_option( $old_value, $value ) {
+function preferred_languages_update_site_option( $option, $value ) {
 	if ( ! is_multisite() ) {
 		return;
 	}
 
-	remove_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_option' );
-	remove_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option' );
+	remove_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option' );
+	remove_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option' );
 
 	$locales             = array_filter( explode( ',', $value ) );
 	$installed_languages = preferred_languages_download_language_packs( $locales );
+	$new_option_value    = implode( ',', $installed_languages );
 
-	// Only store actually installed languages in option.
-	update_site_option( 'preferred_languages', implode( ',', $installed_languages ) );
+	// Only store actually installed languages in option and only if the values differ..
+	if ( $value !== $new_option_value ) {
+		update_site_option( 'preferred_languages', $new_option_value );
+	}
 
-	add_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
-	add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
+	add_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
+	add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
 
 	// Reload translations after save.
 	load_default_textdomain( determine_locale() );
@@ -486,7 +516,11 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		if ( is_readable( $preferred_mofile ) ) {
 			$loaded = load_textdomain( $domain, $preferred_mofile );
 
-			if ( null === $first_mofile && $loaded ) {
+			if ( ! $loaded ) {
+				continue;
+			}
+
+			if ( null === $first_mofile ) {
 				$first_mofile = $preferred_mofile;
 			}
 		}
@@ -522,6 +556,12 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 
 	// Locale has been filtered by something else.
 	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+		return $mofile;
+	}
+
+	// If locale has been switched to a specific locale,
+	// the right MO file has already been chosen. Bail early.
+	if ( preferred_languages_is_locale_switched() ) {
 		return $mofile;
 	}
 
@@ -578,36 +618,38 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	foreach ( $preferred_locales as $locale ) {
 		$preferred_file = str_replace( $current_locale, $locale, $file );
 
-		if ( is_readable( $preferred_file ) ) {
-			$translations = load_script_translations( $preferred_file, $handle, $domain );
-
-			if ( ! $translations ) {
-				continue;
-			}
-
-			if ( ! $all_translations ) {
-				$all_translations = $translations;
-				continue;
-			}
-
-			// Some translations have already been loaded before, merge them.
-			$all_translations_json = json_decode( $all_translations, true );
-			$translations_json     = json_decode( $translations, true );
-
-			foreach ( $translations_json['locale_data']['messages'] as $key => $translation ) {
-				if ( isset( $all_translations_json['locale_data']['messages'][ $key ] ) ) {
-					continue;
-				}
-
-				$all_translations_json['locale_data']['messages'][ $key ] = $translation;
-			}
-
-			$all_translations = wp_json_encode( $all_translations_json );
+		if ( ! is_readable( $preferred_file ) ) {
+			continue;
 		}
+
+		$translations = load_script_translations( $preferred_file, $handle, $domain );
+
+		if ( ! $translations ) {
+			continue;
+		}
+
+		if ( ! $all_translations ) {
+			$all_translations = $translations;
+			continue;
+		}
+
+		// Some translations have already been loaded before, merge them.
+		$all_translations_json = json_decode( $all_translations, true );
+		$translations_json     = json_decode( $translations, true );
+
+		foreach ( $translations_json['locale_data']['messages'] as $key => $translation ) {
+			if ( ! empty( array_filter( (array) $all_translations_json['locale_data']['messages'][ $key ] ) ) ) {
+				continue;
+			}
+
+			$all_translations_json['locale_data']['messages'][ $key ] = $translation;
+		}
+
+		$all_translations = wp_json_encode( $all_translations_json );
 	}
 
-	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 4 );
-	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_script_translation_file' );
+	add_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations', 10, 4 );
+	add_filter( 'load_script_translation_file', 'preferred_languages_load_script_translation_file' );
 
 	if ( $all_translations ) {
 		return $all_translations;
@@ -996,17 +1038,6 @@ function preferred_languages_display_form( $args = array() ) {
 }
 
 /**
- * Initializes the class used for registering textdomains.
- *
- * @since 1.1.0
- */
-function preferred_languages_init_registry() {
-	global $preferred_languages_textdomain_registry;
-
-	$preferred_languages_textdomain_registry = new Preferred_Languages_Textdomain_Registry();
-}
-
-/**
  * Filters gettext calls to work around limitations in just-in-time loading of translations.
  *
  * @since 1.1.0
@@ -1018,6 +1049,8 @@ function preferred_languages_init_registry() {
  * @return string Translated text.
  */
 function preferred_languages_filter_gettext( $translation, $text, $domain ) {
+	global $wp_textdomain_registry;
+
 	if ( 'default' === $domain ) {
 		return $translation;
 	}
@@ -1025,14 +1058,9 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 	$translations = get_translations_for_domain( $domain );
 
 	if ( $translations instanceof NOOP_Translations ) {
-		/* @var Preferred_Languages_Textdomain_Registry $preferred_languages_textdomain_registry */
-		global $preferred_languages_textdomain_registry;
+		$locale = determine_locale();
 
-		if ( ! $preferred_languages_textdomain_registry instanceof Preferred_Languages_Textdomain_Registry ) {
-			preferred_languages_init_registry();
-		}
-
-		$path = $preferred_languages_textdomain_registry->get( $domain );
+		$path = $wp_textdomain_registry->get( $domain, $locale );
 
 		if ( ! $path ) {
 			return $translation;
@@ -1041,8 +1069,20 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		$preferred_locales = preferred_languages_get_list();
 
 		// Locale has been filtered by something else.
-		if ( ! in_array( determine_locale(), $preferred_locales, true ) ) {
+		if ( ! in_array( $locale, $preferred_locales, true ) ) {
 			return $translation;
+		}
+
+		// If locale has been switched to a specific locale, ignore the ones before it.
+		// Example:
+		// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+		// Switched to locale: de_CH
+		// In that case, only check for de_CH, de_DE, es_ES.
+		if ( preferred_languages_is_locale_switched() ) {
+			$preferred_locales = array_slice(
+				$preferred_locales,
+				array_search( $locale, $preferred_locales, true )
+			);
 		}
 
 		foreach ( $preferred_locales as $locale ) {

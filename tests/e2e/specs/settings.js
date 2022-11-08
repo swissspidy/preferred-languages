@@ -1,7 +1,5 @@
 import { visitAdminPage } from '@wordpress/e2e-test-utils';
 
-jest.setTimeout( 10000 );
-
 describe( 'Settings Page', () => {
 	it( 'should display the preferred languages form', async () => {
 		await visitAdminPage( 'options-general.php' );
@@ -54,20 +52,17 @@ describe( 'Settings Page', () => {
 		await expect( page ).toMatchElement(
 			'.preferred-languages button.locales-remove[disabled]'
 		);
-
-		const inactiveLocale = await page.$eval(
-			'#preferred-languages-inactive-locales',
-			( el ) => el.value
-		);
-
-		// Afrikaans is the first item in the dropdown by default.
-		expect( inactiveLocale ).toStrictEqual( 'af' );
 	} );
 
 	it( 'should add a language to the list', async () => {
 		await visitAdminPage( 'options-general.php' );
 
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
+
+		const newLocale = await page.$eval(
+			'#preferred-languages-inactive-locales',
+			( el ) => el.value
+		);
 
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
@@ -86,11 +81,11 @@ describe( 'Settings Page', () => {
 			( el ) => el.value
 		);
 
-		expect( activeLocales ).toStrictEqual( 'af' );
+		expect( activeLocales ).toStrictEqual( newLocale );
 
-		await expect( page ).toMatchElement( '.active-locale', {
-			text: /Afrikaans/i,
-		} );
+		await expect( page ).toMatchElement(
+			`.active-locale[aria-selected="true"][id="${ newLocale }"]`
+		);
 
 		await expect( page ).toMatchElement(
 			'.preferred-languages button.locales-move-up[disabled]'
@@ -108,19 +103,44 @@ describe( 'Settings Page', () => {
 
 		await expect( page ).toMatchElement( '.site-preferred-languages-wrap' );
 
-		// Adding Afrikaans (af).
+		const selectedLocales = [];
+
+		selectedLocales.push(
+			await page.$eval(
+				'#preferred-languages-inactive-locales',
+				( el ) => el.value
+			)
+		);
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
-		// Adding Amharic (am).
+
+		selectedLocales.push(
+			await page.$eval(
+				'#preferred-languages-inactive-locales',
+				( el ) => el.value
+			)
+		);
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
-		// Adding Aragonés (arg).
+
+		selectedLocales.push(
+			await page.$eval(
+				'#preferred-languages-inactive-locales',
+				( el ) => el.value
+			)
+		);
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
-		// Adding Arabic (ar).
+
+		selectedLocales.push(
+			await page.$eval(
+				'#preferred-languages-inactive-locales',
+				( el ) => el.value
+			)
+		);
 		await expect( page ).toClick(
 			'.preferred-languages button.locales-add'
 		);
@@ -130,13 +150,10 @@ describe( 'Settings Page', () => {
 			( el ) => el.value
 		);
 
-		expect( activeLocales ).toStrictEqual( 'af,am,arg,ar' );
+		expect( activeLocales ).toStrictEqual( selectedLocales.join( ',' ) );
 
 		await expect( page ).toMatchElement(
-			'.active-locale[aria-selected="true"]',
-			{
-				text: /العربية/i,
-			}
+			`.active-locale[aria-selected="true"][id="${ selectedLocales[ 3 ] }"]`
 		);
 
 		await expect( page ).toMatchElement(
@@ -177,10 +194,7 @@ describe( 'Settings Page', () => {
 		);
 
 		await expect( page ).toMatchElement(
-			'.active-locale[aria-selected="true"]',
-			{
-				text: 'Afrikaans',
-			}
+			`.active-locale[aria-selected="true"][id="${ selectedLocales[ 0 ] }"]`
 		);
 	} );
 } );

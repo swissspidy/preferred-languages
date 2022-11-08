@@ -1,4 +1,8 @@
 {
 	"core": null,
-	"plugins": [ "." ]
+	"plugins": [
+		".",
+		"./tests/e2e/plugins/custom-internationalized-plugin",
+		"./tests/e2e/plugins/merge-translations"
+	]
 }

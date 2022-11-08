@@ -1,0 +1,40 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: Dominik Schilling\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2015-12-31 16:31+0100\n"
+"PO-Revision-Date: 2022-11-04 15:00+0100\n"
+"Language: es_ES\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.1\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-KeywordsList: __;_e;_x:1,2c;_ex:1,2c;_n:1,2;_nx:1,2,4c;_n_noop:1,2;_nx_noop:1,2,3c;esc_attr__;esc_html__;esc_attr_e;esc_html_e;esc_attr_x:1,2c;esc_html_x:1,2c\n"
+"X-Textdomain-Support: yes\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: custom-internationalized-plugin.php:12
+#: custom-internationalized-plugin.js:8
+msgid "This is a dummy plugin"
+msgstr "Este es un plugin dummy"
+
+#. Plugin Name of the plugin
+msgid "Custom Internationalized Plugin"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/"
+msgstr ""
+
+#. Description of the plugin
+msgid "For testing purposes only."
+msgstr ""
+
+#: custom-internationalized-plugin.php:16
+#: custom-internationalized-plugin.js:14
+msgid "This is another dummy plugin"
+msgstr "Este es otro plugin dummy"
