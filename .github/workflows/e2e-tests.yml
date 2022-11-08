@@ -17,13 +17,13 @@ jobs:
         browser: ["chrome"]
         wp: ["latest"]
         experimental: [false]
-#        include:
-#          - browser: "chrome"
-#            wp: "trunk"
-#            experimental: true
-#          - browser: "firefox"
-#            wp: "latest"
-#            experimental: true
+        include:
+          - browser: "chrome"
+            wp: "trunk"
+            experimental: true
+          - browser: "firefox"
+            wp: "latest"
+            experimental: true
     steps:
       - name: Checkout
         uses: actions/checkout@v3
