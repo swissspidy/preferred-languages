@@ -61,8 +61,8 @@ jobs:
         run: |
           WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -1)
           cd $WP_ENV_DIR
-          mkdir -p tests-WordPress/wp-content/languages
-          chmod -R 767 tests-WordPress/wp-content/languages
+          mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
+          chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
           cd -
           npm run wp-env run tests-cli "wp language core install de_CH de_DE es_ES fr_FR it_IT"
 
