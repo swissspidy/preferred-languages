@@ -37,6 +37,7 @@ describe( 'Translation Loading', () => {
 		] );
 
 		await activatePlugin( 'custom-internationalized-plugin' );
+		await deactivatePlugin( 'merge-translations' );
 	} );
 
 	afterAll( async () => {
