@@ -590,23 +590,23 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
  * @return string|false|null JSON-encoded translation data.
  */
 function preferred_languages_pre_load_script_translations( $translations, $file, $handle, $domain ) {
+	$current_locale = determine_locale();
+
+	/** This filter is documented in inc/functions.php */
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
+
+	if ( ! $merge_translations ) {
+		return $translations;
+	}
+
 	$preferred_locales = preferred_languages_get_list();
 
 	if ( empty( $preferred_locales ) ) {
 		return $translations;
 	}
 
-	$current_locale = determine_locale();
-
 	// Locale has been filtered by something else.
 	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
-		return $translations;
-	}
-
-	/** This filter is documented in inc/functions.php */
-	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
-
-	if ( ! $merge_translations ) {
 		return $translations;
 	}
 
