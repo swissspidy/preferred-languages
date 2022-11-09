@@ -53,6 +53,36 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::preferred_languages_is_locale_switched
+	 */
+	public function test_is_locale_switched_early() {
+		$backup = $GLOBALS['wp_locale_switcher'];
+		unset( $GLOBALS['wp_locale_switcher'] );
+		$actual = preferred_languages_is_locale_switched();
+		$GLOBALS['wp_locale_switcher'] = $backup;
+		$this->assertFalse( $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_is_locale_switched
+	 */
+	public function test_is_locale_switched_false() {
+		$actual = preferred_languages_is_locale_switched();
+		$this->assertSame( is_locale_switched(), $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_is_locale_switched
+	 */
+	public function test_is_locale_switched_true() {
+		$is_switched = switch_to_locale( 'de_DE' );
+		$actual = preferred_languages_is_locale_switched();
+		$this->assertTrue( $is_switched );
+		$this->assertSame( $is_switched, $actual );
+		$this->assertSame( is_locale_switched(), $actual );
+	}
+
+	/**
 	 * @covers ::preferred_languages_update_user_option
 	 */
 	public function test_update_user_option_no_nonce() {
