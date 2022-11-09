@@ -493,7 +493,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	if ( ! $merge_translations ) {
 		return $override;
 	}
-	
+
 	$preferred_locales = preferred_languages_get_list();
 
 	if ( empty( $preferred_locales ) ) {
