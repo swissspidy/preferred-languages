@@ -15,6 +15,9 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$this->rmdir( WP_LANG_DIR );
 
+		$GLOBALS['l10n']          = array();
+		$GLOBALS['l10n_unloaded'] = array();
+
 		$this->download_language_packs_action = new MockAction();
 
 		add_filter( 'preferred_languages_download_language_packs', array( $this->download_language_packs_action, 'filter' ) );
@@ -23,8 +26,6 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function tear_down() {
 		update_option( 'preferred_languages', '' );
 		update_site_option( 'preferred_languages', '' );
-
-		remove_filter( 'preferred_languages_download_language_packs', array( $this->download_language_packs_action, 'filter' ) );
 
 		$this->rmdir( WP_LANG_DIR );
 
@@ -447,8 +448,6 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$output = get_echo( 'preferred_languages_personal_options', array( wp_get_current_user() ) );
 
-		remove_filter( 'get_available_languages', '__return_empty_array' );
-
 		wp_set_current_user( 0 );
 
 		$this->assertNotEmpty( $output );
@@ -470,8 +469,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'get_available_languages', '__return_empty_array' );
 
 		$output = get_echo( 'preferred_languages_personal_options', array( wp_get_current_user() ) );
-
-		remove_filter( 'get_available_languages', '__return_empty_array' );
 
 		$this->assertEmpty( $output );
 	}
@@ -772,8 +769,6 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$actual = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
 
-		remove_filter( 'user_has_cap', array( $this, 'grant_do_not_allow' ) );
-
 		$this->assertSameSets( array_intersect( get_available_languages(), array( 'de_DE', 'fr_FR' ) ), $actual );
 	}
 
@@ -786,9 +781,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'user_has_cap', array( $this, 'grant_do_not_allow' ) );
 
 		$actual = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
-
-		remove_filter( 'user_has_cap', array( $this, 'grant_do_not_allow' ) );
-		remove_filter( 'get_available_languages', '__return_empty_array' );
 
 		$this->assertEmpty( $actual );
 	}
@@ -872,8 +864,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		$expected = array( 'de_DE', 'fr_FR' );
 		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
 
-		remove_filter( 'get_available_languages', $filter );
-
 		$this->assertSameSets( $expected, $actual );
 	}
 
@@ -895,8 +885,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		$expected = array( 'de_DE', 'fr_FR' );
 		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
 
-		remove_filter( 'get_available_languages', '__return_empty_array' );
-
 		$this->assertSameSets( $expected, $actual );
 	}
 
@@ -916,8 +904,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'get_available_languages', '__return_empty_array' );
 
 		$actual = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
-
-		remove_filter( 'get_available_languages', '__return_empty_array' );
 
 		$this->assertEmpty( $actual );
 	}
@@ -941,38 +927,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$expected = array( 'de_DE', 'fr_FR' );
 		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
 
-		remove_filter( 'get_available_languages', '__return_empty_array' );
-
 		$this->assertSameSets( $expected, $actual );
-	}
-
-	/**
-	 * @covers ::preferred_languages_override_load_textdomain
-	 */
-	public function test_override_load_textdomain_no_preferred_locales() {
-		$this->assertFalse( preferred_languages_override_load_textdomain( false, 'default', '' ) );
-		$this->assertTrue( preferred_languages_override_load_textdomain( true, 'default', '' ) );
-	}
-
-	/**
-	 * @covers ::preferred_languages_override_load_textdomain
-	 */
-	public function test_override_load_textdomain_already_filtered() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
-
-		$filter = static function() {
-			return 'es_ES';
-		};
-
-		add_filter( 'determine_locale', $filter );
-
-		$actual1 = preferred_languages_override_load_textdomain( false, 'default', '' );
-		$actual2 = preferred_languages_override_load_textdomain( true, 'default', '' );
-
-		remove_filter( 'determine_locale', $filter );
-
-		$this->assertFalse( $actual1 );
-		$this->assertTrue( $actual2 );
 	}
 
 	/**
@@ -990,19 +945,60 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_override_load_textdomain
+	 */
+	public function test_override_load_textdomain_no_preferred_locales() {
+		add_filter( 'preferred_languages_merge_translations', '__return_true' );
+
+		$this->assertFalse( preferred_languages_override_load_textdomain( false, 'default', '' ) );
+		$this->assertTrue( preferred_languages_override_load_textdomain( true, 'default', '' ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_override_load_textdomain
+	 */
+	public function test_override_load_textdomain_already_filtered() {
+		add_filter( 'preferred_languages_merge_translations', '__return_true' );
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		$filter = static function() {
+			return 'es_ES';
+		};
+
+		add_filter( 'determine_locale', $filter );
+
+		$actual1 = preferred_languages_override_load_textdomain( false, 'default', '' );
+		$actual2 = preferred_languages_override_load_textdomain( true, 'default', '' );
+
+		$this->assertFalse( $actual1 );
+		$this->assertTrue( $actual2 );
+	}
+
+	/**
+	 * @covers ::preferred_languages_override_load_textdomain
 	 *
 	 * @todo Provide actual translation files to demonstrate merging
 	 */
-	public function test_override_load_textdomain_merge() {
+	public function test_override_load_textdomain_no_mofile() {
+		add_filter( 'preferred_languages_merge_translations', '__return_true' );
 		update_option( 'preferred_languages', 'de_DE,es_ES' );
 
+		$actual = preferred_languages_override_load_textdomain( false, 'default', '' );
+
+		$this->assertFalse( $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_override_load_textdomain
+	 */
+	public function test_override_load_textdomain_merge() {
 		add_filter( 'preferred_languages_merge_translations', '__return_true' );
+		update_option( 'preferred_languages', 'es_ES,de_DE' );
 
-		$actual = preferred_languages_override_load_textdomain( true, 'default', '' );
-
-		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
+		$actual = preferred_languages_override_load_textdomain( false, 'default', WP_LANG_DIR . '/es_ES.mo' );
 
 		$this->assertTrue( $actual );
+		$this->assertSame( 'de-DE', __( 'html_lang_attribute' ) );
+		$this->assertSame( '[%s] Solicitud de borrado completada', __( '[%s] Erasure Request Fulfilled' ) );
 	}
 
 	/**
@@ -1026,8 +1022,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'determine_locale', $filter );
 
 		$actual = preferred_languages_load_textdomain_mofile( 'foo' );
-
-		remove_filter( 'determine_locale', $filter );
 
 		$this->assertSame( 'foo', $actual );
 	}
@@ -1088,8 +1082,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		$actual1 = preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' );
 		$actual2 = preferred_languages_pre_load_script_translations( '', 'file', 'handle', 'default' );
 
-		remove_filter( 'determine_locale', $filter );
-
 		$this->assertFalse( $actual1 );
 		$this->assertSame( '', $actual2 );
 	}
@@ -1117,8 +1109,6 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$actual = preferred_languages_pre_load_script_translations( null, 'file', 'handle', 'default' );
 
-		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
-
 		$this->assertNull( $actual );
 	}
 
@@ -1138,8 +1128,6 @@ class Plugin_Test extends WP_UnitTestCase {
 			'internationalized-plugin',
 			'default'
 		);
-
-		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
 
 		$this->assertNotNull( $actual );
 		$this->assertNotEmpty( $actual );
@@ -1168,8 +1156,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'determine_locale', $filter );
 
 		$actual = preferred_languages_load_script_translation_file( 'foo' );
-
-		remove_filter( 'determine_locale', $filter );
 
 		$this->assertSame( 'foo', $actual );
 	}
@@ -1320,8 +1306,6 @@ class Plugin_Test extends WP_UnitTestCase {
 			}
 		);
 
-		remove_filter( 'get_available_languages', '__return_empty_array' );
-
 		$this->assertStringContainsString( 'Some of the languages are not installed.', $actual );
 	}
 
@@ -1422,8 +1406,6 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'determine_locale', $filter );
 
 		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
-
-		remove_filter( 'determine_locale', $filter );
 
 		$this->assertSame( 'This is a dummy plugin', $actual );
 	}
