@@ -196,26 +196,14 @@ function preferred_languages_add_user_meta( $object_id, $meta_key, $meta_value )
 		return;
 	}
 
-	remove_action( 'add_user_meta', 'preferred_languages_add_user_meta' );
-	remove_action( 'update_user_meta', 'preferred_languages_update_user_meta' );
-
 	// Clearing the preferred languages list should also clear the 'locale' user meta
 	// to prevent stale data.
 	if ( empty( $meta_value ) ) {
 		update_user_meta( $object_id, 'locale', '' );
 	}
 
-	$locales             = array_filter( explode( ',', $meta_value ) );
-	$installed_languages = preferred_languages_download_language_packs( $locales );
-	$new_meta_value      = implode( ',', $installed_languages );
-
-	// Only store actually installed languages in user meta and only if the values differ.
-	if ( $meta_value !== $new_meta_value ) {
-		update_user_meta( $object_id, 'preferred_languages', $new_meta_value );
-	}
-
-	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
-	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
+	$locales = array_filter( explode( ',', $meta_value ) );
+	preferred_languages_download_language_packs( $locales );
 
 	// Reload translations after save.
 	if ( get_current_user_id() === $object_id ) {
@@ -242,26 +230,14 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 		return;
 	}
 
-	remove_action( 'add_user_meta', 'preferred_languages_add_user_meta' );
-	remove_action( 'update_user_meta', 'preferred_languages_update_user_meta' );
-
 	// Clearing the preferred languages list should also clear the 'locale' user meta
 	// to prevent stale data.
 	if ( empty( $meta_value ) ) {
 		update_user_meta( $object_id, 'locale', '' );
 	}
 
-	$locales             = array_filter( explode( ',', $meta_value ) );
-	$installed_languages = preferred_languages_download_language_packs( $locales );
-	$new_meta_value      = implode( ',', $installed_languages );
-
-	// Only store actually installed languages in user meta and only if the values differ.
-	if ( $meta_value !== $new_meta_value ) {
-		update_user_meta( $object_id, 'preferred_languages', $new_meta_value );
-	}
-
-	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
-	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
+	$locales = array_filter( explode( ',', $meta_value ) );
+	preferred_languages_download_language_packs( $locales );
 
 	// Reload translations after save.
 	if ( get_current_user_id() === $object_id ) {
@@ -298,20 +274,8 @@ function preferred_languages_pre_update_option( $value, $old_value ) {
  * @param string $value     The new option value.
  */
 function preferred_languages_update_option( $old_value, $value ) {
-	remove_filter( 'add_option_preferred_languages', 'preferred_languages_update_option' );
-	remove_filter( 'update_option_preferred_languages', 'preferred_languages_update_option' );
-
-	$locales             = array_filter( explode( ',', $value ) );
-	$installed_languages = preferred_languages_download_language_packs( $locales );
-	$new_option_value    = implode( ',', $installed_languages );
-
-	// Only store actually installed languages in option and only if the values differ..
-	if ( $value !== $new_option_value ) {
-		update_option( 'preferred_languages', $new_option_value );
-	}
-
-	add_filter( 'add_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
-	add_filter( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
+	$locales = array_filter( explode( ',', $value ) );
+	preferred_languages_download_language_packs( $locales );
 
 	// Reload translations after save.
 	load_default_textdomain( determine_locale() );
@@ -330,20 +294,8 @@ function preferred_languages_update_site_option( $option, $value ) {
 		return;
 	}
 
-	remove_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option' );
-	remove_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option' );
-
-	$locales             = array_filter( explode( ',', $value ) );
-	$installed_languages = preferred_languages_download_language_packs( $locales );
-	$new_option_value    = implode( ',', $installed_languages );
-
-	// Only store actually installed languages in option and only if the values differ..
-	if ( $value !== $new_option_value ) {
-		update_site_option( 'preferred_languages', $new_option_value );
-	}
-
-	add_filter( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
-	add_filter( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
+	$locales = array_filter( explode( ',', $value ) );
+	preferred_languages_download_language_packs( $locales );
 
 	// Reload translations after save.
 	load_default_textdomain( determine_locale() );

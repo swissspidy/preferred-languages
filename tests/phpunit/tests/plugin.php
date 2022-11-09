@@ -9,6 +9,12 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function set_up() {
 		parent::set_up();
 
+		// Allows removing newly added language files but keeping the ones
+		// already provided by the test suite.
+		self::$ignore_files = array_merge( self::$ignore_files, $this->files_in_dir( WP_LANG_DIR ) );
+
+		$this->rmdir( WP_LANG_DIR );
+
 		$this->download_language_packs_action = new MockAction();
 
 		add_filter( 'preferred_languages_download_language_packs', array( $this->download_language_packs_action, 'filter' ) );
@@ -19,6 +25,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		update_site_option( 'preferred_languages', '' );
 
 		remove_filter( 'preferred_languages_download_language_packs', array( $this->download_language_packs_action, 'filter' ) );
+
+		$this->rmdir( WP_LANG_DIR );
 
 		parent::tear_down();
 	}
@@ -58,7 +66,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_is_locale_switched_early() {
 		$backup = $GLOBALS['wp_locale_switcher'];
 		unset( $GLOBALS['wp_locale_switcher'] );
-		$actual = preferred_languages_is_locale_switched();
+		$actual                        = preferred_languages_is_locale_switched();
 		$GLOBALS['wp_locale_switcher'] = $backup;
 		$this->assertFalse( $actual );
 	}
@@ -76,10 +84,12 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_is_locale_switched_true() {
 		$is_switched = switch_to_locale( 'de_DE' );
-		$actual = preferred_languages_is_locale_switched();
+		$actual      = preferred_languages_is_locale_switched();
+		$actual_core = is_locale_switched();
+		restore_current_locale();
 		$this->assertTrue( $is_switched );
 		$this->assertSame( $is_switched, $actual );
-		$this->assertSame( is_locale_switched(), $actual );
+		$this->assertSame( $actual_core, $actual );
 	}
 
 	/**
@@ -146,10 +156,10 @@ class Plugin_Test extends WP_UnitTestCase {
 		wp_set_current_user( $user_id );
 
 		$_POST['_wpnonce']            = wp_create_nonce( 'update-user_' . $user_id );
-		$_POST['preferred_languages'] = 'de_DE,fr_FR';
+		$_POST['preferred_languages'] = 'de_DE,es_ES';
 		preferred_languages_update_user_option( $user_id );
 		$actual = get_user_meta( $user_id, 'preferred_languages', true );
-		$this->assertSame( 'de_DE,fr_FR', $actual );
+		$this->assertSame( 'de_DE,es_ES', $actual );
 	}
 
 	/**
@@ -163,11 +173,11 @@ class Plugin_Test extends WP_UnitTestCase {
 		);
 
 		wp_set_current_user( $user_id );
-		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,es_ES' );
 
 		$expected = array(
 			'de_DE',
-			'fr_FR',
+			'es_ES',
 		);
 
 		$this->assertSame( $expected, preferred_languages_get_user_list() );
@@ -183,11 +193,11 @@ class Plugin_Test extends WP_UnitTestCase {
 			)
 		);
 
-		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,es_ES' );
 
 		$expected = array(
 			'de_DE',
-			'fr_FR',
+			'es_ES',
 		);
 
 		$this->assertSame( $expected, preferred_languages_get_user_list( $user_id ) );
@@ -218,11 +228,11 @@ class Plugin_Test extends WP_UnitTestCase {
 			)
 		);
 
-		update_user_meta( $user->ID, 'preferred_languages', 'de_DE,fr_FR' );
+		update_user_meta( $user->ID, 'preferred_languages', 'de_DE,es_ES' );
 
 		$expected = array(
 			'de_DE',
-			'fr_FR',
+			'es_ES',
 		);
 
 		$this->assertSame( $expected, preferred_languages_get_user_list( $user ) );
@@ -260,11 +270,11 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_get_site_list
 	 */
 	public function test_get_site_list() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', 'de_DE,es_ES' );
 
 		$expected = array(
 			'de_DE',
-			'fr_FR',
+			'es_ES',
 		);
 
 		$this->assertSame( $expected, preferred_languages_get_site_list() );
@@ -274,11 +284,11 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_get_network_list
 	 */
 	public function test_get_network_list() {
-		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_site_option( 'preferred_languages', 'de_DE,es_ES' );
 
 		$expected = array(
 			'de_DE',
-			'fr_FR',
+			'es_ES',
 		);
 
 		$this->assertSame( $expected, preferred_languages_get_network_list() );
@@ -335,12 +345,12 @@ class Plugin_Test extends WP_UnitTestCase {
 		);
 
 		wp_set_current_user( $user_id );
-		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,en_GB' );
 		update_option( 'preferred_languages', 'es_ES' );
 
 		$expected = array(
 			'de_DE',
-			'fr_FR',
+			'en_GB',
 		);
 
 		$this->assertSame( $expected, preferred_languages_get_list() );
@@ -507,12 +517,13 @@ class Plugin_Test extends WP_UnitTestCase {
 		update_user_meta( $user_id, 'locale', 'de_DE' );
 		add_user_meta( $user_id, 'preferred_languages', '' );
 
-		$locale = get_user_meta( $user_id, 'locale', true );
-		$this->assertSame( '', $locale );
+		$this->assertSame( '', get_user_meta( $user_id, 'preferred_languages', true ) );
+		$this->assertSame( '', get_user_meta( $user_id, 'locale', true ) );
 	}
 
 	/**
 	 * @covers ::preferred_languages_add_user_meta
+	 * @group ms-excluded
 	 */
 	public function test_add_user_meta_downloads_language_packs() {
 		$user_id = self::factory()->user->create(
@@ -523,7 +534,52 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		wp_set_current_user( $user_id );
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+		$this->assertSame( 'de_DE,fr_FR', get_user_meta( $user_id, 'preferred_languages', true ) );
+		$this->assertSame( 'de_DE', get_user_meta( $user_id, 'locale', true ) );
 		$this->assertSame( 1, $this->download_language_packs_action->get_call_count() );
+	}
+
+	/**
+	 * @covers ::preferred_languages_add_user_meta
+	 * @group ms-required
+	 */
+	public function test_add_user_meta_downloads_language_packs_multisite() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+
+		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
+		$this->assertSame( 'de_DE,fr_FR', get_user_meta( $user_id, 'preferred_languages', true ) );
+		$this->assertSame( 'de_DE', get_user_meta( $user_id, 'locale', true ) );
+		$this->assertSame( 1, $this->download_language_packs_action->get_call_count() );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_user_meta
+	 */
+	public function test_update_user_meta_download_fails() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+
+		update_user_meta( $user_id, 'preferred_languages', 'it_IT,bg_BG' );
+
+		// Makes wp_download_language_pack() fail early.
+		add_filter( 'file_mod_allowed', '__return_false' );
+
+		update_user_meta( $user_id, 'preferred_languages', 'roh' );
+
+		$this->assertSame( 'roh', get_user_meta( $user_id, 'preferred_languages', true ) );
+		$this->assertSame( 'roh', get_user_meta( $user_id, 'locale', true ) );
+		$this->assertSame( 2, $this->download_language_packs_action->get_call_count() );
 	}
 
 	/**
@@ -542,6 +598,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,fr_FR' );
 		update_user_meta( $user_id, 'preferred_languages', 'de_DE,es_ES,fr_FR' );
 
+		$locale = get_user_meta( $user_id, 'preferred_languages', true );
+		$this->assertSame( 'de_DE,es_ES,fr_FR', $locale );
 		$this->assertSame( 2, $this->download_language_packs_action->get_call_count() );
 	}
 
@@ -594,12 +652,13 @@ class Plugin_Test extends WP_UnitTestCase {
 				'role' => 'administrator',
 			)
 		);
+
 		update_user_meta( $user_id, 'locale', 'de_DE' );
 		update_user_meta( $user_id, 'preferred_languages', 'fr_FR,es_ES' );
 		update_user_meta( $user_id, 'preferred_languages', '' );
 
-		$locale = get_user_meta( $user_id, 'locale', true );
-		$this->assertSame( '', $locale );
+		$this->assertSame( '', get_user_meta( $user_id, 'preferred_languages', true ) );
+		$this->assertSame( '', get_user_meta( $user_id, 'locale', true ) );
 	}
 
 	/**
@@ -611,11 +670,12 @@ class Plugin_Test extends WP_UnitTestCase {
 				'role' => 'administrator',
 			)
 		);
-		update_user_meta( $user_id, 'locale', 'de_DE' );
-		update_user_meta( $user_id, 'preferred_languages', 'fr_FR,es_ES' );
 
-		$locale = get_user_meta( $user_id, 'locale', true );
-		$this->assertSame( 'fr_FR', $locale );
+		update_user_meta( $user_id, 'locale', 'de_DE' );
+		update_user_meta( $user_id, 'preferred_languages', 'fr_FR,es_ES,de_DE' );
+
+		$this->assertSame( 'fr_FR,es_ES,de_DE', get_user_meta( $user_id, 'preferred_languages', true ) );
+		$this->assertSame( 'fr_FR', get_user_meta( $user_id, 'locale', true ) );
 	}
 
 	/**
@@ -643,6 +703,15 @@ class Plugin_Test extends WP_UnitTestCase {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 		$this->assertSame( 2, $this->download_language_packs_action->get_call_count() );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_site_option
+	 * @group ms-excluded
+	 */
+	public function test_update_site_option_single_site() {
+		preferred_languages_update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		$this->assertSame( 0, $this->download_language_packs_action->get_call_count() );
 	}
 
 	/**
@@ -724,9 +793,9 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertEmpty( $actual );
 	}
 
-
 	/**
 	 * @covers ::preferred_languages_download_language_packs
+	 * @group ms-excluded
 	 */
 	public function test_download_language_packs() {
 		$user_id = self::factory()->user->create(
@@ -743,6 +812,44 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertSameSets( $expected, $actual );
 	}
 
+	/**
+	 * @covers ::preferred_languages_download_language_packs
+	 * @group ms-required
+	 */
+	public function test_download_language_packs_multisite_no_caps() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+
+		$expected = array( 'de_DE' );
+		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		$this->assertSameSets( $expected, $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_download_language_packs
+	 * @group ms-required
+	 */
+	public function test_download_language_packs_multisite() {
+		$user_id = self::factory()->user->create(
+			array(
+				'role' => 'administrator',
+			)
+		);
+
+		wp_set_current_user( $user_id );
+		grant_super_admin( $user_id );
+
+		$expected = array( 'de_DE', 'fr_FR' );
+		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		$this->assertSameSets( $expected, $actual );
+	}
 
 	/**
 	 * @covers ::preferred_languages_download_language_packs
@@ -872,7 +979,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_override_load_textdomain
 	 */
 	public function test_override_load_textdomain_no_merge() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', 'de_DE,es_ES' );
 
 		$actual1 = preferred_languages_override_load_textdomain( false, 'default', '' );
 		$actual2 = preferred_languages_override_load_textdomain( true, 'default', '' );
@@ -887,7 +994,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @todo Provide actual translation files to demonstrate merging
 	 */
 	public function test_override_load_textdomain_merge() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', 'de_DE,es_ES' );
 
 		add_filter( 'preferred_languages_merge_translations', '__return_true' );
 
@@ -940,7 +1047,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_load_textdomain_mofile
 	 */
 	public function test_load_textdomain_mofile_non_existent_file() {
-		update_option( 'preferred_languages', 'fr_FR' );
+		update_option( 'preferred_languages', 'de_DE' );
 
 		$actual = preferred_languages_load_textdomain_mofile( WP_LANG_DIR . '/plugins/internationalized-plugin-roh.mo' );
 
@@ -950,10 +1057,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_load_textdomain_mofile
 	 */
-	public function test_load_textdomain_mofile() {
-		update_option( 'preferred_languages', 'fr_FR,de_DE' );
+	public function test_load_textdomain_mofile_only() {
+		update_option( 'preferred_languages', 'en_GB,de_DE' );
 
-		$actual = preferred_languages_load_textdomain_mofile( WP_LANG_DIR . '/plugins/internationalized-plugin-fr_FR.mo' );
+		$actual = preferred_languages_load_textdomain_mofile( WP_LANG_DIR . '/plugins/internationalized-plugin-en_GB.mo' );
 
 		$this->assertSame( WP_LANG_DIR . '/plugins/internationalized-plugin-de_DE.mo', $actual );
 	}
@@ -963,7 +1070,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_pre_load_script_translations_no_preferred_locales() {
 		$this->assertFalse( preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' ) );
-		$this->assertTrue( preferred_languages_pre_load_script_translations( true, 'file', 'handle', 'default' ) );
+		$this->assertSame( '', preferred_languages_pre_load_script_translations( '', 'file', 'handle', 'default' ) );
 	}
 
 	/**
@@ -979,12 +1086,12 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'determine_locale', $filter );
 
 		$actual1 = preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' );
-		$actual2 = preferred_languages_pre_load_script_translations( true, 'file', 'handle', 'default' );
+		$actual2 = preferred_languages_pre_load_script_translations( '', 'file', 'handle', 'default' );
 
 		remove_filter( 'determine_locale', $filter );
 
 		$this->assertFalse( $actual1 );
-		$this->assertTrue( $actual2 );
+		$this->assertSame( '', $actual2 );
 	}
 
 	/**
@@ -994,10 +1101,10 @@ class Plugin_Test extends WP_UnitTestCase {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
 		$actual1 = preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' );
-		$actual2 = preferred_languages_pre_load_script_translations( true, 'file', 'handle', 'default' );
+		$actual2 = preferred_languages_pre_load_script_translations( '', 'file', 'handle', 'default' );
 
 		$this->assertFalse( $actual1 );
-		$this->assertTrue( $actual2 );
+		$this->assertSame( '', $actual2 );
 	}
 
 	/**
@@ -1119,12 +1226,6 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		preferred_languages_settings_field();
 
-		$expected_section = array(
-			'id'       => 'preferred_languages',
-			'title'    => '',
-			'callback' => '__return_empty_string',
-		);
-
 		$expected_field = array(
 			'id'       => 'preferred_languages',
 			'title'    => '<span id="preferred-languages-label">' . __( 'Default Language', 'preferred-languages' ) . '<span/> <span class="dashicons dashicons-translation" aria-hidden="true"></span>',
@@ -1168,7 +1269,6 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_display_form
 	 */
 	public function test_display_form_show_option_site_default() {
-
 		$actual = get_echo(
 			static function() {
 				preferred_languages_display_form(
@@ -1180,6 +1280,23 @@ class Plugin_Test extends WP_UnitTestCase {
 		);
 
 		$this->assertStringContainsString( 'Falling back to Site Default.', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_display_form
+	 */
+	public function test_display_form_show_option_en_US() {
+		$actual = get_echo(
+			static function() {
+				preferred_languages_display_form(
+					array(
+						'show_option_site_default' => true,
+					)
+				);
+			}
+		);
+
+		$this->assertStringContainsString( 'English (United States)', $actual );
 	}
 
 	/**
@@ -1211,13 +1328,29 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_update_network_settings
 	 *
+	 * @group ms-excluded
+	 */
+	public function test_update_network_settings_single_site() {
+		$mock_action = new MockAction();
+
+		add_action( 'wp_verify_nonce_failed', array( $mock_action, 'action' ) );
+
+		$_POST['preferred_languages_network_settings_nonce'] = 'foo';
+		preferred_languages_update_network_settings();
+
+		$this->assertSame( 0, $mock_action->get_call_count() );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_network_settings
+	 *
 	 * @group ms-required
 	 */
 	public function test_update_network_settings_no_nonce() {
-		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_site_option( 'preferred_languages', 'de_DE,es_ES' );
 		preferred_languages_update_network_settings();
 
-		$this->assertSame( 'de_DE,fr_FR', get_site_option( 'preferred_languages' ) );
+		$this->assertSame( 'de_DE,es_ES', get_site_option( 'preferred_languages' ) );
 	}
 
 	/**
@@ -1227,10 +1360,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_update_network_settings_wrong_nonce() {
 		$_POST['preferred_languages_network_settings_nonce'] = 'foo';
-		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_site_option( 'preferred_languages', 'de_DE,es_ES' );
 		preferred_languages_update_network_settings();
 
-		$this->assertSame( 'de_DE,fr_FR', get_site_option( 'preferred_languages' ) );
+		$this->assertSame( 'de_DE,es_ES', get_site_option( 'preferred_languages' ) );
 	}
 
 	/**
@@ -1240,10 +1373,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_update_network_settings_no_post_data() {
 		$_POST['preferred_languages_network_settings_nonce'] = wp_slash( wp_create_nonce( 'preferred_languages_network_settings' ) );
-		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_site_option( 'preferred_languages', 'de_DE,es_ES' );
 		preferred_languages_update_network_settings();
 
-		$this->assertSame( 'de_DE,fr_FR', get_site_option( 'preferred_languages' ) );
+		$this->assertSame( 'de_DE,es_ES', get_site_option( 'preferred_languages' ) );
 	}
 
 	/**
@@ -1326,6 +1459,24 @@ class Plugin_Test extends WP_UnitTestCase {
 		$actual = custom_i18n_plugin_test();
 
 		$this->assertSame( 'Das ist ein Dummy Plugin', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_gettext
+	 */
+	public function test_filter_gettext_plugin_custom_path_locale_switching() {
+		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
+
+		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
+
+		switch_to_locale( 'de_DE' );
+		$actual_de = custom_i18n_plugin_test();
+		switch_to_locale( 'es_ES' );
+		$actual_es = custom_i18n_plugin_test();
+		restore_current_locale();
+
+		$this->assertSame( 'Das ist ein Dummy Plugin', $actual_de );
+		$this->assertSame( 'Este es un plugin dummy', $actual_es );
 	}
 
 	/**
