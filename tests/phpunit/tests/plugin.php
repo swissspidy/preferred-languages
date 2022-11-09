@@ -998,6 +998,8 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$this->assertTrue( $actual );
 		$this->assertSame( 'de-DE', __( 'html_lang_attribute' ) );
+
+		// phpcs:ignore WordPress.WP.I18n.MissingTranslatorsComment
 		$this->assertSame( '[%s] Solicitud de borrado completada', __( '[%s] Erasure Request Fulfilled' ) );
 	}
 
