@@ -477,19 +477,6 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
  * @return bool Whether to override the .mo file loading.
  */
 function preferred_languages_override_load_textdomain( $override, $domain, $mofile ) {
-	$preferred_locales = preferred_languages_get_list();
-
-	if ( empty( $preferred_locales ) ) {
-		return $override;
-	}
-
-	$current_locale = determine_locale();
-
-	// Locale has been filtered by something else.
-	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
-		return $override;
-	}
-
 	/**
 	 * Filters whether translations should be merged with existing ones.
 	 *
@@ -502,6 +489,19 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
 
 	if ( ! $merge_translations ) {
+		return $override;
+	}
+	
+	$preferred_locales = preferred_languages_get_list();
+
+	if ( empty( $preferred_locales ) ) {
+		return $override;
+	}
+
+	$current_locale = determine_locale();
+
+	// Locale has been filtered by something else.
+	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
 		return $override;
 	}
 
