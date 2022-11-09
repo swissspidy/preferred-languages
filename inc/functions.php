@@ -477,6 +477,8 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
  * @return bool Whether to override the .mo file loading.
  */
 function preferred_languages_override_load_textdomain( $override, $domain, $mofile ) {
+	$current_locale = determine_locale();
+
 	/**
 	 * Filters whether translations should be merged with existing ones.
 	 *
@@ -497,8 +499,6 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	if ( empty( $preferred_locales ) ) {
 		return $override;
 	}
-
-	$current_locale = determine_locale();
 
 	// Locale has been filtered by something else.
 	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
