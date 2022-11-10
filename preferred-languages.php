@@ -32,11 +32,6 @@
  */
 
 /**
- * Text domain registry class.
- */
-require_once dirname( __FILE__ ) . '/inc/class-preferred-languages-textdomain-registry.php';
-
-/**
  * Plugin functions.
  */
 require_once dirname( __FILE__ ) . '/inc/functions.php';
