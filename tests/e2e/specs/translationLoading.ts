@@ -56,7 +56,7 @@ describe( 'Translation Loading', () => {
 
 		const defaultOutput = await page.$eval(
 			'.notice-custom-i18n-plugin-locale-current',
-			( el ) => el.innerText
+			( el: HTMLElement ) => el.innerText
 		);
 		expect( defaultOutput ).toMatchInlineSnapshot(
 			`
@@ -70,7 +70,7 @@ describe( 'Translation Loading', () => {
 
 		const localeSwitching = await page.$eval(
 			'.notice-custom-i18n-plugin-locale-switching',
-			( el ) => el.innerText
+			( el: HTMLElement ) => el.innerText
 		);
 		expect( localeSwitching ).toMatchInlineSnapshot(
 			`
@@ -109,7 +109,7 @@ describe( 'Translation Loading', () => {
 
 		const jsI18n = await page.$eval(
 			'.notice-custom-i18n-plugin-js',
-			( el ) => el.innerText
+			( el: HTMLElement ) => el.innerText
 		);
 		expect( jsI18n ).toMatchInlineSnapshot(
 			`
@@ -133,7 +133,7 @@ describe( 'Translation Loading', () => {
 
 			const defaultOutput = await page.$eval(
 				'.notice-custom-i18n-plugin-locale-current',
-				( el ) => el.innerText
+				( el: HTMLElement ) => el.innerText
 			);
 			expect( defaultOutput ).toMatchInlineSnapshot(
 				`
@@ -147,7 +147,7 @@ describe( 'Translation Loading', () => {
 
 			const localeSwitching = await page.$eval(
 				'.notice-custom-i18n-plugin-locale-switching',
-				( el ) => el.innerText
+				( el: HTMLElement ) => el.innerText
 			);
 			expect( localeSwitching ).toMatchInlineSnapshot(
 				`
@@ -186,7 +186,7 @@ describe( 'Translation Loading', () => {
 
 			const jsI18n = await page.$eval(
 				'.notice-custom-i18n-plugin-js',
-				( el ) => el.innerText
+				( el: HTMLElement ) => el.innerText
 			);
 			expect( jsI18n ).toMatchInlineSnapshot(
 				`

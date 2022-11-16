@@ -28,7 +28,7 @@ describe( 'Settings Page', () => {
 		expect(
 			await page.$eval(
 				'input[name="preferred_languages"]',
-				( el ) => el.value
+				( el: HTMLInputElement ) => el.value
 			)
 		).toStrictEqual( '' );
 
@@ -55,13 +55,13 @@ describe( 'Settings Page', () => {
 
 		const newLocale = await page.$eval(
 			'.inactive-locales-list select',
-			( el ) => el.value
+			( el: HTMLSelectElement ) => el.value
 		);
 
 		await expect( page ).toClick( '[aria-label^="Add to list"]' );
 		const activeLocales = await page.$eval(
 			'input[name="preferred_languages"]',
-			( el ) => el.value
+			( el: HTMLInputElement ) => el.value
 		);
 
 		expect( activeLocales ).toStrictEqual( newLocale );
@@ -91,7 +91,7 @@ describe( 'Settings Page', () => {
 		selectedLocales.push(
 			await page.$eval(
 				'.inactive-locales-list select',
-				( el ) => el.value
+				( el: HTMLSelectElement ) => el.value
 			)
 		);
 		await expect( page ).toClick( '[aria-label^="Add to list"]' );
@@ -99,7 +99,7 @@ describe( 'Settings Page', () => {
 		selectedLocales.push(
 			await page.$eval(
 				'.inactive-locales-list select',
-				( el ) => el.value
+				( el: HTMLSelectElement ) => el.value
 			)
 		);
 		await expect( page ).toClick( '[aria-label^="Add to list"]' );
@@ -107,7 +107,7 @@ describe( 'Settings Page', () => {
 		selectedLocales.push(
 			await page.$eval(
 				'.inactive-locales-list select',
-				( el ) => el.value
+				( el: HTMLSelectElement ) => el.value
 			)
 		);
 		await expect( page ).toClick( '[aria-label^="Add to list"]' );
@@ -115,14 +115,14 @@ describe( 'Settings Page', () => {
 		selectedLocales.push(
 			await page.$eval(
 				'.inactive-locales-list select',
-				( el ) => el.value
+				( el: HTMLSelectElement ) => el.value
 			)
 		);
 		await expect( page ).toClick( '[aria-label^="Add to list"]' );
 
 		const activeLocales = await page.$eval(
 			'input[name="preferred_languages"]',
-			( el ) => el.value
+			( el: HTMLInputElement ) => el.value
 		);
 
 		expect( activeLocales ).toStrictEqual( selectedLocales.join( ',' ) );
@@ -175,7 +175,7 @@ describe( 'Settings Page', () => {
 		expect(
 			await page.$eval(
 				'input[name="preferred_languages"]',
-				( el ) => el.value
+				( el: HTMLInputElement ) => el.value
 			)
 		).toStrictEqual( 'fr_FR,de_CH,de_DE,es_ES' );
 	} );

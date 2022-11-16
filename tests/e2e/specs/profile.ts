@@ -12,7 +12,7 @@ describe( 'User Profile', () => {
 
 		const inactiveLocale = await page.$eval(
 			'.inactive-locales-list select',
-			( el ) => el.value
+			( el: HTMLSelectElement ) => el.value
 		);
 
 		// On the profile page, en_US is the first item in the dropdown by default, which has an empty value.
