@@ -904,7 +904,7 @@ function preferred_languages_display_form( $args = array() ) {
 					<li>
 						<button
 							aria-keyshortcuts="Alt+ArrowUp"
-							aria-label="<?php esc_attr( $label_up ); ?>"
+							aria-label="<?php echo esc_attr( $label_up ); ?>"
 							aria-disabled="false"
 							data-tooltip="Alt+Up"
 							type="button"
@@ -915,7 +915,7 @@ function preferred_languages_display_form( $args = array() ) {
 					<li>
 						<button
 							aria-keyshortcuts="Alt+ArrowDown"
-							aria-label="<?php esc_attr( $label_down ); ?>"
+							aria-label="<?php echo esc_attr( $label_down ); ?>"
 							aria-disabled="false"
 							data-tooltip="Alt+Down"
 							type="button"
@@ -926,7 +926,7 @@ function preferred_languages_display_form( $args = array() ) {
 					<li>
 						<button
 							aria-keyshortcuts="Alt+Delete"
-							aria-label="<?php esc_attr( $label_remove ); ?>"
+							aria-label="<?php echo esc_attr( $label_remove ); ?>"
 							aria-disabled="false"
 							data-tooltip="Alt+Delete"
 							type="button"
@@ -955,7 +955,7 @@ function preferred_languages_display_form( $args = array() ) {
 			<div class="inactive-locales-controls">
 				<button
 					aria-keyshortcuts="Alt+A"
-					aria-label="<?php esc_attr( $label_add ); ?>"
+					aria-label="<?php echo esc_attr( $label_add ); ?>"
 					aria-disabled="false"
 					data-tooltip="Alt+A"
 					type="button"
