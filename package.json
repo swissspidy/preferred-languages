@@ -13,11 +13,14 @@
 	},
 	"homepage": "https://github.com/swissspidy/preferred-languages#readme",
 	"devDependencies": {
-		"@wordpress/a11y": "^3.21.0",
-		"@wordpress/e2e-test-utils": "^8.5.0",
+		"@testing-library/jest-dom": "^5.16.5",
+		"@testing-library/react": "^12.1.5",
+		"@testing-library/user-event": "^14.4.3",
+		"@types/expect-puppeteer": "^5.0.2",
+		"@types/jest-environment-puppeteer": "^5.0.3",
 		"@wordpress/env": "^5.6.0",
-		"@wordpress/i18n": "^4.20.0",
 		"@wordpress/scripts": "^24.5.0",
+		"jest-environment-jsdom": "^29.3.1",
 		"prettier": "npm:wp-prettier@^2.6.2",
 		"rtlcss-webpack-plugin": "^4.0.7"
 	},
@@ -25,16 +28,32 @@
 		"jest": "28.1.2"
 	},
 	"scripts": {
-		"build": "wp-scripts build src/preferred-languages.js",
-		"watch": "wp-scripts build src/preferred-languages.js --watch",
+		"build": "wp-scripts build src/preferred-languages.tsx",
+		"format": "wp-scripts format",
 		"lint:css": "wp-scripts lint-style",
 		"lint:js": "wp-scripts lint-js",
 		"lint:md:docs": "wp-scripts lint-md-docs",
 		"lint:md:js": "wp-scripts lint-md-js",
-		"start": "wp-scripts start src/preferred-languages.js",
+		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"start": "wp-scripts start src/preferred-languages.tsx",
 		"test:e2e": "wp-scripts test-e2e",
 		"test:e2e:help": "wp-scripts test-e2e --help",
 		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e --puppeteer-devtools",
+		"test:unit": "wp-scripts test-unit-js",
+		"test:unit:help": "wp-scripts test-unit-js --help",
+		"test:unit:watch": "wp-scripts test-unit-js --watch",
+		"test:unit:debug": "wp-scripts --inspect-brk test-unit-js --runInBand --no-cache",
 		"wp-env": "wp-env"
+	},
+	"dependencies": {
+		"@wordpress/a11y": "^3.21.0",
+		"@wordpress/components": "^22.0.0",
+		"@wordpress/data": "^7.5.0",
+		"@wordpress/dom-ready": "^3.21.0",
+		"@wordpress/e2e-test-utils": "^8.5.0",
+		"@wordpress/element": "^4.19.0",
+		"@wordpress/i18n": "^4.20.0",
+		"@wordpress/keyboard-shortcuts": "^3.19.0",
+		"@wordpress/keycodes": "^3.21.0"
 	}
 }

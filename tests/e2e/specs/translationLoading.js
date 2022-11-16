@@ -10,24 +10,22 @@ describe( 'Translation Loading', () => {
 	beforeAll( async () => {
 		await visitAdminPage( 'options-general.php' );
 
-		const localesDropdown = await page.$(
-			'#preferred-languages-inactive-locales'
-		);
+		const localesDropdown = await page.$( '.inactive-locales-list select' );
 
 		await localesDropdown.select( 'fr_FR' );
-		await page.click( '.preferred-languages button.locales-add' );
+		await page.click( '[aria-label^="Add to list"]' );
 
 		await localesDropdown.select( 'it_IT' );
-		await page.click( '.preferred-languages button.locales-add' );
+		await page.click( '[aria-label^="Add to list"]' );
 
 		await localesDropdown.select( 'de_CH' );
-		await page.click( '.preferred-languages button.locales-add' );
+		await page.click( '[aria-label^="Add to list"]' );
 
 		await localesDropdown.select( 'de_DE' );
-		await page.click( '.preferred-languages button.locales-add' );
+		await page.click( '[aria-label^="Add to list"]' );
 
 		await localesDropdown.select( 'es_ES' );
-		await page.click( '.preferred-languages button.locales-add' );
+		await page.click( '[aria-label^="Add to list"]' );
 
 		await Promise.all( [
 			page.click( '#submit' ),
