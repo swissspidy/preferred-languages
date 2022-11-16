@@ -11,7 +11,7 @@ describe( 'User Profile', () => {
 		await expect( page ).toMatch( 'Falling back to Site Default.' );
 
 		const inactiveLocale = await page.$eval(
-			'#preferred-languages-inactive-locales',
+			'.inactive-locales-list select',
 			( el ) => el.value
 		);
 

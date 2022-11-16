@@ -1,1 +1,17 @@
-{"translation-revision-date":"2022-11-04 15:00+0100","generator":"WP-CLI\/2.6.0","source":"custom-internationalized-plugin.js","domain":"messages","locale_data":{"messages":{"":{"domain":"messages","lang":"es_ES","plural-forms":"nplurals=2; plural=(n != 1);"},"This is a dummy plugin":["Este es un plugin dummy"],"This is another dummy plugin":["Este es otro plugin dummy"]}}}
+{
+	"translation-revision-date": "2022-11-04 15:00+0100",
+	"generator": "WP-CLI/2.6.0",
+	"source": "custom-internationalized-plugin.js",
+	"domain": "messages",
+	"locale_data": {
+		"messages": {
+			"": {
+				"domain": "messages",
+				"lang": "es_ES",
+				"plural-forms": "nplurals=2; plural=(n != 1);"
+			},
+			"This is a dummy plugin": [ "Este es un plugin dummy" ],
+			"This is another dummy plugin": [ "Este es otro plugin dummy" ]
+		}
+	}
+}
