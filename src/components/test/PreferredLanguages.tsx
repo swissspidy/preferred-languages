@@ -213,6 +213,7 @@ describe( 'PreferredLanguages', () => {
 
 		moveDown();
 		moveDown();
+		moveDown();
 
 		expect(
 			screen.getByRole( 'button', { name: /Move language up/ } )
@@ -224,15 +225,37 @@ describe( 'PreferredLanguages', () => {
 		selectFirst();
 
 		expect(
+			screen.getByRole( 'option', { name: /Français/ } )
+		).toHaveAttribute( 'aria-selected', 'true' );
+
+		selectFirst();
+
+		expect(
+			screen.getByRole( 'option', { name: /Français/ } )
+		).toHaveAttribute( 'aria-selected', 'true' );
+
+		expect(
 			screen.getByRole( 'button', { name: /Move language up/ } )
 		).toBeDisabled();
 
 		selectLast();
 
 		expect(
+			screen.getByRole( 'option', { name: /Deutsch/ } )
+		).toHaveAttribute( 'aria-selected', 'true' );
+
+		selectLast();
+
+		expect(
+			screen.getByRole( 'option', { name: /Deutsch/ } )
+		).toHaveAttribute( 'aria-selected', 'true' );
+
+		expect(
 			screen.getByRole( 'button', { name: /Move language down/ } )
 		).toBeDisabled();
 
+		moveUp();
+		moveUp();
 		moveUp();
 
 		expect(
@@ -248,6 +271,27 @@ describe( 'PreferredLanguages', () => {
 			queryByRole( dropdown, 'option', { name: /Deutsch/ } )
 		).toBeInTheDocument();
 
+		removeLocale();
+		removeLocale();
+
+		expect(
+			screen.getByRole( 'button', { name: /Remove/ } )
+		).toBeDisabled();
+
+		removeLocale();
+
+		expect(
+			screen.getByRole( 'button', { name: /Remove/ } )
+		).toBeDisabled();
+
+		selectFirst();
+
+		selectLast();
+
+		expect(
+			screen.getByRole( 'button', { name: /Remove/ } )
+		).toBeDisabled();
+
 		fireEvent.change( dropdown, { target: { value: 'en_GB' } } );
 		expect( dropdown ).toHaveValue( 'en_GB' );
 
@@ -257,11 +301,19 @@ describe( 'PreferredLanguages', () => {
 			queryByRole( listbox, 'option', { name: /English/ } )
 		).toBeInTheDocument();
 
+		expect( dropdown ).toHaveValue( 'fr_FR' );
+
+		addLocale();
+
 		expect( dropdown ).toHaveValue( 'de_DE' );
 
 		addLocale();
 
 		expect( dropdown ).toHaveValue( 'es_ES' );
+
+		addLocale();
+
+		expect( dropdown ).toHaveValue( 'it_IT' );
 
 		addLocale();
 
