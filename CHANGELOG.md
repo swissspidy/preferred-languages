@@ -6,6 +6,8 @@
 * Minimum WordPress version requirement has been increased to 6.1.
 * Improves robustness when using locale switching.
 * Fixes issue with merging script translations.
+* Completely rewritten UI using React.
+* Remove drag & drop sorting to simplify UI.
 
 ## 1.8.0
 
