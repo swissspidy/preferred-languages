@@ -1,6 +1,7 @@
 .git
 .github
 .idea
+artifacts
 bin
 node_modules
 src
@@ -9,9 +10,11 @@ vendor
 .distignore
 .DS_Store
 .editorconfig
+.eslintrc
 .git-blame-ignore-revs
 .gitattributes
 .gitignore
+.phpunit.result.cache
 .wp-env.json
 codecov.yml
 composer.json
