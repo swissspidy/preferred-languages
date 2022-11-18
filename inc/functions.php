@@ -841,17 +841,17 @@ function preferred_languages_display_form( $args = array() ) {
 			);
 		} elseif ( 'en_US' !== $locale ) {
 			$preferred_languages[] = array(
-				'locale'      => $locale,
-				'nativeName'  => $locale,
-				'lang'        => '',
-				'installed'   => $is_installed,
+				'locale'     => $locale,
+				'nativeName' => $locale,
+				'lang'       => '',
+				'installed'  => $is_installed,
 			);
 		} else {
 			$preferred_languages[] = array(
-				'locale'      => $locale,
-				'nativeName'  => 'English (United States)',
-				'lang'        => 'en',
-				'installed'   => true,
+				'locale'     => $locale,
+				'nativeName' => 'English (United States)',
+				'lang'       => 'en',
+				'installed'  => true,
 			);
 		}
 	}
@@ -877,10 +877,10 @@ function preferred_languages_display_form( $args = array() ) {
 			);
 		} else {
 			$all_languages[] = array(
-				'locale'      => $locale,
-				'nativeName'  => $locale,
-				'lang'        => '',
-				'installed'   => true,
+				'locale'     => $locale,
+				'nativeName' => $locale,
+				'lang'       => '',
+				'installed'  => true,
 			);
 		}
 	}

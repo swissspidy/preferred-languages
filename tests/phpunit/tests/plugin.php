@@ -1193,8 +1193,8 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertStringContainsString( '"lang":"de","installed":true', $script_data[1] );
 		$this->assertStringContainsString( '"lang":"fr","installed":false', $script_data[1] );
 		$this->assertStringContainsString( '"lang":"es","installed":true', $script_data[1] );
-		$this->assertStringContainsString( '{"language":"foo","native_name":"foo","lang":"","installed":false}', $script_data[1] );
-		$this->assertStringContainsString( '{"language":"en_US","native_name":"English (United States)","lang":"en","installed":true}', $script_data[1] );
+		$this->assertStringContainsString( '{"locale":"foo","nativeName":"foo","lang":"","installed":false}', $script_data[1] );
+		$this->assertStringContainsString( '{"locale":"en_US","nativeName":"English (United States)","lang":"en","installed":true}', $script_data[1] );
 	}
 
 
