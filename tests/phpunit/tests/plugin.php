@@ -1150,7 +1150,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_display_form_show_option_en_us() {
 		get_echo(
 			static function() {
-				preferred_languages_display_form( array( 'show_option_en_US' => true ) );
+				preferred_languages_display_form( array( 'show_option_en_us' => true ) );
 			}
 		);
 		$script_data = wp_scripts()->get_data( 'preferred-languages', 'before' );

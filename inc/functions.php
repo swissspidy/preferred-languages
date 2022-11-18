@@ -777,7 +777,7 @@ function preferred_languages_personal_options( $user ) {
 				array(
 					'selected'                 => is_array( $selected ) ? $selected : array(),
 					'show_option_site_default' => true,
-					'show_option_en_US'        => true,
+					'show_option_en_us'        => true,
 				)
 			);
 			?>
@@ -785,13 +785,6 @@ function preferred_languages_personal_options( $user ) {
 	</tr>
 	<?php
 }
-
-/*
- * 'selected'                    => array(),
-			'show_available_translations' => current_user_can( 'install_languages' ),
-			'show_option_en_US'           => false,
-			'show_option_site_default'    => false,
- */
 
 /**
  * Displays the actual form to select the preferred languages.
@@ -804,7 +797,7 @@ function preferred_languages_personal_options( $user ) {
  *     @type array $selected                    List of selected locales.
  *     @type bool  $show_available_translations Whether to show translations that are not currently installed.
  *                                              Default true if the user can install translations.
- *     @type bool  $show_option_en_US           Whether to show an "English (United States)" option.
+ *     @type bool  $show_option_en_us           Whether to show an "English (United States)" option.
  *                                              Default false.
  *     @type bool  $show_option_site_default    Whether to indicate a fallback to the Site Default if the list is empty.
  *                                              Default false.
@@ -819,7 +812,7 @@ function preferred_languages_display_form( $args = array() ) {
 		array(
 			'selected'                    => array(),
 			'show_available_translations' => current_user_can( 'install_languages' ),
-			'show_option_en_US'           => false,
+			'show_option_en_us'           => false,
 			'show_option_site_default'    => false,
 		)
 	);
@@ -833,7 +826,7 @@ function preferred_languages_display_form( $args = array() ) {
 	$has_missing_translations = false;
 
 	foreach ( $args['selected'] as $locale ) {
-		$is_installed = in_array( $locale, $languages, true );
+		$is_installed = 'en_US' === $locale || in_array( $locale, $languages, true );
 
 		if ( ! $is_installed ) {
 			$has_missing_translations = true;
@@ -848,15 +841,15 @@ function preferred_languages_display_form( $args = array() ) {
 			);
 		} elseif ( 'en_US' !== $locale ) {
 			$preferred_languages[] = array(
-				'language'    => $locale,
-				'native_name' => $locale,
+				'locale'      => $locale,
+				'nativeName'  => $locale,
 				'lang'        => '',
 				'installed'   => $is_installed,
 			);
 		} else {
 			$preferred_languages[] = array(
-				'language'    => $locale,
-				'native_name' => 'English (United States)',
+				'locale'      => $locale,
+				'nativeName'  => 'English (United States)',
 				'lang'        => 'en',
 				'installed'   => true,
 			);
@@ -865,9 +858,9 @@ function preferred_languages_display_form( $args = array() ) {
 
 	$all_languages = array();
 
-	if ( $args['show_option_en_US'] ) {
+	if ( $args['show_option_en_us'] ) {
 		$all_languages[] = array(
-			'locale'     => '',
+			'locale'     => 'en_US',
 			'nativeName' => 'English (United States)',
 			'lang'       => 'en',
 			'installed'  => true,
@@ -884,8 +877,8 @@ function preferred_languages_display_form( $args = array() ) {
 			);
 		} else {
 			$all_languages[] = array(
-				'language'    => $locale,
-				'native_name' => $locale,
+				'locale'      => $locale,
+				'nativeName'  => $locale,
 				'lang'        => '',
 				'installed'   => true,
 			);
