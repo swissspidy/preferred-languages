@@ -15,7 +15,7 @@ describe( 'User Profile', () => {
 			( el: HTMLSelectElement ) => el.value
 		);
 
-		// On the profile page, en_US is the first item in the dropdown by default, which has an empty value.
-		expect( inactiveLocale ).toStrictEqual( '' );
+		// On the profile page, en_US is the first item in the dropdown by default.
+		expect( inactiveLocale ).toStrictEqual( 'en_US' );
 	} );
 } );
