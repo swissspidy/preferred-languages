@@ -2,7 +2,7 @@
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, l10n, language, locale, translation
 Tested up to: 6.1
-Stable tag: 1.9.0
+Stable tag: 1.8.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -35,7 +35,6 @@ It provides three parameters:
 **Warning**: Since this is a potentially slow/expensive process involving the loading of multiple translation files, it's recommended to use it
 sparingly and only for specific domains.
 
-
 = Get Involved =
 
 Active development is taking place on [GitHub](https://github.com/swissspidy/preferred-languages).
@@ -53,6 +52,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 1.9.0 =
+= 2.0.0 =
 
-This release improves compatibility with locale switching and WordPress 6.1.
+This release improves compatibility with locale switching and WordPress 6.1, and fixes various bugs.

@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.9.0
+## Unreleased
 
 * Improve compatibility with WordPress 6.1 and `WP_Textdomain_Registry`.
 * Minimum WordPress version requirement has been increased to 6.1.
