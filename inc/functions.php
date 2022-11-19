@@ -650,7 +650,7 @@ function preferred_languages_load_script_translation_file( $file ) {
  * @since 1.0.0
  */
 function preferred_languages_register_scripts() {
-	$asset_file = dirname( __DIR__ ) . '/build/preferred-languages.tsx.asset.php';
+	$asset_file = dirname( __DIR__ ) . '/build/preferred-languages.asset.php';
 	$asset      = is_readable( $asset_file ) ? require $asset_file : array();
 
 	$asset['dependencies'] = isset( $asset['dependencies'] ) ? $asset['dependencies'] : array();
@@ -658,7 +658,7 @@ function preferred_languages_register_scripts() {
 
 	wp_register_script(
 		'preferred-languages',
-		plugins_url( 'build/preferred-languages.tsx.js', __DIR__ ),
+		plugins_url( 'build/preferred-languages.js', __DIR__ ),
 		$asset['dependencies'],
 		$asset['version'],
 		true
@@ -668,7 +668,7 @@ function preferred_languages_register_scripts() {
 
 	wp_register_style(
 		'preferred-languages',
-		plugins_url( 'build/preferred-languages.tsx.css', __DIR__ ),
+		plugins_url( 'build/preferred-languages.css', __DIR__ ),
 		array( 'wp-components' ),
 		$asset['version']
 	);

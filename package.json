@@ -21,6 +21,7 @@
 		"@wordpress/env": "^5.6.0",
 		"@wordpress/scripts": "^24.5.0",
 		"jest-environment-jsdom": "^29.3.1",
+		"mini-css-extract-plugin": "^2.7.0",
 		"prettier": "npm:wp-prettier@^2.6.2",
 		"rtlcss-webpack-plugin": "^4.0.7"
 	},
