@@ -47,7 +47,7 @@
 		"wp-env": "wp-env"
 	},
 	"dependencies": {
-		"@wordpress/a11y": "^3.21.0",
+		"@wordpress/a11y": "^3.22.0",
 		"@wordpress/components": "^22.0.0",
 		"@wordpress/data": "^7.5.0",
 		"@wordpress/dom-ready": "^3.22.0",
