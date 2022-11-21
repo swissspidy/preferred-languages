@@ -19,6 +19,17 @@ That way you can set some sort of "fallback chain" where WordPress tries to load
 
 Please help us test this plugin and let us know if something is not working as you think it should.
 
+**Keyboard Shortcuts**
+
+* <code>Arrow Up</code>: Move selected locale one position up.
+* <code>Arrow Down</code>: Move selected locale one position down.
+* <code>Home</code>: Select first locale in the list.
+* <code>End</code>: Select last locale in the list.
+* <code>Backspace</code>/<code>Delete</code>: remove the selected locale from the list.
+* <code>Alt+A</code>: Add the current locale from the dropdown to the list.
+
+**Note**: the Preferred Languages UI needs to be focused in order for the keyboard shortcuts to work.
+
 **Merging Translations**
 
 By default, only the first available translation for a given locale and domain will be loaded.
