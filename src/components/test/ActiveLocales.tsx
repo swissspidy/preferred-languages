@@ -67,10 +67,10 @@ describe( 'ActiveLocales', () => {
 			screen.getByText( /Falling back to English/ )
 		).toBeInTheDocument();
 		expect(
-			screen.getByRole( 'button', { name: /Move language up/ } )
+			screen.getByRole( 'button', { name: /Move up/ } )
 		).toBeDisabled();
 		expect(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		).toBeDisabled();
 		expect(
 			screen.getByRole( 'button', { name: /Remove/ } )
@@ -91,10 +91,10 @@ describe( 'ActiveLocales', () => {
 			screen.getByText( /Falling back to Site Default/ )
 		).toBeInTheDocument();
 		expect(
-			screen.getByRole( 'button', { name: /Move language up/ } )
+			screen.getByRole( 'button', { name: /Move up/ } )
 		).toBeDisabled();
 		expect(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		).toBeDisabled();
 		expect(
 			screen.getByRole( 'button', { name: /Remove/ } )
@@ -112,10 +112,10 @@ describe( 'ActiveLocales', () => {
 		);
 		expect( screen.queryByText( /Falling back/ ) ).not.toBeInTheDocument();
 		expect(
-			screen.getByRole( 'button', { name: /Move language up/ } )
+			screen.getByRole( 'button', { name: /Move up/ } )
 		).toBeDisabled();
 		expect(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		).toBeDisabled();
 		expect(
 			screen.getByRole( 'button', { name: /Remove/ } )
@@ -132,10 +132,10 @@ describe( 'ActiveLocales', () => {
 			/>
 		);
 		expect(
-			screen.getByRole( 'button', { name: /Move language up/ } )
+			screen.getByRole( 'button', { name: /Move up/ } )
 		).toBeDisabled();
 		expect(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		).toBeEnabled();
 	} );
 
@@ -149,10 +149,10 @@ describe( 'ActiveLocales', () => {
 			/>
 		);
 		expect(
-			screen.getByRole( 'button', { name: /Move language up/ } )
+			screen.getByRole( 'button', { name: /Move up/ } )
 		).toBeEnabled();
 		expect(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		).toBeDisabled();
 	} );
 
@@ -330,7 +330,7 @@ describe( 'ActiveLocales', () => {
 		);
 
 		await userEvent.click(
-			screen.getByRole( 'button', { name: /Move language up/ } )
+			screen.getByRole( 'button', { name: /Move up/ } )
 		);
 
 		expect( speak ).toHaveBeenCalledWith( 'Locale moved up' );
@@ -350,7 +350,7 @@ describe( 'ActiveLocales', () => {
 		);
 
 		await userEvent.click(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		);
 
 		expect( speak ).toHaveBeenCalledWith( 'Locale moved down' );

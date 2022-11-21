@@ -249,12 +249,14 @@ function ActiveControls( {
 						isSecondary
 						showTooltip
 						aria-keyshortcuts="ArrowUp"
-						aria-label={
+						aria-label={ sprintf(
 							/* translators: accessibility text */
-							__( 'Move language up (Up)', 'preferred-languages' )
-						}
+							__( 'Move up (%s)', 'preferred-languages' ),
+							/* translators: keyboard shortcut (Arrow Up) */
+							__( 'Up', 'preferred-languages' )
+						) }
 						label={
-							/* translators: keyboard shortcut */
+							/* translators: keyboard shortcut (Arrow Up) */
 							__( 'Up', 'preferred-languages' )
 						}
 						disabled={ isMoveUpDisabled }
@@ -268,15 +270,14 @@ function ActiveControls( {
 						isSecondary
 						showTooltip
 						aria-keyshortcuts="ArrowDown"
-						aria-label={
+						aria-label={ sprintf(
 							/* translators: accessibility text */
-							__(
-								'Move language down (Down)',
-								'preferred-languages'
-							)
-						}
+							__( 'Move down (%s)', 'preferred-languages' ),
+							/* translators: keyboard shortcut (Arrow Down) */
+							__( 'Down', 'preferred-languages' )
+						) }
 						label={
-							/* translators: keyboard shortcut */
+							/* translators: keyboard shortcut (Arrow Down) */
 							__( 'Down', 'preferred-languages' )
 						}
 						disabled={ isMoveDownDisabled }
@@ -290,15 +291,17 @@ function ActiveControls( {
 						isSecondary
 						showTooltip
 						aria-keyshortcuts="Delete"
-						aria-label={
+						aria-label={ sprintf(
 							/* translators: accessibility text */
 							__(
-								'Remove from list (Delete)',
+								'Remove from list (%s)',
 								'preferred-languages'
-							)
-						}
+							),
+							/* translators: keyboard shortcut (Delete / Backspace) */
+							__( 'Delete', 'preferred-languages' )
+						) }
 						label={
-							/* translators: keyboard shortcut */
+							/* translators: keyboard shortcut (Delete / Backspace) */
 							__( 'Delete', 'preferred-languages' )
 						}
 						disabled={ isRemoveDisabled }

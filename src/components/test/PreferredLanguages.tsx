@@ -203,10 +203,10 @@ describe( 'PreferredLanguages', () => {
 		).toHaveAttribute( 'aria-selected', 'true' );
 
 		expect(
-			screen.getByRole( 'button', { name: /Move language up/ } )
+			screen.getByRole( 'button', { name: /Move up/ } )
 		).toBeDisabled();
 		expect(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		).not.toBeDisabled();
 
 		listbox.focus();
@@ -216,10 +216,10 @@ describe( 'PreferredLanguages', () => {
 		moveDown();
 
 		expect(
-			screen.getByRole( 'button', { name: /Move language up/ } )
+			screen.getByRole( 'button', { name: /Move up/ } )
 		).not.toBeDisabled();
 		expect(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		).toBeDisabled();
 
 		selectFirst();
@@ -235,7 +235,7 @@ describe( 'PreferredLanguages', () => {
 		).toHaveAttribute( 'aria-selected', 'true' );
 
 		expect(
-			screen.getByRole( 'button', { name: /Move language up/ } )
+			screen.getByRole( 'button', { name: /Move up/ } )
 		).toBeDisabled();
 
 		selectLast();
@@ -251,7 +251,7 @@ describe( 'PreferredLanguages', () => {
 		).toHaveAttribute( 'aria-selected', 'true' );
 
 		expect(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		).toBeDisabled();
 
 		moveUp();
@@ -259,7 +259,7 @@ describe( 'PreferredLanguages', () => {
 		moveUp();
 
 		expect(
-			screen.getByRole( 'button', { name: /Move language down/ } )
+			screen.getByRole( 'button', { name: /Move down/ } )
 		).not.toBeDisabled();
 
 		removeLocale();

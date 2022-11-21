@@ -33,15 +33,15 @@ describe( 'Settings Page', () => {
 		).toStrictEqual( '' );
 
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language up (Up)"]'
+			'.preferred-languages [aria-label="Move up (Up)"]'
 		);
 
 		// Form buttons disabled by default.
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language up (Up)"][disabled]'
+			'.preferred-languages [aria-label="Move up (Up)"][disabled]'
 		);
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language down (Down)"][disabled]'
+			'.preferred-languages [aria-label="Move down (Down)"][disabled]'
 		);
 		await expect( page ).toMatchElement(
 			'.preferred-languages [aria-label="Remove from list (Delete)"][disabled]'
@@ -71,10 +71,10 @@ describe( 'Settings Page', () => {
 		);
 
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language up (Up)"][disabled]'
+			'.preferred-languages [aria-label="Move up (Up)"][disabled]'
 		);
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language down (Down)"][disabled]'
+			'.preferred-languages [aria-label="Move down (Down)"][disabled]'
 		);
 		await expect( page ).toMatchElement(
 			'.preferred-languages [aria-label="Remove from list (Delete)"]:not([disabled])'
@@ -132,10 +132,10 @@ describe( 'Settings Page', () => {
 		);
 
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language up (Up)"]:not([disabled])'
+			'.preferred-languages [aria-label="Move up (Up)"]:not([disabled])'
 		);
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language down (Down)"][disabled]'
+			'.preferred-languages [aria-label="Move down (Down)"][disabled]'
 		);
 		await expect( page ).toMatchElement(
 			'.preferred-languages [aria-label="Remove from list (Delete)"]:not([disabled])'
@@ -145,10 +145,10 @@ describe( 'Settings Page', () => {
 		await page.keyboard.press( 'ArrowUp' );
 
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language up (Up)"]:not([disabled])'
+			'.preferred-languages [aria-label="Move up (Up)"]:not([disabled])'
 		);
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language down (Down)"]:not([disabled])'
+			'.preferred-languages [aria-label="Move down (Down)"]:not([disabled])'
 		);
 		await expect( page ).toMatchElement(
 			'.preferred-languages [aria-label="Remove from list (Delete)"]:not([disabled])'
@@ -159,10 +159,10 @@ describe( 'Settings Page', () => {
 		await page.keyboard.press( 'ArrowUp' );
 
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language up (Up)"][disabled]'
+			'.preferred-languages [aria-label="Move up (Up)"][disabled]'
 		);
 		await expect( page ).toMatchElement(
-			'.preferred-languages [aria-label="Move language down (Down)"]:not([disabled])'
+			'.preferred-languages [aria-label="Move down (Down)"]:not([disabled])'
 		);
 		await expect( page ).toMatchElement(
 			'.preferred-languages [aria-label="Remove from list (Delete)"]:not([disabled])'
