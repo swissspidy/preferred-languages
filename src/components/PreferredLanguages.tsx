@@ -122,6 +122,38 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 			)
 	);
 
+	const hasUninstalledPreferredLanguages = preferredLanguages.some(
+		( { installed } ) => ! installed
+	);
+
+	console.log(
+		'hasUninstalledPreferredLanguages',
+		hasUninstalledPreferredLanguages
+	);
+
+	useEffect( () => {
+		if ( ! hasUninstalledPreferredLanguages ) {
+			return;
+		}
+		const addSpinner = () => {
+			// <span class="spinner language-install-spinner is-active" />
+			const spinner = document.createElement( 'span' );
+			spinner.className = 'spinner language-install-spinner is-active';
+
+			document.querySelector( '#submit' ).after( spinner );
+		};
+
+		addSpinner();
+
+		const form = document.querySelector( 'form' );
+
+		form.addEventListener( 'submit', addSpinner );
+
+		return () => {
+			form.removeEventListener( 'submit', addSpinner );
+		};
+	}, [ hasUninstalledPreferredLanguages ] );
+
 	const onAddLanguage = ( locale ) => {
 		setPreferredLanguages( ( current ) => [ ...current, locale ] );
 		setSelectedLanguage( locale );
