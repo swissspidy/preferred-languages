@@ -126,11 +126,6 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 		( { installed } ) => ! installed
 	);
 
-	console.log(
-		'hasUninstalledPreferredLanguages',
-		hasUninstalledPreferredLanguages
-	);
-
 	useEffect( () => {
 		if ( ! hasUninstalledPreferredLanguages ) {
 			return;
