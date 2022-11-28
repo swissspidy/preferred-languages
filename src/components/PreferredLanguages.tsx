@@ -132,14 +132,23 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 		}
 
 		const addSpinner = () => {
-			// <span class="spinner language-install-spinner is-active" />
 			const spinner = document.createElement( 'span' );
 			spinner.className = 'spinner language-install-spinner is-active';
 
-			document.querySelector( '#submit' ).after( spinner );
+			const submit = document.querySelector( '#submit' );
+
+			if ( ! submit ) {
+				return;
+			}
+
+			submit.after( spinner );
 		};
 
 		const form = document.querySelector( 'form' );
+
+		if ( ! form ) {
+			return;
+		}
 
 		form.addEventListener( 'submit', addSpinner );
 
