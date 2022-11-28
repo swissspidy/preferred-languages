@@ -130,6 +130,7 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 		if ( ! hasUninstalledPreferredLanguages ) {
 			return;
 		}
+
 		const addSpinner = () => {
 			// <span class="spinner language-install-spinner is-active" />
 			const spinner = document.createElement( 'span' );
@@ -137,8 +138,6 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 
 			document.querySelector( '#submit' ).after( spinner );
 		};
-
-		addSpinner();
 
 		const form = document.querySelector( 'form' );
 
