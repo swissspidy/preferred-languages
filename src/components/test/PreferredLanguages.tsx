@@ -323,6 +323,28 @@ describe( 'PreferredLanguages', () => {
 
 		expect( dropdown ).toBeDisabled();
 	} );
+
+	it( 'adds a spinner when saving new translations', async () => {
+		const { container } = render(
+			<PreferredLanguages
+				allLanguages={ [ de_DE, es_ES, fr_FR ] }
+				preferredLanguages={ [ es_ES ] }
+			/>,
+			{
+				wrapper: ( { children } ) => (
+					<form onSubmit={ ( e ) => e.preventDefault() }>
+						{ children }
+						<input type="submit" id="submit" value="Submit" />
+					</form>
+				),
+			}
+		);
+
+		const submitButton = screen.getByRole( 'button', { name: 'Submit' } );
+		await userEvent.click( submitButton );
+		const spinner = container.querySelector( '.language-install-spinner' );
+		expect( spinner ).toBeInTheDocument();
+	} );
 } );
 
 /* eslint-enable camelcase */
