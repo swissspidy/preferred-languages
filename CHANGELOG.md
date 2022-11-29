@@ -8,6 +8,7 @@
 * Fixes issue with merging script translations.
 * Completely rewritten UI using React.
 * Remove drag & drop sorting to simplify UI.
+* Show loading spinner when saving settings and installing translations.
 
 ## 1.8.0
 

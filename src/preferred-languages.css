@@ -103,3 +103,10 @@
 .no-js .user-preferred-languages-wrap {
 	display: none;
 }
+
+.language-install-spinner {
+	display: inline-block;
+	float: none;
+	margin: -3px 5px 0;
+	vertical-align: middle;
+}
