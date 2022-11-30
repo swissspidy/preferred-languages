@@ -63,6 +63,24 @@ function preferred_languages_is_locale_switched() {
 }
 
 /**
+ * Returns the user ID if we're currently switched to a specific user's locale.
+ *
+ * @since 2.0.0
+ * @global WP_Locale_Switcher $wp_locale_switcher WordPress locale switcher object.
+ * @see switch_to_user_locale
+ *
+ * @return int|false User ID or false on failure.
+ */
+function preferred_languages_get_locale_switcher_user_id() {
+	/* @var WP_Locale_Switcher $wp_locale_switcher */
+	global $wp_locale_switcher;
+
+	return $wp_locale_switcher &&
+		method_exists( $wp_locale_switcher, 'get_current_user_id' ) ?
+		$wp_locale_switcher->get_current_user_id() : false;
+}
+
+/**
  * Updates the user's set of preferred languages.
  *
  * @since 1.0.0
@@ -159,7 +177,9 @@ function preferred_languages_get_network_list() {
 function preferred_languages_get_list() {
 	$preferred_languages = array();
 
-	if ( is_admin() ) {
+	if ( preferred_languages_get_locale_switcher_user_id() ) {
+		$preferred_languages = preferred_languages_get_user_list( preferred_languages_get_locale_switcher_user_id() );
+	} elseif ( is_admin() ) {
 		$preferred_languages = preferred_languages_get_user_list( get_current_user_id() );
 	}
 
