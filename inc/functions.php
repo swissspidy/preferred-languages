@@ -49,7 +49,7 @@ function preferred_languages_register_meta() {
  * Gracefully handles cases where the function is called too early for
  * locale switching to be ready.
  *
- * @since 1.9.0
+ * @since 2.0.0
  * @global WP_Locale_Switcher $wp_locale_switcher WordPress locale switcher object.
  * @see is_locale_switched
  *
