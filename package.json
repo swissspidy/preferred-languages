@@ -12,9 +12,20 @@
 		"url": "https://github.com/swissspidy/preferred-languages/issues"
 	},
 	"homepage": "https://github.com/swissspidy/preferred-languages#readme",
+	"dependencies": {
+		"@wordpress/a11y": "^3.23.0",
+		"@wordpress/components": "^23.0.0",
+		"@wordpress/data": "^8.0.0",
+		"@wordpress/dom-ready": "^3.23.0",
+		"@wordpress/e2e-test-utils": "^9.0.0",
+		"@wordpress/element": "^5.0.0",
+		"@wordpress/i18n": "^4.23.0",
+		"@wordpress/keyboard-shortcuts": "^4.0.0",
+		"@wordpress/keycodes": "^3.23.0"
+	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^5.16.5",
-		"@testing-library/react": "^12.1.5",
+		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^14.4.3",
 		"@types/expect-puppeteer": "^5.0.2",
 		"@types/jest-environment-puppeteer": "^5.0.3",
@@ -26,7 +37,9 @@
 		"rtlcss-webpack-plugin": "^4.0.7"
 	},
 	"overrides": {
-		"jest": "28.1.2"
+		"jest": "28.1.2",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
 	},
 	"scripts": {
 		"build": "wp-scripts build src/preferred-languages.tsx",
@@ -45,16 +58,5 @@
 		"test:unit:watch": "wp-scripts test-unit-js --watch",
 		"test:unit:debug": "wp-scripts --inspect-brk test-unit-js --runInBand --no-cache",
 		"wp-env": "wp-env"
-	},
-	"dependencies": {
-		"@wordpress/a11y": "^3.23.0",
-		"@wordpress/components": "^23.0.0",
-		"@wordpress/data": "^8.0.0",
-		"@wordpress/dom-ready": "^3.23.0",
-		"@wordpress/e2e-test-utils": "^9.0.0",
-		"@wordpress/element": "^5.0.0",
-		"@wordpress/i18n": "^4.23.0",
-		"@wordpress/keyboard-shortcuts": "^4.0.0",
-		"@wordpress/keycodes": "^3.23.0"
 	}
 }
