@@ -48,7 +48,7 @@
 	},
 	"dependencies": {
 		"@wordpress/a11y": "^3.23.0",
-		"@wordpress/components": "^22.1.0",
+		"@wordpress/components": "^23.0.0",
 		"@wordpress/data": "^7.6.0",
 		"@wordpress/dom-ready": "^3.23.0",
 		"@wordpress/e2e-test-utils": "^9.0.0",
