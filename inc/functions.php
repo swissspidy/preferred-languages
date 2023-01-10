@@ -992,7 +992,7 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
  */
 function preferred_languages_filter_debug_information( $args ) {
 	if ( isset( $args['wp-core']['fields']['site_language']['value'] ) ) {
-		$args['wp-core']['fields']['site_language']['value'] = implode( ', ', preferred_languages_get_site_list() ?: array() );
+		$args['wp-core']['fields']['site_language']['value'] = implode( ', ', preferred_languages_get_site_list() );
 	}
 
 	if ( isset( $args['wp-core']['fields']['user_language']['value'] ) ) {
