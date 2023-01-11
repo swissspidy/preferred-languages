@@ -996,7 +996,10 @@ function preferred_languages_filter_debug_information( $args ) {
 	}
 
 	if ( isset( $args['wp-core']['fields']['user_language']['value'] ) ) {
-		$args['wp-core']['fields']['user_language']['value'] = implode( ', ', preferred_languages_get_user_list() ?: array() );
+		$users = preferred_languages_get_user_list();
+		if ( is_array( $users ) ) {
+			$args['wp-core']['fields']['user_language']['value'] = implode( ', ', $users );
+		}
 	}
 
 	return $args;
