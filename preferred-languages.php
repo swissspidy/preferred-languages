@@ -34,9 +34,9 @@
 /**
  * Plugin functions.
  */
-require_once dirname( __FILE__ ) . '/inc/functions.php';
+require_once __DIR__ . '/inc/functions.php';
 
 /**
  * Adds all plugin actions and filters.
  */
-require_once dirname( __FILE__ ) . '/inc/default-filters.php';
+require_once __DIR__ . '/inc/default-filters.php';
