@@ -24,7 +24,7 @@
 	<!-- We only support the latest major WordPress release. -->
 	<rule ref="WordPress.WP.DeprecatedFunctions">
 		<properties>
-			<property name="minimum_supported_version" value="5.3" />
+			<property name="minimum_supported_version" value="6.1" />
 		</properties>
 	</rule>
 

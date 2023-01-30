@@ -12,21 +12,34 @@
 		"url": "https://github.com/swissspidy/preferred-languages/issues"
 	},
 	"homepage": "https://github.com/swissspidy/preferred-languages#readme",
+	"dependencies": {
+		"@wordpress/a11y": "^3.24.0",
+		"@wordpress/components": "^23.1.0",
+		"@wordpress/data": "^8.1.0",
+		"@wordpress/dom-ready": "^3.23.0",
+		"@wordpress/e2e-test-utils": "^9.1.0",
+		"@wordpress/element": "^5.0.0",
+		"@wordpress/i18n": "^4.24.0",
+		"@wordpress/keyboard-shortcuts": "^4.1.0",
+		"@wordpress/keycodes": "^3.24.0"
+	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^5.16.5",
-		"@testing-library/react": "^12.1.5",
+		"@testing-library/react": "^13.4.0",
 		"@testing-library/user-event": "^14.4.3",
 		"@types/expect-puppeteer": "^5.0.2",
 		"@types/jest-environment-puppeteer": "^5.0.3",
-		"@wordpress/env": "^5.7.0",
-		"@wordpress/scripts": "^24.6.0",
-		"jest-environment-jsdom": "^29.3.1",
-		"mini-css-extract-plugin": "^2.7.0",
+		"@wordpress/env": "^5.9.0",
+		"@wordpress/scripts": "^25.1.0",
+		"jest-environment-jsdom": "^29.4.1",
+		"mini-css-extract-plugin": "^2.7.2",
 		"prettier": "npm:wp-prettier@^2.6.2",
 		"rtlcss-webpack-plugin": "^4.0.7"
 	},
 	"overrides": {
-		"jest": "28.1.2"
+		"jest": "28.1.2",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0"
 	},
 	"scripts": {
 		"build": "wp-scripts build src/preferred-languages.tsx",
@@ -45,16 +58,5 @@
 		"test:unit:watch": "wp-scripts test-unit-js --watch",
 		"test:unit:debug": "wp-scripts --inspect-brk test-unit-js --runInBand --no-cache",
 		"wp-env": "wp-env"
-	},
-	"dependencies": {
-		"@wordpress/a11y": "^3.22.0",
-		"@wordpress/components": "^22.1.0",
-		"@wordpress/data": "^7.6.0",
-		"@wordpress/dom-ready": "^3.22.0",
-		"@wordpress/e2e-test-utils": "^8.6.0",
-		"@wordpress/element": "^4.19.0",
-		"@wordpress/i18n": "^4.22.0",
-		"@wordpress/keyboard-shortcuts": "^3.20.0",
-		"@wordpress/keycodes": "^3.22.0"
 	}
 }
