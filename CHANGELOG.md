@@ -9,6 +9,7 @@
 * Completely rewritten UI using React.
 * Remove drag & drop sorting to simplify UI.
 * Show loading spinner when saving settings and installing translations.
+* Add compatibility with WordPress 6.2 and `switch_to_user_locale`.
 
 ## 1.8.0
 
