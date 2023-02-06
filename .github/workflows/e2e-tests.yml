@@ -59,15 +59,14 @@ jobs:
 
                   WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -1)
                   cd $WP_ENV_DIR
-                  ls -la tests-WordPress/wp-content
                   mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
+                  ls -la tests-WordPress/wp-content/languages
                   docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language core install de_CH de_DE es_ES fr_FR it_IT
+                  ls -la tests-WordPress/wp-content/languages
                   cd -
 
-                  npm run wp-env run tests-cli "ls -la /var/www/html/wp-content"
                   npm run wp-env run tests-cli "ls -la /var/www/html/wp-content/languages"
-                  npm run wp-env run tests-cli "wp language core install de_CH de_DE es_ES fr_FR it_IT"
 
             - name: Run tests
               run: npm run test:e2e -- --runInBand
