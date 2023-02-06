@@ -76,8 +76,8 @@ function preferred_languages_get_locale_switcher_user_id() {
 	global $wp_locale_switcher;
 
 	return $wp_locale_switcher &&
-		method_exists( $wp_locale_switcher, 'get_current_user_id' ) ?
-		$wp_locale_switcher->get_current_user_id() : false;
+		method_exists( $wp_locale_switcher, 'get_switched_user_id' ) ?
+		$wp_locale_switcher->get_switched_user_id() : false;
 }
 
 /**
