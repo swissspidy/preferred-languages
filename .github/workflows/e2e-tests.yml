@@ -54,11 +54,19 @@ jobs:
             # and https://github.com/WordPress/gutenberg/tree/trunk/packages/env#installing-a-plugin-or-theme-on-the-development-instance
             - name: Prepare tests
               run: |
+                  npm run wp-env run tests-cli "whoami"
+                  npm run wp-env run tests-cli "ls -la /var/www/html"
+
                   WP_ENV_DIR=$(npm run wp-env install-path --silent 2>&1 | head -1)
                   cd $WP_ENV_DIR
+                  ls -la tests-WordPress/wp-content
                   mkdir -p tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
                   chmod -R 767 tests-WordPress/wp-content/languages tests-WordPress/wp-content/upgrade
+                  docker-compose run --rm -u $(id -u) -e HOME=/tmp tests-cli wp language core install de_CH de_DE es_ES fr_FR it_IT
                   cd -
+
+                  npm run wp-env run tests-cli "ls -la /var/www/html/wp-content"
+                  npm run wp-env run tests-cli "ls -la /var/www/html/wp-content/languages"
                   npm run wp-env run tests-cli "wp language core install de_CH de_DE es_ES fr_FR it_IT"
 
             - name: Run tests
