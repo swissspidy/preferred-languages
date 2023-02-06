@@ -38,6 +38,10 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->download_language_packs_action = new MockAction();
 
 		add_filter( 'preferred_languages_download_language_packs', array( $this->download_language_packs_action, 'filter' ) );
+
+		// Prevents WP_Language_Pack_Upgrader from downloading and overriding language packs.
+		add_filter( 'file_mod_allowed', array( $this, 'filter_file_mod_allowed' ), 10, 2 );
+		add_filter( 'upgrader_pre_install', array( $this, 'filter_upgrader_pre_install' ) );
 	}
 
 	public function tear_down() {
@@ -47,6 +51,25 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->rmdir( WP_LANG_DIR );
 
 		parent::tear_down();
+	}
+
+	public function filter_file_mod_allowed( $file_mod_allowed, $context ) {
+		if ( 'download_language_pack' === $context ) {
+			return false;
+		}
+
+		return $file_mod_allowed;
+	}
+
+	/**
+	 * Filters the installation response before the installation has started.
+	 *
+	 * Short-circuit the installation by returning a WP_Error.
+	 *
+	 * @param bool|WP_Error $response Installation response.
+	 */
+	public function filter_upgrader_pre_install( $response ) {
+		return new WP_Error( 'disabled_for_tests', 'Do not actually download language packs for tests' );
 	}
 
 	public function grant_do_not_allow( $allcaps ) {
@@ -288,9 +311,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_get_list
 	 */
 	public function test_get_list() {
-		wp_set_current_user( self::$administrator );
 		update_user_meta( self::$administrator, 'preferred_languages', 'de_DE,fr_FR' );
 		update_option( 'preferred_languages', 'es_ES' );
+		wp_set_current_user( self::$administrator );
 
 		$expected = array( 'es_ES' );
 
@@ -301,9 +324,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_get_list
 	 */
 	public function test_get_list_network() {
-		wp_set_current_user( self::$administrator );
 		update_user_meta( self::$administrator, 'preferred_languages', 'de_DE,fr_FR' );
 		update_site_option( 'preferred_languages', 'es_ES' );
+		wp_set_current_user( self::$administrator );
 
 		$expected = array( 'es_ES' );
 
@@ -726,10 +749,22 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_download_language_packs() {
 		wp_set_current_user( self::$administrator );
 
+		add_filter( 'get_available_languages', array( $this, 'filter_get_available_languages' ) );
+
 		$expected = array( 'de_DE', 'fr_FR' );
 		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
 
+		remove_filter( 'get_available_languages', array( $this, 'filter_get_available_languages' ) );
+
+		$this->assertSame( 1, $this->download_language_packs_action->get_call_count() );
 		$this->assertSameSets( $expected, $actual );
+	}
+
+	/**
+	 * Filters the list of available language codes.
+	 */
+	public function filter_get_available_languages() {
+		return array( 'de_DE', 'fr_FR' );
 	}
 
 	/**
@@ -753,8 +788,12 @@ class Plugin_Test extends WP_UnitTestCase {
 		wp_set_current_user( self::$administrator );
 		grant_super_admin( self::$administrator );
 
+		add_filter( 'get_available_languages', array( $this, 'filter_get_available_languages' ) );
+
 		$expected = array( 'de_DE', 'fr_FR' );
 		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
+
+		remove_filter( 'get_available_languages', array( $this, 'filter_get_available_languages' ) );
 
 		$this->assertSameSets( $expected, $actual );
 	}
@@ -779,21 +818,6 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_download_language_packs
-	 * @group ms-excluded
-	 */
-	public function test_download_language_packs_no_available() {
-		wp_set_current_user( self::$administrator );
-
-		add_filter( 'get_available_languages', '__return_empty_array' );
-
-		$expected = array( 'de_DE', 'fr_FR' );
-		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
-
-		$this->assertSameSets( $expected, $actual );
-	}
-
-	/**
-	 * @covers ::preferred_languages_download_language_packs
 	 * @group ms-required
 	 */
 	public function test_download_language_packs_no_available_multisite_no_super_admin() {
@@ -803,23 +827,9 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$actual = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
 
+		remove_filter( 'get_available_languages', '__return_empty_array' );
+
 		$this->assertEmpty( $actual );
-	}
-
-	/**
-	 * @covers ::preferred_languages_download_language_packs
-	 * @group ms-required
-	 */
-	public function test_download_language_packs_no_available_multisite() {
-		wp_set_current_user( self::$administrator );
-		grant_super_admin( self::$administrator );
-
-		add_filter( 'get_available_languages', '__return_empty_array' );
-
-		$expected = array( 'de_DE', 'fr_FR' );
-		$actual   = preferred_languages_download_language_packs( array( 'de_DE', 'fr_FR' ) );
-
-		$this->assertSameSets( $expected, $actual );
 	}
 
 	/**
