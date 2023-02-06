@@ -16,6 +16,7 @@ vendor
 .gitignore
 .phpunit.result.cache
 .wp-env.json
+.wp-env.override.json
 codecov.yml
 composer.json
 composer.lock
