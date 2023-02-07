@@ -110,3 +110,8 @@
 	margin: -3px 5px 0;
 	vertical-align: middle;
 }
+
+/* Workaround for https://core.trac.wordpress.org/ticket/57644 */
+.language-install-spinner:not(.preferred-languages-spinner) {
+	display: none;
+}

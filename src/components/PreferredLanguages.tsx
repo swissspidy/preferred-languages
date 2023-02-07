@@ -133,7 +133,8 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 
 		const addSpinner = () => {
 			const spinner = document.createElement( 'span' );
-			spinner.className = 'spinner language-install-spinner is-active';
+			spinner.className =
+				'spinner language-install-spinner is-active preferred-languages-spinner';
 
 			const submit = document.querySelector( '#submit' );
 
