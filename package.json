@@ -31,7 +31,7 @@
 		"@types/jest-environment-puppeteer": "^5.0.3",
 		"@wordpress/env": "^5.11.0",
 		"@wordpress/scripts": "^25.3.0",
-		"jest-environment-jsdom": "^29.4.1",
+		"jest-environment-jsdom": "^29.4.2",
 		"mini-css-extract-plugin": "^2.7.2",
 		"prettier": "npm:wp-prettier@^2.6.2",
 		"rtlcss-webpack-plugin": "^4.0.7"
