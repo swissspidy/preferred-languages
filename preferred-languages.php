@@ -39,4 +39,6 @@ require_once __DIR__ . '/inc/functions.php';
 /**
  * Adds all plugin actions and filters.
  */
-require_once __DIR__ . '/inc/default-filters.php';
+add_action( 'plugins_loaded', function () {
+	require_once __DIR__ . '/inc/default-filters.php';
+}, 10, 0 );
