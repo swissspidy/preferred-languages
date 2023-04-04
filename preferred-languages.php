@@ -36,6 +36,12 @@
  */
 require_once __DIR__ . '/inc/functions.php';
 
+
+/**
+ * Preferred_Languages_PHP_MO class.
+ */
+require_once __DIR__ . '/inc/class-preferred-languages-php-mo.php';
+
 /**
  * Adds all plugin actions and filters.
  */

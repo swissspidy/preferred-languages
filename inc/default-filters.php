@@ -35,3 +35,5 @@ add_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script
 add_filter( 'load_script_translation_file', 'preferred_languages_load_script_translation_file' );
 
 add_filter( 'debug_information', 'preferred_languages_filter_debug_information' );
+
+add_action( 'upgrader_process_complete', 'preferred_languages_upgrader_process_complete', 10, 2 );

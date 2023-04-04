@@ -437,6 +437,141 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
 }
 
 /**
+ * Outputs or returns a parsable string representation of a variable.
+ *
+ * Like {@see var_export()} but "minified".
+ *
+ * @since 2.1.0
+ *
+ * @param mixed $value The variable you want to export.
+ * @param bool $return Optional. Whether to return the variable representation instead of outputing it. Default false.
+ * @return string|void The variable representation or void.
+ */
+function preferred_languages_var_export( $value, $return = false ) {
+	if ( is_array( $value ) ) {
+		$entries = array();
+		foreach ( $value as $key => $val ) {
+			$entries[] = var_export( $key, true ) . '=>'. preferred_languages_var_export( $val, true );
+		}
+
+		$code = '[' . implode( ',', $entries ) . ']';
+		if ( $return ) {
+			return $code;
+		}
+
+		echo $code;
+	} else {
+		return var_export($value, $return);
+	}
+}
+
+/**
+ * Creates a PHP translation file for a given MO file.
+ *
+ * @since 2.1.0
+ *
+ * @param string $mofile MO file path.
+ * @return void
+ */
+function preferred_languages_create_php_file_from_mo_file( $mofile ) {
+	$mo     = new MO();
+	$result = $mo->import_from_file( $mofile );
+
+	if ( ! $result ) {
+		return;
+	}
+
+	$po_file_data =  array(
+			"translation-revision-data" => "+0000",
+			"generator" => "WordPress/" . get_bloginfo( 'version' ),
+			"domain" => "messages",
+			"locale_data" => array(
+					"messages" => array(
+							"" => array(
+									"domain" => "messages",
+							)
+					)
+			)
+	);
+
+	/**
+	 * @var Translation_Entry $entry
+	 */
+	foreach ( $mo->entries as $key => $entry ) {
+		$po_file_data['locale_data']['messages'][$key] = $entry->translations;
+	}
+
+	$language = $mo->get_header( 'Language' );
+
+	if ( $language ) {
+		$po_file_data['locale_data']['messages']['']['lang'] = $language;
+	}
+
+	$plural_form = $mo->get_header('Plural-Forms');
+
+	if ( $plural_form ) {
+		$po_file_data['locale_data']['messages']['']['plural-forms'] = $plural_form;
+	}
+
+	file_put_contents(
+			str_replace( '.mo', '.php', $mofile ),
+			'<?php ' . PHP_EOL . 'return ' . preferred_languages_var_export( $po_file_data, true ) . ';' . PHP_EOL
+	);
+}
+
+/**
+ * Fires when the upgrader process is complete.
+ *
+ * See also {@see 'upgrader_package_options'}.
+ *
+ * @since 2.1.0
+ *
+ * @param WP_Upgrader $upgrader   WP_Upgrader instance. In other contexts this might be a
+ *                                Theme_Upgrader, Plugin_Upgrader, Core_Upgrade, or Language_Pack_Upgrader instance.
+ * @param array       $hook_extra {
+ *     Array of bulk item update data.
+ *
+ *     @type string $action       Type of action. Default 'update'.
+ *     @type string $type         Type of update process. Accepts 'plugin', 'theme', 'translation', or 'core'.
+ *     @type bool   $bulk         Whether the update process is a bulk update. Default true.
+ *     @type array  $plugins      Array of the basename paths of the plugins' main files.
+ *     @type array  $themes       The theme slugs.
+ *     @type array  $translations {
+ *         Array of translations update data.
+ *
+ *         @type string $language The locale the translation is for.
+ *         @type string $type     Type of translation. Accepts 'plugin', 'theme', or 'core'.
+ *         @type string $slug     Text domain the translation is for. The slug of a theme/plugin or
+ *                                'default' for core translations.
+ *         @type string $version  The version of a theme, plugin, or core.
+ *     }
+ * }
+ */
+function preferred_languages_upgrader_process_complete( $upgrader, $hook_extra ) {
+	if ( $hook_extra['type'] !== 'translation' || empty( $hook_extra['translations'] ) ) {
+		return;
+	}
+
+	foreach( $hook_extra['translations'] as $translation ) {
+		switch ( $translation['type'] ) {
+			case 'plugin':
+				$file = WP_LANG_DIR . '/plugins/' . $translation['slug'] . '-' . $translation['language'] . '.mo';
+				break;
+			case 'theme':
+				$file = WP_LANG_DIR . '/themes/' . $translation['slug'] . '-' . $translation['language'] . '.mo';
+				break;
+			default:
+				$file = WP_LANG_DIR . '/' . $translation['language'] . '.mo';
+				break;
+		}
+
+		if ( file_exists( $file ) ) {
+			preferred_languages_create_php_file_from_mo_file( $file );
+		}
+	}
+}
+
+/**
  * Filters whether to override the .mo file loading.
  *
  * Used for supporting translation merging.
@@ -449,6 +584,10 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
  * @return bool Whether to override the .mo file loading.
  */
 function preferred_languages_override_load_textdomain( $override, $domain, $mofile ) {
+	global $l10n, $l10n_unloaded, $wp_textdomain_registry;
+
+	do_action( 'qm/start', 'preferred_languages_override_load_textdomain:' . $domain );
+
 	$current_locale = determine_locale();
 
 	/**
@@ -486,6 +625,37 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		$preferred_mofile = str_replace( $current_locale, $locale, $mofile );
 
 		if ( is_readable( $preferred_mofile ) ) {
+			$php_mo = str_replace( '.mo', '.php', $preferred_mofile );
+
+			if ( ! file_exists( $php_mo ) ) {
+				preferred_languages_create_php_file_from_mo_file( $preferred_mofile );
+			}
+
+			if ( file_exists( $php_mo ) ) {
+				$mo     = new Preferred_Languages_PHP_MO();
+				$result = $mo->import_from_file( $php_mo );
+
+				if ( ! $result ) {
+					$wp_textdomain_registry->set( $domain, $locale, false );
+				} else {
+					if ( isset( $l10n[ $domain ] ) ) {
+						$mo->merge_with( $l10n[ $domain ] );
+					}
+
+					unset( $l10n_unloaded[ $domain ] );
+
+					$l10n[ $domain ] = $mo;
+
+					$wp_textdomain_registry->set( $domain, $locale, dirname( $preferred_mofile ) );
+				}
+
+				if ( null === $first_mofile ) {
+					$first_mofile = $preferred_mofile;
+				}
+
+				continue;
+			}
+
 			$loaded = load_textdomain( $domain, $preferred_mofile );
 
 			if ( ! $loaded ) {
@@ -500,6 +670,8 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 
 	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 3 );
 	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
+
+	do_action( 'qm/stop', 'preferred_languages_override_load_textdomain:' . $domain );
 
 	if ( null !== $first_mofile ) {
 		return true;
