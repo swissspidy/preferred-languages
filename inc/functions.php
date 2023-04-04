@@ -443,25 +443,25 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
  *
  * @since 2.1.0
  *
- * @param mixed $value The variable you want to export.
- * @param bool $return Optional. Whether to return the variable representation instead of outputing it. Default false.
+ * @param mixed $value       The variable you want to export.
+ * @param bool  $return_only Optional. Whether to return the variable representation instead of outputing it. Default false.
  * @return string|void The variable representation or void.
  */
-function preferred_languages_var_export( $value, $return = false ) {
+function preferred_languages_var_export( $value, $return_only = false ) {
 	if ( is_array( $value ) ) {
 		$entries = array();
 		foreach ( $value as $key => $val ) {
-			$entries[] = var_export( $key, true ) . '=>'. preferred_languages_var_export( $val, true );
+			$entries[] = var_export( $key, true ) . '=>' . preferred_languages_var_export( $val, true );
 		}
 
 		$code = '[' . implode( ',', $entries ) . ']';
-		if ( $return ) {
+		if ( $return_only ) {
 			return $code;
 		}
 
 		echo $code;
 	} else {
-		return var_export($value, $return);
+		return var_export( $value, $return_only );
 	}
 }
 
@@ -481,24 +481,26 @@ function preferred_languages_create_php_file_from_mo_file( $mofile ) {
 		return;
 	}
 
-	$po_file_data =  array(
-			"translation-revision-data" => "+0000",
-			"generator" => "WordPress/" . get_bloginfo( 'version' ),
-			"domain" => "messages",
-			"locale_data" => array(
-					"messages" => array(
-							"" => array(
-									"domain" => "messages",
-							)
-					)
-			)
+	$po_file_data = array(
+		'translation-revision-data' => '+0000',
+		'generator'                 => 'WordPress/' . get_bloginfo( 'version' ),
+		'domain'                    => 'messages',
+		'locale_data'               => array(
+			'messages' => array(
+				'' => array(
+					'domain' => 'messages',
+				),
+			),
+		),
 	);
 
 	/**
+	 * Translation entry.
+	 *
 	 * @var Translation_Entry $entry
 	 */
 	foreach ( $mo->entries as $key => $entry ) {
-		$po_file_data['locale_data']['messages'][$key] = $entry->translations;
+		$po_file_data['locale_data']['messages'][ $key ] = $entry->translations;
 	}
 
 	$language = $mo->get_header( 'Language' );
@@ -507,15 +509,15 @@ function preferred_languages_create_php_file_from_mo_file( $mofile ) {
 		$po_file_data['locale_data']['messages']['']['lang'] = $language;
 	}
 
-	$plural_form = $mo->get_header('Plural-Forms');
+	$plural_form = $mo->get_header( 'Plural-Forms' );
 
 	if ( $plural_form ) {
 		$po_file_data['locale_data']['messages']['']['plural-forms'] = $plural_form;
 	}
 
 	file_put_contents(
-			str_replace( '.mo', '.php', $mofile ),
-			'<?php ' . PHP_EOL . 'return ' . preferred_languages_var_export( $po_file_data, true ) . ';' . PHP_EOL
+		str_replace( '.mo', '.php', $mofile ),
+		'<?php ' . PHP_EOL . 'return ' . preferred_languages_var_export( $po_file_data, true ) . ';' . PHP_EOL
 	);
 }
 
@@ -548,11 +550,11 @@ function preferred_languages_create_php_file_from_mo_file( $mofile ) {
  * }
  */
 function preferred_languages_upgrader_process_complete( $upgrader, $hook_extra ) {
-	if ( $hook_extra['type'] !== 'translation' || empty( $hook_extra['translations'] ) ) {
+	if ( 'translation' !== $hook_extra['type'] || empty( $hook_extra['translations'] ) ) {
 		return;
 	}
 
-	foreach( $hook_extra['translations'] as $translation ) {
+	foreach ( $hook_extra['translations'] as $translation ) {
 		switch ( $translation['type'] ) {
 			case 'plugin':
 				$file = WP_LANG_DIR . '/plugins/' . $translation['slug'] . '-' . $translation['language'] . '.mo';

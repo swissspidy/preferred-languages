@@ -38,9 +38,9 @@ class Preferred_Languages_PHP_MO extends Gettext_Translations {
 	}
 
 	/**
-	 * Fills up with the entries from MO file $filename
+	 * Fills up with the entries from MO file $filename.
 	 *
-	 * @param string $filename MO file to load
+	 * @param string $filename MO file to load.
 	 * @return bool True if the import from file was successful, otherwise false.
 	 */
 	public function import_from_file( $filename ) {
@@ -50,18 +50,18 @@ class Preferred_Languages_PHP_MO extends Gettext_Translations {
 
 		$this->filename = (string) $filename;
 
-		$translations = include( $filename );
+		$translations = include $filename;
 
 		$headers = array(
 			'PO-Revision-Date' => $translations['translation-revision-data'],
-			'X-Generator' => $translations['generator'],
-			'Plural-Forms' => $translations['locale_data']['messages']['']['plural-forms'],
-			'Language' => $translations['locale_data']['messages']['']['lang'],
+			'X-Generator'      => $translations['generator'],
+			'Plural-Forms'     => $translations['locale_data']['messages']['']['plural-forms'],
+			'Language'         => $translations['locale_data']['messages']['']['lang'],
 		);
 
 		$this->set_headers( array_filter( $headers ) );
 
-		foreach( $translations['locale_data']['messages'] as $original => $translation ) {
+		foreach ( $translations['locale_data']['messages'] as $original => $translation ) {
 			if ( '' === $original ) {
 				continue;
 			}
@@ -79,10 +79,10 @@ class Preferred_Languages_PHP_MO extends Gettext_Translations {
 	 * found in a MO file
 	 *
 	 * @static
-	 * @param string $original original string to translate from MO file. Might contain
-	 *  0x04 as context separator or 0x00 as singular/plural separator
+	 * @param string $original    Original string to translate from MO file. Might contain
+	 *                            0x04 as context separator or 0x00 as singular/plural separator.
 	 * @param string $translation translation string from MO file. Might contain
-	 *  0x00 as a plural translations separator
+	 *                            0x00 as a plural translations separator.
 	 * @return Translation_Entry Entry instance.
 	 */
 	public function &make_entry( $original, $translation ) {
@@ -108,15 +108,19 @@ class Preferred_Languages_PHP_MO extends Gettext_Translations {
 	}
 
 	/**
-	 * @param int $count
-	 * @return string
+	 * Get the plural form for a given count.
+	 *
+	 * @param int $count Count.
+	 * @return string Plural form.
 	 */
 	public function select_plural_form( $count ) {
 		return $this->gettext_select_plural_form( $count );
 	}
 
 	/**
-	 * @return int
+	 * Returns the plural forms count.
+	 *
+	 * @return int Plural forms count.
 	 */
 	public function get_plural_forms_count() {
 		return $this->_nplurals;
