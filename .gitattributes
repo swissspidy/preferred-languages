@@ -6,3 +6,5 @@ codecov.yml export-ignore
 package.json export-ignore
 package-lock.json export-ignore
 *.xml.dist export-ignore
+tests/e2e/plugins/custom-internationalized-plugin/languages/custom-internationalized-plugin-de_DE.php linguist-generated=true
+tests/e2e/plugins/custom-internationalized-plugin/languages/custom-internationalized-plugin-es_ES.php linguist-generated=true
