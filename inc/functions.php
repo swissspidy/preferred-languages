@@ -515,6 +515,7 @@ function preferred_languages_create_php_file_from_mo_file( $mofile ) {
 		$po_file_data['locale_data']['messages']['']['plural-forms'] = $plural_form;
 	}
 
+	// TODO: Use WP_Filesystem instead.
 	file_put_contents(
 		str_replace( '.mo', '.php', $mofile ),
 		'<?php ' . PHP_EOL . 'return ' . preferred_languages_var_export( $po_file_data, true ) . ';' . PHP_EOL
@@ -522,9 +523,7 @@ function preferred_languages_create_php_file_from_mo_file( $mofile ) {
 }
 
 /**
- * Fires when the upgrader process is complete.
- *
- * See also {@see 'upgrader_package_options'}.
+ * Creates PHP translation files after the translation updates process.
  *
  * @since 2.1.0
  *
@@ -588,8 +587,6 @@ function preferred_languages_upgrader_process_complete( $upgrader, $hook_extra )
 function preferred_languages_override_load_textdomain( $override, $domain, $mofile ) {
 	global $l10n, $l10n_unloaded, $wp_textdomain_registry;
 
-	do_action( 'qm/start', 'preferred_languages_override_load_textdomain:' . $domain );
-
 	$current_locale = determine_locale();
 
 	/**
@@ -637,6 +634,8 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 				$mo     = new Preferred_Languages_PHP_MO();
 				$result = $mo->import_from_file( $php_mo );
 
+				// This part here basically does the same as `load_textdomain()`
+				// by merging existing translations and updating the registry.
 				if ( ! $result ) {
 					$wp_textdomain_registry->set( $domain, $locale, false );
 				} else {
@@ -672,8 +671,6 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 
 	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 3 );
 	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
-
-	do_action( 'qm/stop', 'preferred_languages_override_load_textdomain:' . $domain );
 
 	if ( null !== $first_mofile ) {
 		return true;

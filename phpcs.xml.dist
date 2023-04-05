@@ -22,11 +22,7 @@
 	</rule>
 
 	<!-- We only support the latest major WordPress release. -->
-	<rule ref="WordPress.WP.DeprecatedFunctions">
-		<properties>
-			<property name="minimum_supported_version" value="6.1" />
-		</properties>
-	</rule>
+	<config name="minimum_wp_version" value="6.1" />
 
 	<!-- Check all PHP files in directory tree by default. -->
 	<arg name="extensions" value="php"/>
