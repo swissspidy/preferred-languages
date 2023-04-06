@@ -481,45 +481,10 @@ function preferred_languages_create_php_file_from_mo_file( $mofile ) {
 		return;
 	}
 
-	$po_file_data = array(
-		'translation-revision-data' => '+0000',
-		'generator'                 => 'WordPress/' . get_bloginfo( 'version' ),
-		'domain'                    => 'messages',
-		'locale_data'               => array(
-			'messages' => array(
-				'' => array(
-					'domain' => 'messages',
-				),
-			),
-		),
-	);
+	$php_mo = new Preferred_Languages_PHP_MO();
+	$php_mo->merge_with( $mo );
 
-	/**
-	 * Translation entry.
-	 *
-	 * @var Translation_Entry $entry
-	 */
-	foreach ( $mo->entries as $key => $entry ) {
-		$po_file_data['locale_data']['messages'][ $key ] = $entry->translations;
-	}
-
-	$language = $mo->get_header( 'Language' );
-
-	if ( $language ) {
-		$po_file_data['locale_data']['messages']['']['lang'] = $language;
-	}
-
-	$plural_form = $mo->get_header( 'Plural-Forms' );
-
-	if ( $plural_form ) {
-		$po_file_data['locale_data']['messages']['']['plural-forms'] = $plural_form;
-	}
-
-	// TODO: Use WP_Filesystem instead.
-	file_put_contents(
-		str_replace( '.mo', '.php', $mofile ),
-		'<?php ' . PHP_EOL . 'return ' . preferred_languages_var_export( $po_file_data, true ) . ';' . PHP_EOL
-	);
+	$php_mo->export_to_file( str_replace( '.mo', '.php', $mofile ) );
 }
 
 /**

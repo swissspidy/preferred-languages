@@ -55,8 +55,8 @@ class Preferred_Languages_PHP_MO extends Gettext_Translations {
 		$headers = array(
 			'PO-Revision-Date' => $translations['translation-revision-data'],
 			'X-Generator'      => $translations['generator'],
-			'Plural-Forms'     => $translations['locale_data']['messages']['']['plural-forms'],
-			'Language'         => $translations['locale_data']['messages']['']['lang'],
+			'Plural-Forms'     => isset( $translations['locale_data']['messages']['']['plural-forms'] ) ? $translations['locale_data']['messages']['']['plural-forms'] : '',
+			'Language'         => isset( $translations['locale_data']['messages']['']['lang'] ) ? $translations['locale_data']['messages']['']['lang'] : '',
 		);
 
 		$this->set_headers( array_filter( $headers ) );
@@ -72,6 +72,62 @@ class Preferred_Languages_PHP_MO extends Gettext_Translations {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @param string $filename File name.
+	 * @return bool True on success, false on failure.
+	 */
+	public function export_to_file( $filename ) {
+		$fh = fopen( $filename, 'wb' );
+		if ( ! $fh ) {
+			return false;
+		}
+
+		$po_file_data = array(
+			'translation-revision-data' => '+0000',
+			'generator'                 => 'WordPress/' . get_bloginfo( 'version' ),
+			'domain'                    => 'messages',
+			'locale_data'               => array(
+				'messages' => array(
+					'' => array(
+						'domain' => 'messages',
+					),
+				),
+			),
+		);
+
+		/**
+		 * Translation entry.
+		 *
+		 * @var Translation_Entry $entry
+		 */
+		foreach ( $this->entries as $key => $entry ) {
+			if ( empty( array_filter( $entry->translations ) ) ) {
+				continue;
+			}
+			$po_file_data['locale_data']['messages'][ $key ] = $entry->translations;
+		}
+
+		$language = $this->get_header( 'Language' );
+
+		if ( $language ) {
+			$po_file_data['locale_data']['messages']['']['lang'] = $language;
+		}
+
+		$plural_form = $this->get_header( 'Plural-Forms' );
+
+		if ( $plural_form ) {
+			$po_file_data['locale_data']['messages']['']['plural-forms'] = $plural_form;
+		}
+
+		$export = '<?php ' . PHP_EOL . 'return ' . preferred_languages_var_export( $po_file_data, true ) . ';' . PHP_EOL;
+
+		$res = fwrite( $fh, $export );
+
+		fclose( $fh );
+
+		return $res;
 	}
 
 	/**
