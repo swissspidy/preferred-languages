@@ -75,6 +75,8 @@ class Preferred_Languages_PHP_MO extends Gettext_Translations {
 	}
 
 	/**
+	 * Export entries to file.
+	 *
 	 * @param string $filename File name.
 	 * @return bool True on success, false on failure.
 	 */
