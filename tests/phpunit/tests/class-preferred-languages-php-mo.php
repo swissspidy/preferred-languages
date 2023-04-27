@@ -1,6 +1,12 @@
 <?php
 
+/**
+ * @coversDefaultClass Preferred_Languages_PHP_MO
+ */
 class Preferred_Languages_PHP_MO_Test extends WP_UnitTestCase {
+	/**
+	 * @covers ::import_from_file
+	 */
 	public function test_simple() {
 		$mo = new Preferred_Languages_PHP_MO();
 		$mo->import_from_file( DIR_PL_TESTDATA . '/pomo/simple.php' );
@@ -9,6 +15,9 @@ class Preferred_Languages_PHP_MO_Test extends WP_UnitTestCase {
 		$this->assertSame( array( 'yes' ), $mo->entries["kuku\nruku"]->translations );
 	}
 
+	/**
+	 * @covers ::import_from_file
+	 */
 	public function test_plural() {
 		$mo = new Preferred_Languages_PHP_MO();
 		$mo->import_from_file( DIR_PL_TESTDATA . '/pomo/plural.php' );
@@ -35,6 +44,9 @@ class Preferred_Languages_PHP_MO_Test extends WP_UnitTestCase {
 		$this->assertSame( 'twoey dragoney', $mo->translate_plural( 'one dragon', '%d dragons', -8 ) );
 	}
 
+	/**
+	 * @covers ::import_from_file
+	 */
 	public function test_context() {
 		$mo = new Preferred_Languages_PHP_MO();
 		$mo->import_from_file( DIR_PL_TESTDATA . '/pomo/context.php' );
@@ -74,6 +86,9 @@ class Preferred_Languages_PHP_MO_Test extends WP_UnitTestCase {
 		$this->assertSame( array(), array_diff( array( 'pink', 'green', 'red' ), array_keys( $host->entries ) ) );
 	}
 
+	/**
+	 * @covers ::export_to_file
+	 */
 	public function test_export_php_file() {
 		$entries              = array();
 		$entries[]            = new Translation_Entry(
@@ -134,6 +149,9 @@ class Preferred_Languages_PHP_MO_Test extends WP_UnitTestCase {
 		}
 	}
 
+	/**
+	 * @covers ::export_to_file
+	 */
 	public function test_export_should_not_include_empty_translations() {
 		$mo = new Preferred_Languages_PHP_MO();
 		$mo->add_entry(
