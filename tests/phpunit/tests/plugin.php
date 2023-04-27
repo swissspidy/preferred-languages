@@ -1042,6 +1042,14 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::preferred_languages_load_script_translation_file
 	 */
+	public function test_load_script_translation_file_no_file() {
+		$actual = preferred_languages_load_script_translation_file( false );
+		$this->assertFalse( $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_load_script_translation_file
+	 */
 	public function test_load_script_translation_file_no_preferred_locales() {
 		$actual = preferred_languages_load_script_translation_file( 'foo' );
 		$this->assertSame( 'foo', $actual );
