@@ -123,7 +123,7 @@ class Preferred_Languages_PHP_MO extends Gettext_Translations {
 			$po_file_data['locale_data']['messages']['']['plural-forms'] = $plural_form;
 		}
 
-		$export = '<?php ' . PHP_EOL . 'return ' . preferred_languages_var_export( $po_file_data, true ) . ';' . PHP_EOL;
+		$export = '<?php' . PHP_EOL . 'return ' . preferred_languages_var_export( $po_file_data, true ) . ';' . PHP_EOL;
 
 		$res = fwrite( $fh, $export );
 

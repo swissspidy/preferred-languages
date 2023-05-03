@@ -7,9 +7,21 @@ class Preferred_Languages_PHP_MO_Test extends WP_UnitTestCase {
 	/**
 	 * @covers ::import_from_file
 	 */
+	public function test_import_from_file_non_existent_file() {
+		$mo      = new Preferred_Languages_PHP_MO();
+		$success = $mo->import_from_file( DIR_PL_TESTDATA . '/pomo/doesnotexist.php' );
+		$this->assertFalse( $success );
+	}
+
+	/**
+	 * @covers ::import_from_file
+	 * @covers ::get_filename
+	 */
 	public function test_simple() {
-		$mo = new Preferred_Languages_PHP_MO();
-		$mo->import_from_file( DIR_PL_TESTDATA . '/pomo/simple.php' );
+		$mo      = new Preferred_Languages_PHP_MO();
+		$success = $mo->import_from_file( DIR_PL_TESTDATA . '/pomo/simple.php' );
+		$this->assertTrue( $success );
+		$this->assertSame( DIR_PL_TESTDATA . '/pomo/simple.php', $mo->get_filename() );
 		$this->assertCount( 2, $mo->entries );
 		$this->assertSame( array( 'dyado' ), $mo->entries['baba']->translations );
 		$this->assertSame( array( 'yes' ), $mo->entries["kuku\nruku"]->translations );
@@ -131,7 +143,9 @@ class Preferred_Languages_PHP_MO_Test extends WP_UnitTestCase {
 		);
 
 		$mo = new Preferred_Languages_PHP_MO();
+		$mo->set_header( 'Language', 'ru_RU' );
 		$mo->set_header( 'Project-Id-Version', 'Baba Project 1.0' );
+		$mo->set_header( 'Plural-Forms', 'nplurals=5; plural=0' );
 		foreach ( $entries as $entry ) {
 			$mo->add_entry( $entry );
 		}
