@@ -1493,9 +1493,11 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$expected_contents = <<<CONTENTS
 <?php
-return ['translation-revision-data'=>'+0000','generator'=>'WordPress/6.3-alpha-55690','domain'=>'messages','locale_data'=>['messages'=>[''=>['domain'=>'messages'],'This is a dummy plugin'=>[0=>'Das ist ein Dummy Plugin']]]];
+return ['translation-revision-data'=>'+0000','generator'=>'WordPress/VERSION','domain'=>'messages','locale_data'=>['messages'=>[''=>['domain'=>'messages'],'This is a dummy plugin'=>[0=>'Das ist ein Dummy Plugin']]]];
 
 CONTENTS;
+
+		$expected_contents = str_replace( 'WordPress/VERSION', 'WordPress/' . get_bloginfo( 'version' ), $expected_contents );
 
 		$this->unlink( $php_file ); // Just for cleanup.
 
