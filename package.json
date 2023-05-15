@@ -20,7 +20,7 @@
 		"@wordpress/e2e-test-utils": "^10.4.0",
 		"@wordpress/element": "^5.5.0",
 		"@wordpress/i18n": "^4.33.0",
-		"@wordpress/keyboard-shortcuts": "^4.9.0",
+		"@wordpress/keyboard-shortcuts": "^4.10.0",
 		"@wordpress/keycodes": "^3.33.0"
 	},
 	"devDependencies": {
