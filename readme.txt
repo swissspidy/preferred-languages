@@ -1,7 +1,7 @@
 === Preferred Languages ===
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, l10n, language, locale, translation
-Tested up to: 6.2
+Tested up to: 6.3
 Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -63,6 +63,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 2.0.0 =
+= 2.0.1 =
 
-This release improves compatibility with locale switching and WordPress 6.1, and fixes various bugs.
+This release addresses a minor bug with merging script translations and ensure c compatibility with WordPress 6.3.
