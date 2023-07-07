@@ -610,7 +610,10 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 		$translations_json     = json_decode( $translations, true );
 
 		foreach ( $translations_json['locale_data']['messages'] as $key => $translation ) {
-			if ( ! empty( array_filter( (array) $all_translations_json['locale_data']['messages'][ $key ] ) ) ) {
+			if (
+				isset( $all_translations_json['locale_data']['messages'][ $key ] ) &&
+				! empty( array_filter( (array) $all_translations_json['locale_data']['messages'][ $key ] ) )
+			) {
 				continue;
 			}
 
