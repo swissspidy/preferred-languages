@@ -36,4 +36,5 @@
  */
 require_once __DIR__ . '/inc/functions.php';
 
-add_action( 'plugins_loaded', 'preferred_languages_boot' );
+// We need to load before plugins_loaded, see https://core.trac.wordpress.org/ticket/58546
+preferred_languages_boot();
