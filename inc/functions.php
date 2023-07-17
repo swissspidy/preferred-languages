@@ -8,6 +8,8 @@
 /**
  * Adds all plugin actions and filters.
  *
+ * @codeCoverageIgnore
+ *
  * @since 2.0.1
  */
 function preferred_languages_boot() {
