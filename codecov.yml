@@ -1,6 +1,2 @@
 # Overall settings for PR integration via codecov.io
 # See https://docs.codecov.com/docs/codecovyml-reference
-
-# See https://docs.codecov.com/docs/ignoring-paths
-ignore:
-    - inc/default-filters.php
