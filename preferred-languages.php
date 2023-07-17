@@ -36,7 +36,5 @@
  */
 require_once __DIR__ . '/inc/functions.php';
 
-/**
- * Adds all plugin actions and filters.
- */
-require_once __DIR__ . '/inc/default-filters.php';
+// We need to load before plugins_loaded, see https://core.trac.wordpress.org/ticket/58546.
+preferred_languages_boot();
