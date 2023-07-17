@@ -57,7 +57,9 @@ add_action(
 		<div class="notice notice-success notice-custom-i18n-plugin-locale-current">
 			<ul>
 				<li>Current Locale: <?php echo determine_locale(); ?></li>
-				<li>Preferred Languages: <?php echo implode( ',', preferred_languages_get_list() ); ?></li>
+				<?php if ( function_exists( 'preferred_languages_get_list' ) ) : ?>
+					<li>Preferred Languages: <?php echo implode( ',', preferred_languages_get_list() ); ?></li>
+				<?php endif; ?>
 				<li>Output:
 					<ul>
 						<li><?php echo custom_i18n_plugin_test(); ?></li>
@@ -69,7 +71,9 @@ add_action(
 		<div class="notice notice-success notice-custom-i18n-plugin-locale-switching">
 			<ul>
 				<li>Current Locale: <?php echo determine_locale(); ?></li>
-				<li>Preferred Languages: <?php echo implode( ',', preferred_languages_get_list() ); ?></li>
+				<?php if ( function_exists( 'preferred_languages_get_list' ) ) : ?>
+					<li>Preferred Languages: <?php echo implode( ',', preferred_languages_get_list() ); ?></li>
+				<?php endif; ?>
 				<li>Output:
 					<ul>
 						<li><?php echo custom_i18n_plugin_test(); ?></li>

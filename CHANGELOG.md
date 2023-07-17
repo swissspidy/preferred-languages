@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1
+
+* Prevent "Undefined index" notices when merging script translations.
+* Ensures compatibility with WordPress 6.3.
+
 ## 2.0.0
 
 * Improve compatibility with WordPress 6.1 and `WP_Textdomain_Registry`.
