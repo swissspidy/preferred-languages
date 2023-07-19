@@ -2,6 +2,8 @@
 <ruleset name="WordPress Coding Standards for Preferred Languages Plugin">
 	<description>A custom set of code standard rules for Preferred Languages.</description>
 
+	<config name="minimum_supported_wp_version" value="6.1" />
+
 	<rule ref="WordPress-Core" />
 
 	<rule ref="WordPress-Docs">
@@ -22,11 +24,7 @@
 	</rule>
 
 	<!-- We only support the latest major WordPress release. -->
-	<rule ref="WordPress.WP.DeprecatedFunctions">
-		<properties>
-			<property name="minimum_supported_version" value="6.1" />
-		</properties>
-	</rule>
+	<rule ref="WordPress.WP.DeprecatedFunctions" />
 
 	<!-- Check all PHP files in directory tree by default. -->
 	<arg name="extensions" value="php"/>
