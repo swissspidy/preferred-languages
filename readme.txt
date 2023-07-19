@@ -65,4 +65,4 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 = 2.0.1 =
 
-This release addresses a minor bug with merging script translations and ensure c compatibility with WordPress 6.3.
+This release addresses a minor bug with merging script translations and ensures compatibility with WordPress 6.3.
