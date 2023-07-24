@@ -24,7 +24,7 @@
 		"@wordpress/keycodes": "^3.38.0"
 	},
 	"devDependencies": {
-		"@testing-library/jest-dom": "^5.16.5",
+		"@testing-library/jest-dom": "^5.17.0",
 		"@testing-library/react": "^14.0.0",
 		"@testing-library/user-event": "^14.4.3",
 		"@types/expect-puppeteer": "^5.0.3",
