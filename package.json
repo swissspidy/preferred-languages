@@ -21,7 +21,7 @@
 		"@wordpress/element": "^5.16.0",
 		"@wordpress/i18n": "^4.36.0",
 		"@wordpress/keyboard-shortcuts": "^4.16.0",
-		"@wordpress/keycodes": "^3.38.0"
+		"@wordpress/keycodes": "^3.40.0"
 	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^6.0.0",
