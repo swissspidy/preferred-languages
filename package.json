@@ -13,7 +13,7 @@
 	},
 	"homepage": "https://github.com/swissspidy/preferred-languages#readme",
 	"dependencies": {
-		"@wordpress/a11y": "^3.38.0",
+		"@wordpress/a11y": "^3.40.0",
 		"@wordpress/components": "^25.5.0",
 		"@wordpress/data": "^9.10.0",
 		"@wordpress/dom-ready": "^3.40.0",
