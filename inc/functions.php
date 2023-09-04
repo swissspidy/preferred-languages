@@ -29,10 +29,12 @@ function preferred_languages_boot() {
 
 	add_filter( 'pre_update_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 3 );
 	add_filter( 'pre_update_site_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 3 );
-	add_action( 'add_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
+	add_action( 'add_option_preferred_languages', 'preferred_languages_add_option', 10, 2 );
 	add_action( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 	add_action( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
 	add_action( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
+	add_action( 'pre_option_WPLANG', 'preferred_languages_filter_option', 10, 2 );
+	add_action( 'pre_site_option_WPLANG', 'preferred_languages_filter_option', 10, 2 );
 	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
 	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
 	add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
@@ -326,6 +328,28 @@ function preferred_languages_pre_update_option( $value, $old_value ) {
 }
 
 /**
+ * Downloads language packs upon adding the site option.
+ *
+ * @since 2.1.0
+ *
+ * @param string $option Name of the option to add.
+ * @param mixed  $value  Value of the option.
+ */
+function preferred_languages_add_option( $option, $value ) {
+	// Clearing the preferred languages list should also clear the 'WPLANG' option
+	// to prevent stale data.
+	if ( empty( $value ) ) {
+		update_option( 'WPLANG', '' );
+	}
+
+	$locales = array_filter( explode( ',', $value ) );
+	preferred_languages_download_language_packs( $locales );
+
+	// Reload translations after save.
+	load_default_textdomain( determine_locale() );
+}
+
+/**
  * Downloads language packs upon updating the site option.
  *
  * @since 1.3.0
@@ -334,6 +358,12 @@ function preferred_languages_pre_update_option( $value, $old_value ) {
  * @param string $value     The new option value.
  */
 function preferred_languages_update_option( $old_value, $value ) {
+	// Clearing the preferred languages list should also clear the 'WPLANG' option
+	// to prevent stale data.
+	if ( empty( $value ) ) {
+		update_option( 'WPLANG', '' );
+	}
+
 	$locales = array_filter( explode( ',', $value ) );
 	preferred_languages_download_language_packs( $locales );
 
@@ -359,6 +389,28 @@ function preferred_languages_update_site_option( $option, $value ) {
 
 	// Reload translations after save.
 	load_default_textdomain( determine_locale() );
+}
+
+/**
+ * Filters calls to get_option( 'WPLANG' ) to use the preferred languages setting.
+ *
+ * @since 2.1.0
+ *
+ * @param string $locale The current locale.
+ * @return string
+ */
+function preferred_languages_filter_option( $locale ) {
+	$preferred_languages = preferred_languages_get_site_list();
+
+	if ( empty( $preferred_languages ) && is_multisite() ) {
+		$preferred_languages = preferred_languages_get_network_list();
+	}
+
+	if ( ! empty( $preferred_languages ) ) {
+		return reset( $preferred_languages );
+	}
+
+	return $locale;
 }
 
 /**

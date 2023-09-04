@@ -415,6 +415,36 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::preferred_languages_filter_option
+	 */
+	public function test_get_option_returns_locale_unchanged() {
+		update_option( 'WPLANG', '' );
+		$this->assertSame( '', get_option( 'WPLANG' ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_option
+	 */
+	public function test_get_option_returns_first_preferred_locale() {
+		update_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
+		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
+		$first = explode( ',', get_option( 'preferred_languages' ) )[0];
+		$this->assertSame( $first, get_option( 'WPLANG' ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_option
+	 * @group ms-required
+	 */
+	public function test_get_option_returns_first_preferred_locale_from_network() {
+		update_site_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
+		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
+		$first = explode( ',', get_site_option( 'preferred_languages' ) )[0];
+		$this->assertSame( $first, get_site_option( 'WPLANG' ) );
+	}
+
+
+	/**
 	 * @covers ::preferred_languages_register_scripts
 	 */
 	public function test_register_scripts() {
@@ -633,7 +663,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::preferred_languages_update_option
+	 * @covers ::preferred_languages_add_option
 	 */
 	public function test_add_option_downloads_language_packs() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
@@ -641,6 +671,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::preferred_languages_add_option
 	 * @covers ::preferred_languages_update_option
 	 */
 	public function test_update_option_downloads_language_packs_again() {
@@ -650,6 +681,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::preferred_languages_add_option
 	 * @covers ::preferred_languages_update_option
 	 * @covers ::preferred_languages_pre_update_option
 	 */
@@ -657,6 +689,19 @@ class Plugin_Test extends WP_UnitTestCase {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 		$this->assertSame( 2, $this->download_language_packs_action->get_call_count() );
+	}
+
+	/**
+	 * @covers ::preferred_languages_add_option
+	 * @covers ::preferred_languages_update_option
+	 */
+	public function test_update_option_empty_list() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'WPLANG', 'de_DE' );
+		update_option( 'preferred_languages', '' );
+
+		$this->assertSame( '', get_option( 'preferred_languages' ) );
+		$this->assertSame( '', get_option( 'WPLANG' ) );
 	}
 
 	/**
