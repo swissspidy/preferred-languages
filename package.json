@@ -14,13 +14,13 @@
 	"homepage": "https://github.com/swissspidy/preferred-languages#readme",
 	"dependencies": {
 		"@wordpress/a11y": "^3.41.0",
-		"@wordpress/components": "^25.7.0",
+		"@wordpress/components": "^25.8.0",
 		"@wordpress/data": "^9.12.0",
-		"@wordpress/dom-ready": "^3.40.0",
-		"@wordpress/e2e-test-utils": "^10.12.0",
+		"@wordpress/dom-ready": "^3.42.0",
+		"@wordpress/e2e-test-utils": "^10.13.0",
 		"@wordpress/element": "^5.19.0",
 		"@wordpress/i18n": "^4.36.0",
-		"@wordpress/keyboard-shortcuts": "^4.18.0",
+		"@wordpress/keyboard-shortcuts": "^4.19.0",
 		"@wordpress/keycodes": "^3.40.0"
 	},
 	"devDependencies": {
