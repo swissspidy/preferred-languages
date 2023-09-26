@@ -7,37 +7,6 @@
 	margin: 1em 0;
 }
 
-.active-locales-list,
-.inactive-locales-list {
-	width: 25em;
-	clear: both;
-	float: left;
-}
-
-.active-locales-list {
-	margin: 0 1em 0 0;
-}
-
-.inactive-locales-list {
-	margin: 0 1em 0 0;
-}
-
-.active-locales-controls {
-	clear: both;
-}
-
-.active-locales-controls ul {
-	margin: 0;
-}
-
-.active-locales-controls li {
-	margin: 0;
-}
-
-.active-locales-controls li + li {
-	margin-top: 6px;
-}
-
 .active-locales-controls .button {
 	margin: 0;
 }
@@ -49,15 +18,26 @@
 	}
 }
 
+.active-locales-list,
+.inactive-locales-list {
+	width: 25em;
+	clear: both;
+	float: left;
+}
+
 .active-locales-list {
 	height: 120px;
 	overflow-y: scroll;
-	margin-top: 0;
+	margin: 0 1em 0 0;
 	background: #fff;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
 	border: 1px solid #ddd;
 	color: #32373c;
 	box-sizing: border-box;
+}
+
+.inactive-locales-list {
+	margin: 0 1em 0 0;
 }
 
 .active-locales-list.empty-list {
@@ -76,6 +56,22 @@
 	margin: 0;
 	padding: 0 0 0 8px;
 	cursor: pointer;
+}
+
+.active-locales-controls {
+	clear: both;
+}
+
+.active-locales-controls ul {
+	margin: 0;
+}
+
+.active-locales-controls li {
+	margin: 0;
+}
+
+.active-locales-controls li + li {
+	margin-top: 6px;
 }
 
 .active-locales-list li:hover {
