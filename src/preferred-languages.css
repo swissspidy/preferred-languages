@@ -1,3 +1,8 @@
+/* When JS is not loaded yet. Approximation to prevent layout shift. */
+#preferred-languages-root:empty {
+	height: 205px;
+}
+
 .active-locales {
 	margin: 1em 0;
 }
@@ -5,9 +10,16 @@
 .active-locales-list,
 .inactive-locales-list {
 	width: 25em;
-	margin: 0 1em 1em 0;
 	clear: both;
 	float: left;
+}
+
+.active-locales-list {
+	margin: 0 1em 0 0;
+}
+
+.inactive-locales-list {
+	margin: 0 1em 0 0;
 }
 
 .active-locales-controls {
@@ -16,6 +28,14 @@
 
 .active-locales-controls ul {
 	margin: 0;
+}
+
+.active-locales-controls li {
+	margin: 0;
+}
+
+.active-locales-controls li + li {
+	margin-top: 6px;
 }
 
 .active-locales-controls .button {
