@@ -72,7 +72,7 @@
 }
 
 .active-locales-controls li + li {
-	margin-top: .5em;
+	margin-top: 0.5em;
 }
 
 .active-locales-list li:hover {

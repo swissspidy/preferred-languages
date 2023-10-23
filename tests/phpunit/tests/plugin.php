@@ -907,7 +907,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'preferred_languages_merge_translations', '__return_true' );
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
-		$filter = static function() {
+		$filter = static function () {
 			return 'es_ES';
 		};
 
@@ -964,7 +964,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_load_textdomain_mofile_already_filtered() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
-		$filter = static function() {
+		$filter = static function () {
 			return 'es_ES';
 		};
 
@@ -1022,7 +1022,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_pre_load_script_translations_already_filtered() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
-		$filter = static function() {
+		$filter = static function () {
 			return 'es_ES';
 		};
 
@@ -1106,7 +1106,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_load_script_translation_file_already_filtered() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
-		$filter = static function() {
+		$filter = static function () {
 			return 'es_ES';
 		};
 
@@ -1219,7 +1219,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		wp_set_current_user( self::$administrator );
 
 		get_echo(
-			static function() {
+			static function () {
 				preferred_languages_display_form( array( 'selected' => array( 'roh' ) ) );
 			}
 		);
@@ -1239,7 +1239,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		grant_super_admin( self::$administrator );
 
 		get_echo(
-			static function() {
+			static function () {
 				preferred_languages_display_form( array( 'selected' => array( 'roh' ) ) );
 			}
 		);
@@ -1255,7 +1255,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_display_form_show_option_en_us() {
 		get_echo(
-			static function() {
+			static function () {
 				preferred_languages_display_form( array( 'show_option_en_us' => true ) );
 			}
 		);
@@ -1271,7 +1271,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_display_form_show_option_site_default() {
 		get_echo(
-			static function() {
+			static function () {
 				preferred_languages_display_form( array( 'show_option_site_default' => true ) );
 			}
 		);
@@ -1288,7 +1288,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_display_form_selected_mixed() {
 		get_echo(
-			static function() {
+			static function () {
 				preferred_languages_display_form( array( 'selected' => array( 'de_DE', 'en_US', 'fr_FR', 'es_ES', 'foo' ) ) );
 			}
 		);
@@ -1394,7 +1394,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_filter_gettext_plugin_already_filtered() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
-		$filter = static function() {
+		$filter = static function () {
 			return 'es_ES';
 		};
 
