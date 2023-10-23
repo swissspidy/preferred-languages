@@ -11,13 +11,6 @@
 	margin: 0;
 }
 
-@media screen and (min-width: 510px) {
-
-	.active-locales-controls {
-		clear: none;
-	}
-}
-
 .active-locales-list,
 .inactive-locales-list {
 	width: 25em;
@@ -61,6 +54,14 @@
 .active-locales-controls {
 	clear: both;
 }
+
+@media screen and (min-width: 510px) {
+
+	.active-locales-controls {
+		clear: none;
+	}
+}
+
 
 .active-locales-controls ul {
 	margin: 0;
