@@ -112,7 +112,6 @@ function InactiveLocalesSelect( {
 			value={ value }
 			onChange={ onChange }
 			disabled={ ! hasItems }
-			__next36pxDefaultSize
 			__nextHasNoMarginBottom
 		>
 			{ installedLanguages.length > 0 && (

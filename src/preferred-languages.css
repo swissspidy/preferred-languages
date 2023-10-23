@@ -72,7 +72,7 @@
 }
 
 .active-locales-controls li + li {
-	margin-top: 6px;
+	margin-top: .5em;
 }
 
 .active-locales-list li:hover {
@@ -106,6 +106,10 @@
 
 .inactive-locales select {
 	width: 100%;
+}
+
+.preferred-languages .components-button {
+	height: 30px;
 }
 
 .preferred-languages .components-notice {
