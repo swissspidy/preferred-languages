@@ -15,7 +15,7 @@
 	"dependencies": {
 		"@wordpress/a11y": "^3.44.0",
 		"@wordpress/components": "^25.10.0",
-		"@wordpress/data": "^9.14.0",
+		"@wordpress/data": "^9.15.0",
 		"@wordpress/dom-ready": "^3.42.0",
 		"@wordpress/e2e-test-utils": "^10.15.0",
 		"@wordpress/element": "^5.19.0",
