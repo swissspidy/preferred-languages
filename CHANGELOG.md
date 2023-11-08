@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0
+
+* Filters the `WPLANG` option for improved compatibility.
+* Minimum PHP version requirement increased to 7.0.
+* Ensures compatibility with WordPress 6.4.
+
 ## 2.0.1
 
 * Prevent "Undefined index" notices when merging script translations.
