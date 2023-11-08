@@ -49,7 +49,7 @@ jobs:
             - name: Install PHP dependencies
               uses: ramsey/composer-install@v2
               with:
-                composer-options: '--prefer-dist --no-progress --no-interaction'
+                  composer-options: '--prefer-dist --no-progress --no-interaction'
 
             - name: Lint PHP
               run: composer lint
