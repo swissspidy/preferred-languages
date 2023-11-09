@@ -36,6 +36,7 @@ describe( 'Translation Loading', () => {
 
 		await activatePlugin( 'custom-internationalized-plugin' );
 		await deactivatePlugin( 'merge-translations' );
+		await deactivatePlugin( 'performant-translations' );
 	} );
 
 	afterAll( async () => {
@@ -194,6 +195,83 @@ describe( 'Translation Loading', () => {
 			Este es otro plugin dummy"
 		`
 			);
+		} );
+
+		describe( 'Performant Translations', () => {
+			beforeAll( async () => {
+				await activatePlugin( 'performant-translations' );
+			} );
+			afterAll( async () => {
+				await deactivatePlugin( 'performant-translations' );
+			} );
+
+			it( 'should correctly translate strings', async () => {
+				await visitAdminPage( 'index.php' );
+
+				const defaultOutput = await page.$eval(
+					'.notice-custom-i18n-plugin-locale-current',
+					( el: HTMLElement ) => el.innerText
+				);
+				expect( defaultOutput ).toMatchInlineSnapshot(
+					`
+				"Current Locale: fr_FR
+				Preferred Languages: fr_FR,it_IT,de_CH,de_DE,es_ES
+				Output:
+				Das ist ein Dummy Plugin
+				Este es otro plugin dummy"
+			`
+				);
+
+				const localeSwitching = await page.$eval(
+					'.notice-custom-i18n-plugin-locale-switching',
+					( el: HTMLElement ) => el.innerText
+				);
+				expect( localeSwitching ).toMatchInlineSnapshot(
+					`
+				"Current Locale: fr_FR
+				Preferred Languages: fr_FR,it_IT,de_CH,de_DE,es_ES
+				Output:
+				Das ist ein Dummy Plugin
+				Este es otro plugin dummy
+				Switched to it_IT: True
+				Current Locale: it_IT
+				Output:
+				Das ist ein Dummy Plugin
+				Este es otro plugin dummy
+				Switched to de_DE: True
+				Current Locale: de_DE
+				Output:
+				Das ist ein Dummy Plugin
+				Este es otro plugin dummy
+				Switched to en_US: True
+				Current Locale: en_US
+				Output:
+				This is a dummy plugin
+				This is another dummy plugin
+				Switched to de_CH: True
+				Current Locale: de_CH
+				Output:
+				Das ist ein Dummy Plugin
+				Este es otro plugin dummy
+				Switched to es_ES: True
+				Current Locale: es_ES
+				Output:
+				Das ist ein Dummy Plugin
+				Este es otro plugin dummy"
+					`
+				);
+
+				const jsI18n = await page.$eval(
+					'.notice-custom-i18n-plugin-js',
+					( el: HTMLElement ) => el.innerText
+				);
+				expect( jsI18n ).toMatchInlineSnapshot(
+					`
+				"Das ist ein Dummy Plugin
+				Este es otro plugin dummy"
+					`
+				);
+			} );
 		} );
 	} );
 } );
