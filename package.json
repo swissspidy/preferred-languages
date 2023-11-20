@@ -25,7 +25,7 @@
 	},
 	"devDependencies": {
 		"@testing-library/jest-dom": "^6.1.4",
-		"@testing-library/react": "^14.1.0",
+		"@testing-library/react": "^14.1.2",
 		"@testing-library/user-event": "^14.5.1",
 		"@types/expect-puppeteer": "^5.0.6",
 		"@types/jest-environment-puppeteer": "^5.0.6",
