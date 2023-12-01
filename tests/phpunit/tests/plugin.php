@@ -1426,6 +1426,17 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @link https://github.com/swissspidy/preferred-languages/issues/881
+	 *
+	 * @covers ::preferred_languages_filter_gettext
+	 */
+	public function test_filter_gettext_plugin_filter_registry_lookup() {
+		update_option( 'preferred_languages', 'it_IT,de_DE,es_ES' );
+
+		$this->assertSame( 'Das ist ein Dummy Plugin', __( 'This is a dummy plugin', 'internationalized-plugin' ) );
+	}
+
+	/**
 	 * @covers ::preferred_languages_filter_gettext
 	 */
 	public function test_filter_gettext_plugin_custom_path() {

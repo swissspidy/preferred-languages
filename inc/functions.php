@@ -1060,12 +1060,6 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 	if ( $translations instanceof NOOP_Translations ) {
 		$locale = determine_locale();
 
-		$path = $wp_textdomain_registry->get( $domain, $locale );
-
-		if ( ! $path ) {
-			return $translation;
-		}
-
 		$preferred_locales = preferred_languages_get_list();
 
 		// Locale has been filtered by something else.
@@ -1086,6 +1080,12 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 		}
 
 		foreach ( $preferred_locales as $locale ) {
+			$path = $wp_textdomain_registry->get( $domain, $locale );
+
+			if ( ! $path ) {
+				continue;
+			}
+
 			$mofile = "{$path}/{$domain}-{$locale}.mo";
 
 			if ( load_textdomain( $domain, $mofile ) ) {
