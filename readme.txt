@@ -2,7 +2,7 @@
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, l10n, language, locale, translation
 Tested up to: 6.4
-Stable tag: 2.1.0
+Stable tag: 2.1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,10 +63,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 2.1.0 =
+= 2.1.1 =
 
-This releases increases minimum required PHP version to 7.0, filters the `WPLANG` option, and ensures compatibility with WordPress 6.4.
-
-= 2.0.1 =
-
-This release addresses a minor bug with merging script translations and ensures compatibility with WordPress 6.3.
+This release fixes an issue with the fallback logic when there is no translation for the primary locale.

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.1
+
+* Fixes an issue with the fallback logic when there is no translation for the primary locale.
+
 ## 2.1.0
 
 * Filters the `WPLANG` option for improved compatibility.
