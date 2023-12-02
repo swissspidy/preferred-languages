@@ -45,8 +45,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	public function tear_down() {
-		update_option( 'preferred_languages', '' );
-		update_site_option( 'preferred_languages', '' );
+		delete_option( 'preferred_languages' );
+		delete_site_option( 'preferred_languages' );
+
+		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
 
 		$this->rmdir( WP_LANG_DIR );
 
@@ -705,6 +707,17 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::preferred_languages_add_option
+	 */
+	public function test_add_option_empty_list() {
+		update_option( 'WPLANG', 'de_DE' );
+		add_option( 'preferred_languages', '' );
+
+		$this->assertSame( '', get_option( 'preferred_languages' ) );
+		$this->assertSame( '', get_option( 'WPLANG' ) );
+	}
+
+	/**
 	 * @covers ::preferred_languages_update_site_option
 	 * @group ms-excluded
 	 */
@@ -1012,6 +1025,8 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_pre_load_script_translations
 	 */
 	public function test_pre_load_script_translations_no_preferred_locales() {
+		add_filter( 'preferred_languages_merge_translations', '__return_true' );
+
 		$this->assertFalse( preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' ) );
 		$this->assertSame( '', preferred_languages_pre_load_script_translations( '', 'file', 'handle', 'default' ) );
 	}
@@ -1020,6 +1035,8 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_pre_load_script_translations
 	 */
 	public function test_pre_load_script_translations_already_filtered() {
+		add_filter( 'preferred_languages_merge_translations', '__return_true' );
+
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
 		$filter = static function () {
