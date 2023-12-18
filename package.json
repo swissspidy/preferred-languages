@@ -29,7 +29,7 @@
 		"@testing-library/user-event": "^14.5.1",
 		"@types/expect-puppeteer": "^5.0.6",
 		"@types/jest-environment-puppeteer": "^5.0.6",
-		"@wordpress/env": "^8.12.0",
+		"@wordpress/env": "^9.0.0",
 		"@wordpress/scripts": "^26.17.0",
 		"jest-environment-jsdom": "^29.7.0",
 		"mini-css-extract-plugin": "^2.7.6",
