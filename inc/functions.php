@@ -190,8 +190,15 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
  * @return array Preferred languages.
  */
 function preferred_languages_get_site_list() {
+	/** @var null|array $cache */
+	static $cache;
+	if ( is_array( $cache ) ) {
+		return $cache;
+	}
+
 	$preferred_languages = get_option( 'preferred_languages', '' );
-	return array_filter( explode( ',', $preferred_languages ) );
+	$cache = array_filter( explode( ',', $preferred_languages ) );
+	return $cache;
 }
 
 /**
@@ -202,8 +209,14 @@ function preferred_languages_get_site_list() {
  * @return array Preferred languages.
  */
 function preferred_languages_get_network_list() {
+	/** @var null|array $cache */
+	static $cache;
+	if ( is_array( $cache ) ) {
+		return $cache;
+	}
 	$preferred_languages = get_site_option( 'preferred_languages', '' );
-	return array_filter( explode( ',', $preferred_languages ) );
+	$cache = array_filter( explode( ',', $preferred_languages ) );
+	return $cache;
 }
 
 /**
