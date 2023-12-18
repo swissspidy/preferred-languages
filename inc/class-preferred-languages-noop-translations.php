@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Locale API: Preferred_Languages_Noop_Translations class
  *
