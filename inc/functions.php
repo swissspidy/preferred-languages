@@ -1049,13 +1049,22 @@ function preferred_languages_display_form( $args = array() ) {
  * @return string Translated text.
  */
 function preferred_languages_filter_gettext( $translation, $text, $domain ) {
-	global $wp_textdomain_registry;
+	global $wp_textdomain_registry, $l10n;
+
+	static $noop_translations = null;
+	if ( null === $noop_translations ) {
+		$noop_translations = new Preferred_Languages_Noop_Translations();
+	}
 
 	if ( 'default' === $domain ) {
 		return $translation;
 	}
 
 	$translations = get_translations_for_domain( $domain );
+
+	if ( $translations instanceof Preferred_Languages_Noop_Translations ) {
+		return $translation;
+	}
 
 	if ( $translations instanceof NOOP_Translations ) {
 		$locale = determine_locale();
@@ -1090,11 +1099,12 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 
 			if ( load_textdomain( $domain, $mofile ) ) {
 				$translations = get_translations_for_domain( $domain );
-				$translation  = $translations->translate( $text );
 
-				break;
+				return $translations->translate( $text );
 			}
 		}
+
+		$l10n[ $domain ] = &$noop_translations;
 	}
 
 	return $translation;
