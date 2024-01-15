@@ -14,6 +14,9 @@
  */
 function preferred_languages_boot() {
 	add_filter( 'gettext', 'preferred_languages_filter_gettext', 10, 3 );
+	add_filter( 'gettext_with_context', 'preferred_languages_filter_gettext_with_context', 10, 4 );
+	add_filter( 'ngettext', 'preferred_languages_filter_ngettext', 10, 5 );
+	add_filter( 'ngettext_with_context', 'preferred_languages_filter_ngettext_with_context', 10, 6 );
 
 	add_action( 'init', 'preferred_languages_register_setting' );
 	add_action( 'init', 'preferred_languages_register_meta' );
@@ -1037,18 +1040,23 @@ function preferred_languages_display_form( $args = array() ) {
 	<?php
 }
 
+
 /**
- * Filters gettext calls to work around limitations in just-in-time loading of translations.
+ * Helper function used for just-in-time loading of translations.
  *
- * @since 1.1.0
+ * @since 2.1.2
+ * @access private
  *
- * @param string $translation  Translated text.
- * @param string $text         Text to translate.
- * @param string $domain       Text domain. Unique identifier for retrieving translated strings.
+ * @param string $translation Translated text.
+ * @param string $single      The text to be used if the number is singular.
+ * @param string $plural      The text to be used if the number is plural.
+ * @param int    $number      The number to compare against to use either the singular or plural form.
+ * @param string $context     Context information for the translators.
+ * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
  *
  * @return string Translated text.
  */
-function preferred_languages_filter_gettext( $translation, $text, $domain ) {
+function preferred_languages_load_just_in_time( $translation, $single, $plural = null, $number = null, $context = null, $domain = 'default' ) {
 	global $wp_textdomain_registry, $l10n;
 
 	static $noop_translations = null;
@@ -1100,7 +1108,11 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 			if ( load_textdomain( $domain, $mofile ) ) {
 				$translations = get_translations_for_domain( $domain );
 
-				return $translations->translate( $text );
+				if ( null !== $plural ) {
+					return $translations->translate_plural( $single, $plural, $number, $context );
+				}
+
+				return $translations->translate( $single, $context );
 			}
 		}
 
@@ -1108,6 +1120,71 @@ function preferred_languages_filter_gettext( $translation, $text, $domain ) {
 	}
 
 	return $translation;
+}
+
+/**
+ * Filters gettext calls to work around limitations in just-in-time loading of translations.
+ *
+ * @since 1.1.0
+ *
+ * @param string $translation  Translated text.
+ * @param string $text         Text to translate.
+ * @param string $domain       Text domain. Unique identifier for retrieving translated strings.
+ *
+ * @return string Translated text.
+ */
+function preferred_languages_filter_gettext( $translation, $text, $domain ) {
+	return preferred_languages_load_just_in_time( $translation, $text, null, null, null, $domain );
+}
+
+/**
+ * Filters gettext calls to work around limitations in just-in-time loading of translations.
+ *
+ * @since 2.1.2
+ *
+ * @param string $translation Translated text.
+ * @param string $text        Text to translate.
+ * @param string $context     Context information for the translators.
+ * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
+ *
+ * @return string Translated text.
+ */
+function preferred_languages_filter_gettext_with_context( $translation, $text, $context, $domain ) {
+	return preferred_languages_load_just_in_time( $translation, $text, null, null, $context, $domain );
+}
+
+/**
+ * Filters gettext calls to work around limitations in just-in-time loading of translations.
+ *
+ * @since 2.1.2
+ *
+ * @param string $translation Translated text.
+ * @param string $single      The text to be used if the number is singular.
+ * @param string $plural      The text to be used if the number is plural.
+ * @param int    $number      The number to compare against to use either the singular or plural form.
+ * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
+ *
+ * @return string Translated text.
+ */
+function preferred_languages_filter_ngettext( $translation, $single, $plural, $number, $domain ) {
+	return preferred_languages_load_just_in_time( $translation, $single, $plural, $number, null, $domain );
+}
+/**
+ * Filters gettext calls to work around limitations in just-in-time loading of translations.
+ *
+ * @since 2.1.2
+ *
+ * @param string $translation Translated text.
+ * @param string $single      The text to be used if the number is singular.
+ * @param string $plural      The text to be used if the number is plural.
+ * @param int    $number      The number to compare against to use either the singular or plural form.
+ * @param string $context     Context information for the translators.
+ * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
+ *
+ * @return string Translated text.
+ */
+function preferred_languages_filter_ngettext_with_context( $translation, $single, $plural, $number, $context, $domain ) {
+	return preferred_languages_load_just_in_time( $translation, $single, $plural, $number, $context, $domain );
 }
 
 /**

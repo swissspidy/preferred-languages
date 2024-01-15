@@ -1,0 +1,51 @@
+# Copyright (C) 2024 
+# This file is distributed under the same license as the Custom Dummy Plugin plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Custom Dummy Plugin 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-internationalized-plugin\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-01-15T13:34:45+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.9.0\n"
+"X-Domain: custom-internationalized-plugin\n"
+
+#. Plugin Name of the plugin
+msgid "Custom Dummy Plugin"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/"
+msgstr ""
+
+#. Description of the plugin
+msgid "For testing purposes only."
+msgstr ""
+
+#: custom-internationalized-plugin.php:13
+msgid "This is a dummy plugin"
+msgstr ""
+
+#: custom-internationalized-plugin.php:17
+msgctxt "some context"
+msgid "This is a dummy plugin with context"
+msgstr ""
+
+#. translators: %s: some number
+#: custom-internationalized-plugin.php:22
+msgid "%s dummy plugin"
+msgid_plural "%s dummy plugins"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %s: some number
+#: custom-internationalized-plugin.php:27
+msgctxt "some context"
+msgid "%s dummy plugin with context"
+msgid_plural "%s dummy plugins with context"
+msgstr[0] ""
+msgstr[1] ""
