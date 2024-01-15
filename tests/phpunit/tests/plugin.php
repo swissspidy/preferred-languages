@@ -1400,6 +1400,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_gettext
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plugin_no_preferred_languages() {
 		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
@@ -1408,6 +1409,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_gettext
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plugin_already_filtered() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
@@ -1425,6 +1427,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_gettext
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plugin_already_translated() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
@@ -1447,6 +1450,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @link https://github.com/swissspidy/preferred-languages/issues/881
 	 *
 	 * @covers ::preferred_languages_filter_gettext
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plugin_filter_registry_lookup() {
 		update_option( 'preferred_languages', 'it_IT,de_DE,es_ES' );
@@ -1456,6 +1460,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_gettext
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plugin_custom_path() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE' );
@@ -1469,6 +1474,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_gettext
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plugin_custom_path_locale_switching() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
@@ -1487,6 +1493,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_gettext_with_context
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_context_plugin_custom_path() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE' );
@@ -1500,6 +1507,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_ngettext
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plural_plugin_custom_path() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE' );
@@ -1512,6 +1520,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_ngettext_with_context
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plural_context_plugin_custom_path() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE' );
@@ -1525,6 +1534,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_gettext
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plugin_cache_list_retrieval() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
