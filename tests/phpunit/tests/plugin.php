@@ -1485,6 +1485,32 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::preferred_languages_filter_gettext
+	 */
+	public function test_filter_gettext_plugin_cache_list_retrieval() {
+		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
+
+		$filter = new MockAction();
+		add_filter( 'option_preferred_languages', array( $filter, 'filter' ) );
+
+		__( 'Foo', 'thisplugindoesnotexist' );
+		__( 'Foo', 'thisplugindoesnotexist' );
+		__( 'Foo', 'thisplugindoesnotexist' );
+
+		$first_count = $filter->get_call_count();
+
+		__( 'Foo', 'thisplugindoesnotexist' );
+		__( 'Foo', 'thisplugindoesnotexist' );
+		__( 'Foo', 'thisplugindoesnotexist' );
+
+		$second_count = $filter->get_call_count();
+
+		remove_filter( 'option_preferred_languages', array( $filter, 'filter' ) );
+
+		$this->assertSame( $first_count, $second_count );
+	}
+
+	/**
 	 * @covers ::preferred_languages_filter_debug_information
 	 */
 	public function test_filter_debug_information() {
