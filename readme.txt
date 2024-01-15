@@ -2,7 +2,7 @@
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, l10n, language, locale, translation
 Tested up to: 6.4
-Stable tag: 2.1.1
+Stable tag: 2.1.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -63,6 +63,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 2.1.1 =
+= 2.1.2 =
 
-This release fixes an issue with the fallback logic when there is no translation for the primary locale.
+This release improves performance and compatibility with just-in-time translation loading in WordPress.

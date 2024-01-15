@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.2
+
+* Improves performance and compatibility with just-in-time translation loading in WordPress.
+
 ## 2.1.1
 
 * Fixes an issue with the fallback logic when there is no translation for the primary locale.
