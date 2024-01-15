@@ -24,15 +24,15 @@
 		"@wordpress/keycodes": "^3.48.0"
 	},
 	"devDependencies": {
-		"@testing-library/jest-dom": "^6.1.4",
+		"@testing-library/jest-dom": "^6.2.0",
 		"@testing-library/react": "^14.1.2",
-		"@testing-library/user-event": "^14.5.1",
+		"@testing-library/user-event": "^14.5.2",
 		"@types/expect-puppeteer": "^5.0.6",
 		"@types/jest-environment-puppeteer": "^5.0.6",
 		"@wordpress/env": "^9.0.0",
 		"@wordpress/scripts": "^26.19.0",
 		"jest-environment-jsdom": "^29.7.0",
-		"mini-css-extract-plugin": "^2.7.6",
+		"mini-css-extract-plugin": "^2.7.7",
 		"prettier": "npm:wp-prettier@^3.0.3",
 		"rtlcss-webpack-plugin": "^4.0.7"
 	},
