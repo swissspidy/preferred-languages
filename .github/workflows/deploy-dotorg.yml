@@ -1,0 +1,42 @@
+name: Deploy to WordPress.org
+
+on:
+    release:
+        types:
+            - published
+
+jobs:
+    release:
+        name: Publish release
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v4
+
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version-file: '.nvmrc'
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm ci
+
+            - name: Build plugin
+              run: npm run build
+
+            - name: WordPress plugin deploy
+              uses: 10up/action-wordpress-plugin-deploy@stable
+              id: deploy
+              with:
+                  generate-zip: true
+                  dry-run: true
+              env:
+                  SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+                  SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+                  SLUG: preferred-languages
+
+            - name: Upload release asset
+              run: gh release upload ${{ github.event.release.tag_name }} ${{ steps.deploy.outputs.zip-path }}
+              env:
+                  GH_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
