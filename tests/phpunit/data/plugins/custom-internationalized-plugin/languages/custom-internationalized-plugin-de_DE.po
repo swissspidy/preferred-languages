@@ -1,8 +1,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2015-12-31 16:31+0100\n"
-"PO-Revision-Date: 2022-07-04 18:48+0200\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/custom-"
+"internationalized-plugin\n"
+"POT-Creation-Date: 2024-01-15T13:34:45+00:00\n"
+"PO-Revision-Date: 2024-01-15 14:35+0100\n"
 "Last-Translator: Dominik Schilling\n"
 "Language-Team: \n"
 "Language: de_DE\n"
@@ -18,6 +20,38 @@ msgstr ""
 "X-Textdomain-Support: yes\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: internationalized-plugin.php:11
+#. Plugin Name of the plugin
+msgid "Custom Dummy Plugin"
+msgstr ""
+
+#. Plugin URI of the plugin
+msgid "https://wordpress.org/"
+msgstr ""
+
+#. Description of the plugin
+msgid "For testing purposes only."
+msgstr ""
+
+#: custom-internationalized-plugin.php:13
 msgid "This is a dummy plugin"
 msgstr "Das ist ein Dummy Plugin"
+
+#: custom-internationalized-plugin.php:17
+msgctxt "some context"
+msgid "This is a dummy plugin with context"
+msgstr "Das ist ein Dummy Plugin mit Kontext"
+
+#. translators: %s: some number
+#: custom-internationalized-plugin.php:22
+msgid "%s dummy plugin"
+msgid_plural "%s dummy plugins"
+msgstr[0] "%s Dummy Plugin"
+msgstr[1] "%s Dummy Plugins"
+
+#. translators: %s: some number
+#: custom-internationalized-plugin.php:27
+msgctxt "some context"
+msgid "%s dummy plugin with context"
+msgid_plural "%s dummy plugins with context"
+msgstr[0] "%s Dummy Plugin mit Kontext"
+msgstr[1] "%s Dummy Plugins mit Kontext"

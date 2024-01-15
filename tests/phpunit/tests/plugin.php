@@ -1391,6 +1391,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_filter_gettext
+	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_default() {
 		$actual = preferred_languages_filter_gettext( 'Hello World', 'Hello World', 'default' );
@@ -1483,6 +1484,44 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertSame( 'Das ist ein Dummy Plugin', $actual_de );
 		$this->assertSame( 'Este es un plugin dummy', $actual_es );
 	}
+
+	/**
+	 * @covers ::preferred_languages_filter_gettext_with_context
+	 */
+	public function test_filter_gettext_context_plugin_custom_path() {
+		update_option( 'preferred_languages', 'fr_FR,de_DE' );
+
+		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
+
+		$actual = custom_i18n_plugin_test_context();
+
+		$this->assertSame( 'Das ist ein Dummy Plugin mit Kontext', $actual );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_ngettext
+	 */
+	public function test_filter_gettext_plural_plugin_custom_path() {
+		update_option( 'preferred_languages', 'fr_FR,de_DE' );
+
+		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
+
+		$this->assertSame( '%s Dummy Plugin', custom_i18n_plugin_test_plural( 1 ) );
+		$this->assertSame( '%s Dummy Plugins', custom_i18n_plugin_test_plural( 2 ) );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_ngettext_with_context
+	 */
+	public function test_filter_gettext_plural_context_plugin_custom_path() {
+		update_option( 'preferred_languages', 'fr_FR,de_DE' );
+
+		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
+
+		$this->assertSame( '%s Dummy Plugin mit Kontext', custom_i18n_plugin_test_plural_context( 1 ) );
+		$this->assertSame( '%s Dummy Plugins mit Kontext', custom_i18n_plugin_test_plural_context( 2 ) );
+	}
+
 
 	/**
 	 * @covers ::preferred_languages_filter_gettext
