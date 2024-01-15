@@ -1040,78 +1040,6 @@ function preferred_languages_display_form( $args = array() ) {
 	<?php
 }
 
-/**
- * Filters gettext calls to work around limitations in just-in-time loading of translations.
- *
- * @since 1.1.0
- *
- * @param string $translation  Translated text.
- * @param string $text         Text to translate.
- * @param string $domain       Text domain. Unique identifier for retrieving translated strings.
- *
- * @return string Translated text.
- */
-function preferred_languages_filter_gettext( $translation, $text, $domain ) {
-	global $wp_textdomain_registry, $l10n;
-
-	static $noop_translations = null;
-	if ( null === $noop_translations ) {
-		$noop_translations = new Preferred_Languages_Noop_Translations();
-	}
-
-	if ( 'default' === $domain ) {
-		return $translation;
-	}
-
-	$translations = get_translations_for_domain( $domain );
-
-	if ( $translations instanceof Preferred_Languages_Noop_Translations ) {
-		return $translation;
-	}
-
-	if ( $translations instanceof NOOP_Translations ) {
-		$locale = determine_locale();
-
-		$preferred_locales = preferred_languages_get_list();
-
-		// Locale has been filtered by something else.
-		if ( ! in_array( $locale, $preferred_locales, true ) ) {
-			return $translation;
-		}
-
-		// If locale has been switched to a specific locale, ignore the ones before it.
-		// Example:
-		// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
-		// Switched to locale: de_CH
-		// In that case, only check for de_CH, de_DE, es_ES.
-		if ( preferred_languages_is_locale_switched() ) {
-			$preferred_locales = array_slice(
-				$preferred_locales,
-				array_search( $locale, $preferred_locales, true )
-			);
-		}
-
-		foreach ( $preferred_locales as $locale ) {
-			$path = $wp_textdomain_registry->get( $domain, $locale );
-
-			if ( ! $path ) {
-				continue;
-			}
-
-			$mofile = "{$path}/{$domain}-{$locale}.mo";
-
-			if ( load_textdomain( $domain, $mofile ) ) {
-				$translations = get_translations_for_domain( $domain );
-
-				return $translations->translate( $text );
-			}
-		}
-
-		$l10n[ $domain ] = &$noop_translations;
-	}
-
-	return $translation;
-}
 
 /**
  * Helper function used for just-in-time loading of translations.
@@ -1192,6 +1120,21 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 	}
 
 	return $translation;
+}
+
+/**
+ * Filters gettext calls to work around limitations in just-in-time loading of translations.
+ *
+ * @since 1.1.0
+ *
+ * @param string $translation  Translated text.
+ * @param string $text         Text to translate.
+ * @param string $domain       Text domain. Unique identifier for retrieving translated strings.
+ *
+ * @return string Translated text.
+ */
+function preferred_languages_filter_gettext( $translation, $text, $domain ) {
+	return preferred_languages_load_just_in_time( $translation, $text, null, null, null, $domain );
 }
 
 /**
