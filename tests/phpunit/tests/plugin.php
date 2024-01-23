@@ -42,15 +42,23 @@ class Plugin_Test extends WP_UnitTestCase {
 		// Prevents WP_Language_Pack_Upgrader from downloading and overriding language packs.
 		add_filter( 'file_mod_allowed', array( $this, 'filter_file_mod_allowed' ), 10, 2 );
 		add_filter( 'upgrader_pre_install', array( $this, 'filter_upgrader_pre_install' ) );
+
+		unload_textdomain( 'custom-internationalized-plugin' );
+		unload_textdomain( 'internationalized-plugin' );
+		unload_textdomain( 'default' );
 	}
 
 	public function tear_down() {
 		delete_option( 'preferred_languages' );
 		delete_site_option( 'preferred_languages' );
 
-		remove_filter( 'preferred_languages_merge_translations', '__return_true' );
+		remove_all_filters( 'preferred_languages_merge_translations' );
 
 		$this->rmdir( WP_LANG_DIR );
+
+		unload_textdomain( 'custom-internationalized-plugin' );
+		unload_textdomain( 'internationalized-plugin' );
+		unload_textdomain( 'default' );
 
 		parent::tear_down();
 	}
