@@ -546,6 +546,8 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
 function preferred_languages_override_load_textdomain( $override, $domain, $mofile ) {
 	$current_locale = determine_locale();
 
+	$merge_translations = class_exists( 'WP_Translations' );
+
 	/**
 	 * Filters whether translations should be merged with existing ones.
 	 *
@@ -555,7 +557,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	 * @param string $domain         The text domain
 	 * @param string $current_locale The current locale.
 	 */
-	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', $merge_translations, $domain, $current_locale );
 
 	if ( ! $merge_translations ) {
 		return $override;
