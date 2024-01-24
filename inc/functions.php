@@ -577,6 +577,18 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		return $override;
 	}
 
+	// If locale has been switched to a specific locale, ignore the ones before it.
+	// Example:
+	// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+	// Switched to locale: de_CH
+	// In that case, only check for de_CH, de_DE, es_ES.
+	if ( preferred_languages_is_locale_switched() ) {
+		$preferred_locales = array_slice(
+				$preferred_locales,
+				array_search( $current_locale, $preferred_locales, true )
+		);
+	}
+
 	$first_mofile = null;
 
 	remove_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain' );
@@ -664,8 +676,10 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 function preferred_languages_pre_load_script_translations( $translations, $file, $handle, $domain ) {
 	$current_locale = determine_locale();
 
+	$merge_translations = class_exists( 'WP_Translations' );
+
 	/** This filter is documented in inc/functions.php */
-	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', $merge_translations, $domain, $current_locale );
 
 	if ( ! $merge_translations ) {
 		return $translations;
@@ -681,6 +695,19 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
 		return $translations;
 	}
+
+	// If locale has been switched to a specific locale, ignore the ones before it.
+	// Example:
+	// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+	// Switched to locale: de_CH
+	// In that case, only check for de_CH, de_DE, es_ES.
+	if ( preferred_languages_is_locale_switched() ) {
+		$preferred_locales = array_slice(
+				$preferred_locales,
+				array_search( $current_locale, $preferred_locales, true )
+		);
+	}
+
 
 	remove_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations' );
 	remove_filter( 'load_script_translation_file', 'preferred_languages_load_script_translation_file' );
