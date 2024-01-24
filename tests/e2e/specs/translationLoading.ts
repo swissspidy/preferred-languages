@@ -35,12 +35,14 @@ describe( 'Translation Loading', () => {
 		] );
 
 		await activatePlugin( 'custom-internationalized-plugin' );
+		await activatePlugin( 'no-merge-translations' );
 		await deactivatePlugin( 'merge-translations' );
 		await deactivatePlugin( 'performant-translations' );
 	} );
 
 	afterAll( async () => {
 		await deactivatePlugin( 'custom-internationalized-plugin' );
+		await deactivatePlugin( 'no-merge-translations' );
 
 		// Extra space just so page.type() types something to clear the input field.
 		await setOption( 'preferred_languages', ' ' );
@@ -122,11 +124,13 @@ describe( 'Translation Loading', () => {
 
 	describe( 'Merging Translations', () => {
 		beforeAll( async () => {
+			await deactivatePlugin( 'no-merge-translations' );
 			await activatePlugin( 'merge-translations' );
 		} );
 
 		afterAll( async () => {
 			await deactivatePlugin( 'merge-translations' );
+			await activatePlugin( 'no-merge-translations' );
 		} );
 
 		it( 'should correctly translate strings', async () => {
