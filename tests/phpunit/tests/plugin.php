@@ -1064,6 +1064,8 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_pre_load_script_translations
 	 */
 	public function test_pre_load_script_translations_no_merge() {
+		add_filter( 'preferred_languages_merge_translations', '__return_false' );
+
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
 		$actual1 = preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' );
