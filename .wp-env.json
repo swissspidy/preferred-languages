@@ -4,6 +4,7 @@
 		"https://downloads.wordpress.org/plugin/performant-translations.zip",
 		".",
 		"./tests/e2e/plugins/custom-internationalized-plugin",
-		"./tests/e2e/plugins/merge-translations"
+		"./tests/e2e/plugins/merge-translations",
+		"./tests/e2e/plugins/no-merge-translations"
 	]
 }
