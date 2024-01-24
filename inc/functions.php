@@ -42,7 +42,7 @@ function preferred_languages_boot() {
 	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
 	add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
 	add_filter( 'locale', 'preferred_languages_filter_locale', 5 ); // Before WP_Locale_Switcher.
-	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 3 );
+	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 4 );
 	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10 );
 	add_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations', 10, 4 );
 	add_filter( 'load_script_translation_file', 'preferred_languages_load_script_translation_file' );
@@ -538,13 +538,16 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
  *
  * @since 1.7.1
  *
- * @param bool   $override Whether to override the .mo file loading. Default false.
- * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
- * @param string $mofile   Path to the MO file.
+ * @param bool        $override         Whether to override the .mo file loading. Default false.
+ * @param string      $domain           Text domain. Unique identifier for retrieving translated strings.
+ * @param string      $mofile           Path to the MO file.
+ * @param string|null $current_locale   Optional. Locale. Defaults to current locale.
  * @return bool Whether to override the .mo file loading.
  */
-function preferred_languages_override_load_textdomain( $override, $domain, $mofile ) {
-	$current_locale = determine_locale();
+function preferred_languages_override_load_textdomain( $override, $domain, $mofile, $current_locale = null ) {
+	if ( ! isset( $current_locale ) ) {
+		$current_locale = determine_locale();
+	}
 
 	$merge_translations = class_exists( 'WP_Translations' );
 
@@ -595,7 +598,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		}
 	}
 
-	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 3 );
+	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 4 );
 	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
 
 	if ( null !== $first_mofile ) {
