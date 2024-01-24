@@ -584,8 +584,8 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	// In that case, only check for de_CH, de_DE, es_ES.
 	if ( preferred_languages_is_locale_switched() ) {
 		$preferred_locales = array_slice(
-				$preferred_locales,
-				array_search( $current_locale, $preferred_locales, true )
+			$preferred_locales,
+			array_search( $current_locale, $preferred_locales, true )
 		);
 	}
 
@@ -703,11 +703,10 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	// In that case, only check for de_CH, de_DE, es_ES.
 	if ( preferred_languages_is_locale_switched() ) {
 		$preferred_locales = array_slice(
-				$preferred_locales,
-				array_search( $current_locale, $preferred_locales, true )
+			$preferred_locales,
+			array_search( $current_locale, $preferred_locales, true )
 		);
 	}
-
 
 	remove_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations' );
 	remove_filter( 'load_script_translation_file', 'preferred_languages_load_script_translation_file' );
