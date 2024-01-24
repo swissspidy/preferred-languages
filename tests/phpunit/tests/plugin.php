@@ -1485,6 +1485,27 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_load_just_in_time
 	 */
 	public function test_filter_gettext_plugin_custom_path_locale_switching() {
+		add_filter( 'preferred_languages_merge_translations', '__return_false' );
+		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
+
+		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
+
+		switch_to_locale( 'de_DE' );
+		$actual_de = custom_i18n_plugin_test();
+		switch_to_locale( 'es_ES' );
+		$actual_es = custom_i18n_plugin_test();
+		restore_current_locale();
+
+		$this->assertSame( 'Das ist ein Dummy Plugin', $actual_de );
+		$this->assertSame( 'Este es un plugin dummy', $actual_es );
+	}
+
+	/**
+	 * @covers ::preferred_languages_filter_gettext
+	 * @covers ::preferred_languages_load_just_in_time
+	 */
+	public function test_filter_gettext_plugin_custom_path_locale_switching_merge_translations() {
+		add_filter( 'preferred_languages_merge_translations', '__return_true' );
 		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
 
 		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
