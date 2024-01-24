@@ -184,7 +184,7 @@ describe( 'Translation Loading', () => {
 			Switched to es_ES: True
 			Current Locale: es_ES
 			Output:
-			Das ist ein Dummy Plugin
+			Este es un plugin dummy
 			Este es otro plugin dummy"
 		`
 			);
@@ -260,7 +260,7 @@ describe( 'Translation Loading', () => {
 				Switched to es_ES: True
 				Current Locale: es_ES
 				Output:
-				Das ist ein Dummy Plugin
+				Este es un plugin dummy
 				Este es otro plugin dummy"
 					`
 				);
