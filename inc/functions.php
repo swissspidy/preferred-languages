@@ -42,7 +42,7 @@ function preferred_languages_boot() {
 	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
 	add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
 	add_filter( 'locale', 'preferred_languages_filter_locale', 5 ); // Before WP_Locale_Switcher.
-	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 3 );
+	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 4 );
 	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile', 10 );
 	add_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations', 10, 4 );
 	add_filter( 'load_script_translation_file', 'preferred_languages_load_script_translation_file' );
@@ -538,13 +538,18 @@ function preferred_languages_filter_user_locale( $value, $object_id, $meta_key )
  *
  * @since 1.7.1
  *
- * @param bool   $override Whether to override the .mo file loading. Default false.
- * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
- * @param string $mofile   Path to the MO file.
+ * @param bool        $override         Whether to override the .mo file loading. Default false.
+ * @param string      $domain           Text domain. Unique identifier for retrieving translated strings.
+ * @param string      $mofile           Path to the MO file.
+ * @param string|null $current_locale   Optional. Locale. Defaults to current locale.
  * @return bool Whether to override the .mo file loading.
  */
-function preferred_languages_override_load_textdomain( $override, $domain, $mofile ) {
-	$current_locale = determine_locale();
+function preferred_languages_override_load_textdomain( $override, $domain, $mofile, $current_locale = null ) {
+	if ( ! isset( $current_locale ) ) {
+		$current_locale = determine_locale();
+	}
+
+	$merge_translations = class_exists( 'WP_Translations' );
 
 	/**
 	 * Filters whether translations should be merged with existing ones.
@@ -555,7 +560,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	 * @param string $domain         The text domain
 	 * @param string $current_locale The current locale.
 	 */
-	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', $merge_translations, $domain, $current_locale );
 
 	if ( ! $merge_translations ) {
 		return $override;
@@ -570,6 +575,18 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	// Locale has been filtered by something else.
 	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
 		return $override;
+	}
+
+	// If locale has been switched to a specific locale, ignore the ones before it.
+	// Example:
+	// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+	// Switched to locale: de_CH
+	// In that case, only check for de_CH, de_DE, es_ES.
+	if ( preferred_languages_is_locale_switched() ) {
+		$preferred_locales = array_slice(
+			$preferred_locales,
+			array_search( $current_locale, $preferred_locales, true )
+		);
 	}
 
 	$first_mofile = null;
@@ -593,7 +610,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		}
 	}
 
-	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 3 );
+	add_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain', 10, 4 );
 	add_filter( 'load_textdomain_mofile', 'preferred_languages_load_textdomain_mofile' );
 
 	if ( null !== $first_mofile ) {
@@ -659,8 +676,10 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 function preferred_languages_pre_load_script_translations( $translations, $file, $handle, $domain ) {
 	$current_locale = determine_locale();
 
+	$merge_translations = class_exists( 'WP_Translations' );
+
 	/** This filter is documented in inc/functions.php */
-	$merge_translations = apply_filters( 'preferred_languages_merge_translations', false, $domain, $current_locale );
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', $merge_translations, $domain, $current_locale );
 
 	if ( ! $merge_translations ) {
 		return $translations;
@@ -675,6 +694,18 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	// Locale has been filtered by something else.
 	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
 		return $translations;
+	}
+
+	// If locale has been switched to a specific locale, ignore the ones before it.
+	// Example:
+	// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+	// Switched to locale: de_CH
+	// In that case, only check for de_CH, de_DE, es_ES.
+	if ( preferred_languages_is_locale_switched() ) {
+		$preferred_locales = array_slice(
+			$preferred_locales,
+			array_search( $current_locale, $preferred_locales, true )
+		);
 	}
 
 	remove_filter( 'pre_load_script_translations', 'preferred_languages_pre_load_script_translations' );
