@@ -43,8 +43,9 @@ It provides three parameters:
 2. `$domain` - The text domain
 3. `$current_locale` - The current locale.
 
-**Warning**: Since this is a potentially slow/expensive process involving the loading of multiple translation files, it's recommended to use it
-sparingly and only for specific domains.
+**Note:** On WordPress 6.5 and newer, this functionality is enabled by default.
+On older versions of WordPress, this is a potentially slow/expensive process,
+so it's recommended to use it sparingly and only for specific domains.
 
 = Get Involved =
 
