@@ -63,6 +63,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 2.1.2 =
+= 2.2.0 =
 
-This release improves performance and compatibility with just-in-time translation loading in WordPress.
+This release ensures compatibility with WordPress 6.5 and enables translation merging by default if using that version.

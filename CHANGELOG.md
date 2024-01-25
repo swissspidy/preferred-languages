@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0
+
+* Ensured compatibility with new translation library in WordPress 6.5.
+* Enables translation merging by default when using WordPress 6.5, thanks to improved performance.
+
 ## 2.1.2
 
 * Improves performance and compatibility with just-in-time translation loading in WordPress.
