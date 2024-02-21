@@ -1,6 +1,23 @@
-/* When JS is not loaded yet. Approximation to prevent layout shift. */
+/*
+	Prevent layout shifts when component is not rendered and put in place yet.
+*/
+
 #preferred-languages-root:empty {
 	height: 205px;
+}
+
+/* User profile */
+.js .user-language-wrap:nth-child(1 of .user-language-wrap) td {
+	height: 200px;
+	visibility: hidden;
+}
+
+/* Site settings */
+
+/* stylelint-disable-next-line selector-id-pattern */
+.js #WPLANG {
+	height: 200px;
+	visibility: hidden;
 }
 
 .active-locales {
@@ -116,9 +133,6 @@
 	display: inline-block;
 }
 
-/* stylelint-disable-next-line selector-id-pattern */
-.js #WPLANG,
-.js .user-language-wrap,
 .no-js .preferred-languages,
 .no-js #preferred-languages-label,
 .no-js .user-preferred-languages-wrap {
@@ -132,7 +146,6 @@
 	vertical-align: middle;
 }
 
-/* Workaround for https://core.trac.wordpress.org/ticket/57644 */
 .language-install-spinner:not(.preferred-languages-spinner) {
 	display: none;
 }
