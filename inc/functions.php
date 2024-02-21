@@ -573,7 +573,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	}
 
 	// Locale has been filtered by something else.
-	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+	if ( $preferred_locales[0] !== $current_locale ) {
 		return $override;
 	}
 
@@ -639,7 +639,7 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 	$current_locale = determine_locale();
 
 	// Locale has been filtered by something else.
-	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+	if ( $preferred_locales[0] !== $current_locale ) {
 		return $mofile;
 	}
 
@@ -692,7 +692,7 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	}
 
 	// Locale has been filtered by something else.
-	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+	if ( $preferred_locales[0] !== $current_locale ) {
 		return $translations;
 	}
 
@@ -782,7 +782,7 @@ function preferred_languages_load_script_translation_file( $file ) {
 	$current_locale = determine_locale();
 
 	// Locale has been filtered by something else.
-	if ( ! in_array( $current_locale, $preferred_locales, true ) ) {
+	if ( $preferred_locales[0] !== $current_locale ) {
 		return $file;
 	}
 
@@ -1110,8 +1110,12 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 
 		$preferred_locales = preferred_languages_get_list();
 
+		if ( empty( $preferred_locales ) ) {
+			return $translation;
+		}
+
 		// Locale has been filtered by something else.
-		if ( ! in_array( $locale, $preferred_locales, true ) ) {
+		if ( $preferred_locales[0] !== $locale ) {
 			return $translation;
 		}
 
