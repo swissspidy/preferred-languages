@@ -52,17 +52,17 @@ jobs:
             - name: Set up PHP
               uses: shivammathur/setup-php@v2
               with:
-                php-version: ${{ matrix.php-version }}
-                coverage: none
-                tools: parallel-lint
+                  php-version: ${{ matrix.php-version }}
+                  coverage: none
+                  tools: parallel-lint
 
             - name: Search for invalid complex curly syntax
               run: |
-                ! git grep -e '\${[A-Z_a-z]' -- '*.php'
+                  ! git grep -e '\${[A-Z_a-z]' -- '*.php'
 
             - name: Check source code for syntax errors
               run: |
-                composer exec --no-interaction -- parallel-lint *.php inc/
+                  composer exec --no-interaction -- parallel-lint *.php inc/ tests/
 
     lint-php:
         name: PHP Lints
