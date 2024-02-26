@@ -120,8 +120,8 @@ function preferred_languages_get_locale_switcher_user_id() {
 	/* @var WP_Locale_Switcher $wp_locale_switcher */
 	global $wp_locale_switcher;
 
-	return $wp_locale_switcher &&
-		method_exists( $wp_locale_switcher, 'get_switched_user_id' ) ?
+	return $wp_locale_switcher instanceof WP_Locale_Switcher &&
+				method_exists( $wp_locale_switcher, 'get_switched_user_id' ) ?
 		$wp_locale_switcher->get_switched_user_id() : false;
 }
 
@@ -595,7 +595,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	if ( preferred_languages_is_locale_switched() ) {
 		$offset = array_search( $current_locale, $preferred_locales, true );
 
-		if ( false === $offset ) {
+		if ( ! is_int( $offset ) ) {
 			return $override;
 		}
 
@@ -692,6 +692,10 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
  * @return string|false|null JSON-encoded translation data.
  */
 function preferred_languages_pre_load_script_translations( $translations, $file, $handle, $domain ) {
+	if ( ! $file ) {
+		return $translations;
+	}
+
 	$current_locale = determine_locale();
 
 	$merge_translations = class_exists( 'WP_Translations' );
@@ -724,7 +728,7 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	if ( preferred_languages_is_locale_switched() ) {
 		$offset = array_search( $current_locale, $preferred_locales, true );
 
-		if ( false === $offset ) {
+		if ( ! is_int( $offset ) ) {
 			return $translations;
 		}
 
@@ -1157,7 +1161,7 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 		if ( preferred_languages_is_locale_switched() ) {
 			$offset = array_search( $current_locale, $preferred_locales, true );
 
-			if ( false === $offset ) {
+			if ( ! is_int( $offset ) ) {
 				return $translation;
 			}
 
