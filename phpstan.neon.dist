@@ -1,7 +1,7 @@
 includes:
 	- build-cs/vendor/phpstan/phpstan/conf/bleedingEdge.neon
 parameters:
-	level: 0
+	level: 5
 	paths:
 		- inc/
 		- tests/phpunit
@@ -9,3 +9,5 @@ parameters:
 		- message: '/^Call to private\/internal function preferred_languages_load_just_in_time\(\).$/'
 	scanFiles:
 		- build-cs/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
+	bootstrapFiles:
+		- tests/phpstan/bootstrap.php

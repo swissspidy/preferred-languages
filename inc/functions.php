@@ -153,7 +153,7 @@ function preferred_languages_update_user_option( $user_id ) {
  *
  * @since 1.3.0
  *
- * @param int|WP_User $user_id User's ID or a WP_User object. Defaults to current user.
+ * @param int|string|WP_User $user_id User's ID or a WP_User object. Defaults to current user.
  * @return array|false Preferred languages or false if user does not exists.
  */
 function preferred_languages_get_user_list( $user_id = 0 ) {
@@ -766,7 +766,7 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
  *
  * @param string|false $file Path to the translation file to load. False if there isn't one.
  *
- * @return string The modified JSON file path.
+ * @return string|false The modified JSON file path or false if there isn't one.
  */
 function preferred_languages_load_script_translation_file( $file ) {
 	if ( ! $file ) {
