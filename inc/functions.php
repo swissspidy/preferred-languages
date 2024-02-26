@@ -655,7 +655,7 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 	$current_locale = determine_locale();
 
 	// Locale has been filtered by something else.
-	if ( $preferred_locales[0] !== $current_locale  && ! preferred_languages_is_locale_switched() ) {
+	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 		return $mofile;
 	}
 
