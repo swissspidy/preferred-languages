@@ -3,6 +3,7 @@
 .idea
 artifacts
 bin
+build-cs
 node_modules
 src
 tests
@@ -24,6 +25,8 @@ composer.lock
 package.json
 package-lock.json
 phpcs.xml.dist
+phpstan.neon
+phpstan.neon.dist
 phpunit.xml.dist
 phpunit-multisite.xml.dist
 README.md

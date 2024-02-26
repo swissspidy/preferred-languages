@@ -39,7 +39,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '7.4'
+                  php-version: 'latest'
                   coverage: none
                   tools: composer, cs2pr
 
@@ -49,10 +49,32 @@ jobs:
             - name: Install PHP dependencies
               uses: ramsey/composer-install@v2
               with:
-                  composer-options: '--prefer-dist --no-progress --no-interaction'
+                  composer-options: '--prefer-dist --no-scripts'
 
             - name: Lint PHP
-              run: composer lint
+              run: composer run lint
+
+    phpstan:
+        name: PHPStan
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 'latest'
+                  coverage: none
+                  tools: composer, cs2pr
+
+            - name: Install PHP dependencies
+              uses: ramsey/composer-install@v2
+              with:
+                  composer-options: '--prefer-dist'
+
+            - name: Run PHPStan
+              run: composer run phpstan
 
     unit-js:
         name: JS Tests
@@ -136,7 +158,7 @@ jobs:
             - name: Install PHP dependencies
               uses: ramsey/composer-install@v2
               with:
-                  composer-options: '--prefer-dist --no-progress --no-interaction --no-scripts'
+                  composer-options: '--prefer-dist --no-scripts'
 
             # Installs a different PHPUnit version depending on the WP/PHP version combo we're testing against.
             #

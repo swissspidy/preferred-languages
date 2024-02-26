@@ -30,14 +30,14 @@ function preferred_languages_boot() {
 	add_action( 'personal_options_update', 'preferred_languages_update_user_option' );
 	add_action( 'edit_user_profile_update', 'preferred_languages_update_user_option' );
 
-	add_filter( 'pre_update_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 3 );
-	add_filter( 'pre_update_site_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 3 );
+	add_filter( 'pre_update_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 2 );
+	add_filter( 'pre_update_site_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 2 );
 	add_action( 'add_option_preferred_languages', 'preferred_languages_add_option', 10, 2 );
 	add_action( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 	add_action( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
 	add_action( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
-	add_action( 'pre_option_WPLANG', 'preferred_languages_filter_option', 10, 2 );
-	add_action( 'pre_site_option_WPLANG', 'preferred_languages_filter_option', 10, 2 );
+	add_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+	add_filter( 'pre_site_option_WPLANG', 'preferred_languages_filter_option' );
 	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
 	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
 	add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
@@ -120,8 +120,8 @@ function preferred_languages_get_locale_switcher_user_id() {
 	/* @var WP_Locale_Switcher $wp_locale_switcher */
 	global $wp_locale_switcher;
 
-	return $wp_locale_switcher &&
-		method_exists( $wp_locale_switcher, 'get_switched_user_id' ) ?
+	return $wp_locale_switcher instanceof WP_Locale_Switcher &&
+				method_exists( $wp_locale_switcher, 'get_switched_user_id' ) ?
 		$wp_locale_switcher->get_switched_user_id() : false;
 }
 
@@ -134,6 +134,10 @@ function preferred_languages_get_locale_switcher_user_id() {
  */
 function preferred_languages_update_user_option( $user_id ) {
 	if ( ! isset( $_POST['_wpnonce'], $_POST['preferred_languages'] ) ) {
+		return;
+	}
+
+	if ( ! is_string( $_POST['_wpnonce'] ) ) {
 		return;
 	}
 
@@ -153,8 +157,8 @@ function preferred_languages_update_user_option( $user_id ) {
  *
  * @since 1.3.0
  *
- * @param int|WP_User $user_id User's ID or a WP_User object. Defaults to current user.
- * @return array|false Preferred languages or false if user does not exists.
+ * @param int|string|WP_User $user_id User's ID or a WP_User object. Defaults to current user.
+ * @return string[]|false Preferred languages or false if user does not exists.
  */
 function preferred_languages_get_user_list( $user_id = 0 ) {
 	$user = false;
@@ -172,6 +176,11 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
 	}
 
 	$preferred_languages = get_user_meta( $user->ID, 'preferred_languages', true );
+
+	if ( ! is_string( $preferred_languages ) ) {
+		return false;
+	}
+
 	$preferred_languages = array_filter( explode( ',', $preferred_languages ) );
 
 	if ( ! empty( $preferred_languages ) ) {
@@ -182,7 +191,11 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
 	$locale = get_user_meta( $user->ID, 'locale', true );
 	add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
 
-	return empty( $locale ) ? false : array( $locale );
+	if ( empty( $locale ) || ! is_string( $locale ) ) {
+		return false;
+	}
+
+	return array( $locale );
 }
 
 /**
@@ -190,10 +203,15 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
  *
  * @since 1.3.0
  *
- * @return array Preferred languages.
+ * @return string[] Preferred languages.
  */
 function preferred_languages_get_site_list() {
 	$preferred_languages = get_option( 'preferred_languages', '' );
+
+	if ( ! is_string( $preferred_languages ) ) {
+		return array();
+	}
+
 	return array_filter( explode( ',', $preferred_languages ) );
 }
 
@@ -202,10 +220,15 @@ function preferred_languages_get_site_list() {
  *
  * @since 1.7.0
  *
- * @return array Preferred languages.
+ * @return string[] Preferred languages.
  */
 function preferred_languages_get_network_list() {
 	$preferred_languages = get_site_option( 'preferred_languages', '' );
+
+	if ( ! is_string( $preferred_languages ) ) {
+		return array();
+	}
+
 	return array_filter( explode( ',', $preferred_languages ) );
 }
 
@@ -217,7 +240,7 @@ function preferred_languages_get_network_list() {
  *
  * @since 1.0.0
  *
- * @return array Preferred languages.
+ * @return string[] Preferred languages.
  */
 function preferred_languages_get_list() {
 	$preferred_languages = array();
@@ -269,6 +292,10 @@ function preferred_languages_add_user_meta( $object_id, $meta_key, $meta_value )
 		update_user_meta( $object_id, 'locale', '' );
 	}
 
+	if ( ! is_string( $meta_value ) ) {
+		return;
+	}
+
 	$locales = array_filter( explode( ',', $meta_value ) );
 	preferred_languages_download_language_packs( $locales );
 
@@ -305,6 +332,10 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 		update_user_meta( $object_id, 'locale', '' );
 	}
 
+	if ( ! is_string( $meta_value ) ) {
+		return;
+	}
+
 	$locales = array_filter( explode( ',', $meta_value ) );
 	preferred_languages_download_language_packs( $locales );
 
@@ -326,6 +357,10 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
  * @return mixed
  */
 function preferred_languages_pre_update_option( $value, $old_value ) {
+	if ( ! is_string( $value ) ) {
+		return $value;
+	}
+
 	if ( $value === $old_value ) {
 		$locales = array_filter( explode( ',', $value ) );
 		preferred_languages_download_language_packs( $locales );
@@ -349,6 +384,10 @@ function preferred_languages_add_option( $option, $value ) {
 	 */
 	if ( empty( $value ) ) {
 		update_option( 'WPLANG', '' );
+	}
+
+	if ( ! is_string( $value ) ) {
+		return;
 	}
 
 	$locales = array_filter( explode( ',', $value ) );
@@ -429,8 +468,8 @@ function preferred_languages_filter_option( $locale ) {
  *
  * @since 1.0.0
  *
- * @param array $locales List of locales to install language packs for.
- * @return array The installed and available languages.
+ * @param string[] $locales List of locales to install language packs for.
+ * @return string[] The installed and available languages.
  */
 function preferred_languages_download_language_packs( $locales ) {
 	// Handle translation install.
@@ -513,12 +552,12 @@ function preferred_languages_filter_locale( $locale ) {
  *
  * @since 1.0.0
  *
- * @param null|array|string $value     The value get_metadata() should return - a single metadata value,
- *                                     or an array of values.
- * @param int               $object_id Object ID.
- * @param string            $meta_key  Meta key.
+ * @param mixed  $value     The value get_metadata() should return - a single metadata value,
+ *                          or an array of values.
+ * @param int    $object_id Object ID.
+ * @param string $meta_key  Meta key.
  *
- * @return null|array|string The meta value.
+ * @return mixed The meta value.
  */
 function preferred_languages_filter_user_locale( $value, $object_id, $meta_key ) {
 	if ( 'locale' !== $meta_key ) {
@@ -595,7 +634,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	if ( preferred_languages_is_locale_switched() ) {
 		$offset = array_search( $current_locale, $preferred_locales, true );
 
-		if ( false === $offset ) {
+		if ( ! is_int( $offset ) ) {
 			return $override;
 		}
 
@@ -692,6 +731,10 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
  * @return string|false|null JSON-encoded translation data.
  */
 function preferred_languages_pre_load_script_translations( $translations, $file, $handle, $domain ) {
+	if ( ! $file ) {
+		return $translations;
+	}
+
 	$current_locale = determine_locale();
 
 	$merge_translations = class_exists( 'WP_Translations' );
@@ -724,7 +767,7 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	if ( preferred_languages_is_locale_switched() ) {
 		$offset = array_search( $current_locale, $preferred_locales, true );
 
-		if ( false === $offset ) {
+		if ( ! is_int( $offset ) ) {
 			return $translations;
 		}
 
@@ -761,6 +804,15 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 		$all_translations_json = json_decode( $all_translations, true );
 		$translations_json     = json_decode( $translations, true );
 
+		if (
+				! is_array( $all_translations_json ) ||
+				! is_array( $translations_json ) ||
+				! isset( $translations_json['locale_data']['messages'] ) ||
+				! is_array( $translations_json['locale_data']['messages'] )
+		) {
+			return $translations;
+		}
+
 		foreach ( $translations_json['locale_data']['messages'] as $key => $translation ) {
 			if (
 				isset( $all_translations_json['locale_data']['messages'][ $key ] ) &&
@@ -792,7 +844,7 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
  *
  * @param string|false $file Path to the translation file to load. False if there isn't one.
  *
- * @return string The modified JSON file path.
+ * @return string|false The modified JSON file path or false if there isn't one.
  */
 function preferred_languages_load_script_translation_file( $file ) {
 	if ( ! $file ) {
@@ -916,7 +968,15 @@ function preferred_languages_update_network_settings() {
 		return;
 	}
 
-	$nonce = isset( $_POST['preferred_languages_network_settings_nonce'] ) ? wp_unslash( $_POST['preferred_languages_network_settings_nonce'] ) : '';
+	if ( ! isset( $_POST['preferred_languages_network_settings_nonce'] ) ) {
+		return;
+	}
+
+	if ( ! is_string( $_POST['preferred_languages_network_settings_nonce'] ) ) {
+		return;
+	}
+
+	$nonce = wp_unslash( $_POST['preferred_languages_network_settings_nonce'] );
 
 	if ( ! wp_verify_nonce( $nonce, 'preferred_languages_network_settings' ) ) {
 		return;
@@ -969,6 +1029,8 @@ function preferred_languages_personal_options( $user ) {
  * Displays the actual form to select the preferred languages.
  *
  * @since 1.0.0
+ *
+ * @phpstan-param array{selected?: string[], show_available_translations?: bool, show_option_en_us?: bool, show_option_site_default?: bool} $args
  *
  * @param array $args {
  *     Optional. Array of form arguments.
@@ -1155,7 +1217,7 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 		if ( preferred_languages_is_locale_switched() ) {
 			$offset = array_search( $current_locale, $preferred_locales, true );
 
-			if ( false === $offset ) {
+			if ( ! is_int( $offset ) ) {
 				return $translation;
 			}
 
@@ -1177,7 +1239,7 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 			if ( load_textdomain( $domain, $mofile ) ) {
 				$translations = get_translations_for_domain( $domain );
 
-				if ( null !== $plural ) {
+				if ( null !== $plural && null !== $number ) {
 					return $translations->translate_plural( $single, $plural, $number, $context );
 				}
 
@@ -1260,6 +1322,9 @@ function preferred_languages_filter_ngettext_with_context( $translation, $single
  * Filters debug information to include Preferred Languages data.
  *
  * @since 1.8.0
+ *
+ * @phpstan-param array{wp-core: array{fields: array{site_language: array{value?: string}, user_language: array{value?: string}}}} $args
+ * @phpstan-return array{wp-core: array{fields: array{site_language: array{value?: string}, user_language: array{value?: string}}}}
  *
  * @param array $args The debug information to be added to the core information page.
  *
