@@ -261,8 +261,10 @@ function preferred_languages_add_user_meta( $object_id, $meta_key, $meta_value )
 		return;
 	}
 
-	// Clearing the preferred languages list should also clear the 'locale' user meta
-	// to prevent stale data.
+	/*
+	 * Clearing the preferred languages list should also clear the 'locale' user meta
+	 * in order to prevent stale data.
+	 */
 	if ( empty( $meta_value ) ) {
 		update_user_meta( $object_id, 'locale', '' );
 	}
@@ -295,8 +297,10 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 		return;
 	}
 
-	// Clearing the preferred languages list should also clear the 'locale' user meta
-	// to prevent stale data.
+	/*
+	 * Clearing the preferred languages list should also clear the 'locale' user meta
+	 * in order to prevent stale data.
+	 */
 	if ( empty( $meta_value ) ) {
 		update_user_meta( $object_id, 'locale', '' );
 	}
@@ -339,8 +343,10 @@ function preferred_languages_pre_update_option( $value, $old_value ) {
  * @param mixed  $value  Value of the option.
  */
 function preferred_languages_add_option( $option, $value ) {
-	// Clearing the preferred languages list should also clear the 'WPLANG' option
-	// to prevent stale data.
+	/*
+	 * Clearing the preferred languages list should also clear the 'WPLANG' option
+	 * in order to prevent stale data.
+	 */
 	if ( empty( $value ) ) {
 		update_option( 'WPLANG', '' );
 	}
@@ -361,8 +367,10 @@ function preferred_languages_add_option( $option, $value ) {
  * @param string $value     The new option value.
  */
 function preferred_languages_update_option( $old_value, $value ) {
-	// Clearing the preferred languages list should also clear the 'WPLANG' option
-	// to prevent stale data.
+	/*
+	 * Clearing the preferred languages list should also clear the 'WPLANG' option
+	 * in order to prevent stale data.
+	 */
 	if ( empty( $value ) ) {
 		update_option( 'WPLANG', '' );
 	}
@@ -556,7 +564,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	 *
 	 * @since 1.7.0
 	 *
-	 * @param bool   $merge          Whether translations should be merged.
+	 * @param bool   $merge          Whether translations should be merged. Defaults to true on WordPress 6.5 and newer.
 	 * @param string $domain         The text domain
 	 * @param string $current_locale The current locale.
 	 */
@@ -573,19 +581,27 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	}
 
 	// Locale has been filtered by something else.
-	if ( $preferred_locales[0] !== $current_locale ) {
+	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 		return $override;
 	}
 
-	// If locale has been switched to a specific locale, ignore the ones before it.
-	// Example:
-	// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
-	// Switched to locale: de_CH
-	// In that case, only check for de_CH, de_DE, es_ES.
+	/*
+	 * If locale has been switched to a specific locale, ignore the ones before it.
+	 * Example:
+	 * Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+	 * Switched to locale: de_CH
+	 * In that case, only check for de_CH, de_DE, es_ES.
+	 */
 	if ( preferred_languages_is_locale_switched() ) {
+		$offset = array_search( $current_locale, $preferred_locales, true );
+
+		if ( false === $offset ) {
+			return $override;
+		}
+
 		$preferred_locales = array_slice(
 			$preferred_locales,
-			array_search( $current_locale, $preferred_locales, true )
+			$offset
 		);
 	}
 
@@ -639,12 +655,14 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 	$current_locale = determine_locale();
 
 	// Locale has been filtered by something else.
-	if ( $preferred_locales[0] !== $current_locale ) {
+	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 		return $mofile;
 	}
 
-	// If locale has been switched to a specific locale,
-	// the right MO file has already been chosen. Bail early.
+	/*
+	 * If locale has been switched to a specific locale,
+	 * the right MO file has already been chosen. Bail early.
+	 */
 	if ( preferred_languages_is_locale_switched() ) {
 		return $mofile;
 	}
@@ -692,19 +710,27 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	}
 
 	// Locale has been filtered by something else.
-	if ( $preferred_locales[0] !== $current_locale ) {
+	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 		return $translations;
 	}
 
-	// If locale has been switched to a specific locale, ignore the ones before it.
-	// Example:
-	// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
-	// Switched to locale: de_CH
-	// In that case, only check for de_CH, de_DE, es_ES.
+	/*
+	 * If locale has been switched to a specific locale, ignore the ones before it.
+	 * Example:
+	 * Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+	 * Switched to locale: de_CH
+	 * In that case, only check for de_CH, de_DE, es_ES.
+	 */
 	if ( preferred_languages_is_locale_switched() ) {
+		$offset = array_search( $current_locale, $preferred_locales, true );
+
+		if ( false === $offset ) {
+			return $translations;
+		}
+
 		$preferred_locales = array_slice(
 			$preferred_locales,
-			array_search( $current_locale, $preferred_locales, true )
+			$offset
 		);
 	}
 
@@ -782,7 +808,7 @@ function preferred_languages_load_script_translation_file( $file ) {
 	$current_locale = determine_locale();
 
 	// Locale has been filtered by something else.
-	if ( $preferred_locales[0] !== $current_locale ) {
+	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 		return $file;
 	}
 
@@ -806,8 +832,8 @@ function preferred_languages_register_scripts() {
 	$asset_file = dirname( __DIR__ ) . '/build/preferred-languages.asset.php';
 	$asset      = is_readable( $asset_file ) ? require $asset_file : array();
 
-	$asset['dependencies'] = isset( $asset['dependencies'] ) ? $asset['dependencies'] : array();
-	$asset['version']      = isset( $asset['version'] ) ? $asset['version'] : '';
+	$asset['dependencies'] = $asset['dependencies'] ?? array();
+	$asset['version']      = $asset['version'] ?? '';
 
 	wp_register_script(
 		'preferred-languages',
@@ -890,7 +916,7 @@ function preferred_languages_update_network_settings() {
 		return;
 	}
 
-	$nonce = isset( $_POST['preferred_languages_network_settings_nonce'] ) ? wp_unslash( $_POST['preferred_languages_network_settings_nonce'] ) : null;
+	$nonce = isset( $_POST['preferred_languages_network_settings_nonce'] ) ? wp_unslash( $_POST['preferred_languages_network_settings_nonce'] ) : '';
 
 	if ( ! wp_verify_nonce( $nonce, 'preferred_languages_network_settings' ) ) {
 		return;
@@ -1106,7 +1132,7 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 	}
 
 	if ( $translations instanceof NOOP_Translations ) {
-		$locale = determine_locale();
+		$current_locale = determine_locale();
 
 		$preferred_locales = preferred_languages_get_list();
 
@@ -1115,19 +1141,27 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 		}
 
 		// Locale has been filtered by something else.
-		if ( $preferred_locales[0] !== $locale ) {
+		if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 			return $translation;
 		}
 
-		// If locale has been switched to a specific locale, ignore the ones before it.
-		// Example:
-		// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
-		// Switched to locale: de_CH
-		// In that case, only check for de_CH, de_DE, es_ES.
+		/*
+		 * If locale has been switched to a specific locale, ignore the ones before it.
+		 * Example:
+		 * Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+		 * Switched to locale: de_CH
+		 * In that case, only check for de_CH, de_DE, es_ES.
+		 */
 		if ( preferred_languages_is_locale_switched() ) {
+			$offset = array_search( $current_locale, $preferred_locales, true );
+
+			if ( false === $offset ) {
+				return $translation;
+			}
+
 			$preferred_locales = array_slice(
 				$preferred_locales,
-				array_search( $locale, $preferred_locales, true )
+				$offset
 			);
 		}
 
