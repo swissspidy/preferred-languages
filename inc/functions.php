@@ -1141,7 +1141,7 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 		}
 
 		// Locale has been filtered by something else.
-		if ( $preferred_locales[0] !== $current_locale ) {
+		if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 			return $translation;
 		}
 
