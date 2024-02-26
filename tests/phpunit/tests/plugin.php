@@ -63,6 +63,11 @@ class Plugin_Test extends WP_UnitTestCase {
 		parent::tear_down();
 	}
 
+	/**
+	 * @param bool   $file_mod_allowed Whether file modifications are allowed.
+	 * @param string $context          The usage context.
+	 * @return bool
+	 */
 	public function filter_file_mod_allowed( $file_mod_allowed, $context ) {
 		if ( 'download_language_pack' === $context ) {
 			return false;
@@ -82,6 +87,11 @@ class Plugin_Test extends WP_UnitTestCase {
 		return new WP_Error( 'disabled_for_tests', 'Do not actually download language packs for tests' );
 	}
 
+	/**
+	 * @param array<string, bool> $allcaps Array of key/value pairs where keys represent a capability name
+	 *                                     and boolean values represent whether the user has that capability.
+	 * @return array<string, bool>
+	 */
 	public function grant_do_not_allow( $allcaps ) {
 		$allcaps['do_not_allow'] = true;
 		return $allcaps;

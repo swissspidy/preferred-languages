@@ -154,7 +154,7 @@ function preferred_languages_update_user_option( $user_id ) {
  * @since 1.3.0
  *
  * @param int|string|WP_User $user_id User's ID or a WP_User object. Defaults to current user.
- * @return array|false Preferred languages or false if user does not exists.
+ * @return string[]|false Preferred languages or false if user does not exists.
  */
 function preferred_languages_get_user_list( $user_id = 0 ) {
 	$user = false;
@@ -190,7 +190,7 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
  *
  * @since 1.3.0
  *
- * @return array Preferred languages.
+ * @return string[] Preferred languages.
  */
 function preferred_languages_get_site_list() {
 	$preferred_languages = get_option( 'preferred_languages', '' );
@@ -202,7 +202,7 @@ function preferred_languages_get_site_list() {
  *
  * @since 1.7.0
  *
- * @return array Preferred languages.
+ * @return string[] Preferred languages.
  */
 function preferred_languages_get_network_list() {
 	$preferred_languages = get_site_option( 'preferred_languages', '' );
@@ -217,7 +217,7 @@ function preferred_languages_get_network_list() {
  *
  * @since 1.0.0
  *
- * @return array Preferred languages.
+ * @return string[] Preferred languages.
  */
 function preferred_languages_get_list() {
 	$preferred_languages = array();
@@ -421,8 +421,8 @@ function preferred_languages_filter_option( $locale ) {
  *
  * @since 1.0.0
  *
- * @param array $locales List of locales to install language packs for.
- * @return array The installed and available languages.
+ * @param string[] $locales List of locales to install language packs for.
+ * @return string[] The installed and available languages.
  */
 function preferred_languages_download_language_packs( $locales ) {
 	// Handle translation install.
@@ -505,12 +505,12 @@ function preferred_languages_filter_locale( $locale ) {
  *
  * @since 1.0.0
  *
- * @param null|array|string $value     The value get_metadata() should return - a single metadata value,
- *                                     or an array of values.
- * @param int               $object_id Object ID.
- * @param string            $meta_key  Meta key.
+ * @param mixed  $value     The value get_metadata() should return - a single metadata value,
+ *                          or an array of values.
+ * @param int    $object_id Object ID.
+ * @param string $meta_key  Meta key.
  *
- * @return null|array|string The meta value.
+ * @return mixed The meta value.
  */
 function preferred_languages_filter_user_locale( $value, $object_id, $meta_key ) {
 	if ( 'locale' !== $meta_key ) {
@@ -944,6 +944,8 @@ function preferred_languages_personal_options( $user ) {
  *
  * @since 1.0.0
  *
+ * @phpstan-param array{selected?: string[], show_available_translations?: bool, show_option_en_us?: bool, show_option_site_default?: bool} $args
+ *
  * @param array $args {
  *     Optional. Array of form arguments.
  *
@@ -1226,6 +1228,9 @@ function preferred_languages_filter_ngettext_with_context( $translation, $single
  * Filters debug information to include Preferred Languages data.
  *
  * @since 1.8.0
+ *
+ * @phpstan-param array{wp-core: array{fields: array{site_language: array{value?: string}, user_language: array{value?: string}}}} $args
+ * @phpstan-return array{wp-core: array{fields: array{site_language: array{value?: string}, user_language: array{value?: string}}}}
  *
  * @param array $args The debug information to be added to the core information page.
  *

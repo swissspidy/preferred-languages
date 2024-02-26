@@ -1,12 +1,13 @@
 includes:
 	- build-cs/vendor/phpstan/phpstan/conf/bleedingEdge.neon
 parameters:
-	level: 5
+	level: 6
 	paths:
 		- inc/
 		- tests/phpunit
 	ignoreErrors:
-		- message: '/^Call to private\/internal function preferred_languages_load_just_in_time\(\).$/'
+		- message: '/^Call to private\/internal function preferred_languages_load_just_in_time\(\)\.$/'
+		- message: '/has no return type specified\.$/'
 	scanFiles:
 		- build-cs/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
 	bootstrapFiles:
