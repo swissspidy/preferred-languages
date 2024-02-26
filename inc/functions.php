@@ -30,14 +30,14 @@ function preferred_languages_boot() {
 	add_action( 'personal_options_update', 'preferred_languages_update_user_option' );
 	add_action( 'edit_user_profile_update', 'preferred_languages_update_user_option' );
 
-	add_filter( 'pre_update_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 3 );
-	add_filter( 'pre_update_site_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 3 );
+	add_filter( 'pre_update_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 2 );
+	add_filter( 'pre_update_site_option_preferred_languages', 'preferred_languages_pre_update_option', 10, 2 );
 	add_action( 'add_option_preferred_languages', 'preferred_languages_add_option', 10, 2 );
 	add_action( 'update_option_preferred_languages', 'preferred_languages_update_option', 10, 2 );
 	add_action( 'add_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
 	add_action( 'update_site_option_preferred_languages', 'preferred_languages_update_site_option', 10, 2 );
-	add_action( 'pre_option_WPLANG', 'preferred_languages_filter_option', 10, 2 );
-	add_action( 'pre_site_option_WPLANG', 'preferred_languages_filter_option', 10, 2 );
+	add_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+	add_filter( 'pre_site_option_WPLANG', 'preferred_languages_filter_option' );
 	add_action( 'add_user_meta', 'preferred_languages_add_user_meta', 10, 3 );
 	add_action( 'update_user_meta', 'preferred_languages_update_user_meta', 10, 4 );
 	add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );

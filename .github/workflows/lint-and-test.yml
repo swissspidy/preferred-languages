@@ -39,7 +39,7 @@ jobs:
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '7.4'
+                  php-version: 'latest'
                   coverage: none
                   tools: composer, cs2pr
 
@@ -53,6 +53,28 @@ jobs:
 
             - name: Lint PHP
               run: composer lint
+
+    phpstan:
+        name: PHPStan
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: 'latest'
+                  coverage: none
+                  tools: composer, cs2pr
+
+            - name: Install PHP dependencies
+              uses: ramsey/composer-install@v2
+              with:
+                  composer-options: '--prefer-dist --no-progress --no-interaction'
+
+            - name: Run PHPStan
+              run: composer phpstan
 
     unit-js:
         name: JS Tests
