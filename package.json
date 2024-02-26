@@ -30,7 +30,7 @@
 		"@types/expect-puppeteer": "^5.0.6",
 		"@types/jest-environment-puppeteer": "^5.0.6",
 		"@wordpress/env": "^9.4.0",
-		"@wordpress/scripts": "^27.2.0",
+		"@wordpress/scripts": "^27.3.0",
 		"jest-environment-jsdom": "^29.7.0",
 		"mini-css-extract-plugin": "^2.8.0",
 		"prettier": "npm:wp-prettier@^3.0.3",
