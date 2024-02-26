@@ -1183,7 +1183,7 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 			if ( load_textdomain( $domain, $mofile ) ) {
 				$translations = get_translations_for_domain( $domain );
 
-				if ( null !== $plural ) {
+				if ( null !== $plural && null !== $number ) {
 					return $translations->translate_plural( $single, $plural, $number, $context );
 				}
 

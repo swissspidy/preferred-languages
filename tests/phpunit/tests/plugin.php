@@ -1058,7 +1058,7 @@ class Plugin_Test extends WP_UnitTestCase {
 
 		$actual_false = preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' );
 
-		$this->assertIsNotString( $actual_false );
+		$this->assertIsBool( $actual_false );
 		$this->assertFalse( $actual_false );
 		$this->assertSame( '', preferred_languages_pre_load_script_translations( '', 'file', 'handle', 'default' ) );
 	}
@@ -1080,7 +1080,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$actual1 = preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' );
 		$actual2 = preferred_languages_pre_load_script_translations( '', 'file', 'handle', 'default' );
 
-		$this->assertIsNotString( $actual1 );
+		$this->assertIsBool( $actual1 );
 		$this->assertFalse( $actual1 );
 		$this->assertSame( '', $actual2 );
 	}
@@ -1096,7 +1096,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$actual1 = preferred_languages_pre_load_script_translations( false, 'file', 'handle', 'default' );
 		$actual2 = preferred_languages_pre_load_script_translations( '', 'file', 'handle', 'default' );
 
-		$this->assertIsNotString( $actual1 );
+		$this->assertIsBool( $actual1 );
 		$this->assertFalse( $actual1 );
 		$this->assertSame( '', $actual2 );
 	}
