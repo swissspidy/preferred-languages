@@ -261,8 +261,10 @@ function preferred_languages_add_user_meta( $object_id, $meta_key, $meta_value )
 		return;
 	}
 
-	// Clearing the preferred languages list should also clear the 'locale' user meta
-	// to prevent stale data.
+	/*
+	 * Clearing the preferred languages list should also clear the 'locale' user meta
+	 * in order to prevent stale data.
+	 */
 	if ( empty( $meta_value ) ) {
 		update_user_meta( $object_id, 'locale', '' );
 	}
@@ -295,8 +297,10 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 		return;
 	}
 
-	// Clearing the preferred languages list should also clear the 'locale' user meta
-	// to prevent stale data.
+	/*
+	 * Clearing the preferred languages list should also clear the 'locale' user meta
+	 * in order to prevent stale data.
+	 */
 	if ( empty( $meta_value ) ) {
 		update_user_meta( $object_id, 'locale', '' );
 	}
@@ -339,8 +343,10 @@ function preferred_languages_pre_update_option( $value, $old_value ) {
  * @param mixed  $value  Value of the option.
  */
 function preferred_languages_add_option( $option, $value ) {
-	// Clearing the preferred languages list should also clear the 'WPLANG' option
-	// to prevent stale data.
+	/*
+	 * Clearing the preferred languages list should also clear the 'WPLANG' option
+	 * in order to prevent stale data.
+	 */
 	if ( empty( $value ) ) {
 		update_option( 'WPLANG', '' );
 	}
@@ -361,8 +367,10 @@ function preferred_languages_add_option( $option, $value ) {
  * @param string $value     The new option value.
  */
 function preferred_languages_update_option( $old_value, $value ) {
-	// Clearing the preferred languages list should also clear the 'WPLANG' option
-	// to prevent stale data.
+	/*
+	 * Clearing the preferred languages list should also clear the 'WPLANG' option
+	 * in order to prevent stale data.
+	 */
 	if ( empty( $value ) ) {
 		update_option( 'WPLANG', '' );
 	}
@@ -556,7 +564,7 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	 *
 	 * @since 1.7.0
 	 *
-	 * @param bool   $merge          Whether translations should be merged.
+	 * @param bool   $merge          Whether translations should be merged. Defaults to true on WordPress 6.5 and newer.
 	 * @param string $domain         The text domain
 	 * @param string $current_locale The current locale.
 	 */
@@ -572,16 +580,18 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		return $override;
 	}
 
-	// Locale has been filtered by something else.
-	if ( $preferred_locales[0] !== $current_locale ) {
+	// Locale has been filtered by something else, but not because of locale switching.
+	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 		return $override;
 	}
 
-	// If locale has been switched to a specific locale, ignore the ones before it.
-	// Example:
-	// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
-	// Switched to locale: de_CH
-	// In that case, only check for de_CH, de_DE, es_ES.
+	/*
+	 * If locale has been switched to a specific locale, ignore the ones before it.
+	 * Example:
+	 * Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+	 * Switched to locale: de_CH
+	 * In that case, only check for de_CH, de_DE, es_ES.
+	 */
 	if ( preferred_languages_is_locale_switched() ) {
 		$preferred_locales = array_slice(
 			$preferred_locales,
@@ -638,8 +648,8 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 
 	$current_locale = determine_locale();
 
-	// Locale has been filtered by something else.
-	if ( $preferred_locales[0] !== $current_locale ) {
+	// Locale has been filtered by something else, but not because of locale switching.
+	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 		return $mofile;
 	}
 
@@ -691,16 +701,18 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 		return $translations;
 	}
 
-	// Locale has been filtered by something else.
-	if ( $preferred_locales[0] !== $current_locale ) {
+	// Locale has been filtered by something else, but not because of locale switching.
+	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 		return $translations;
 	}
 
-	// If locale has been switched to a specific locale, ignore the ones before it.
-	// Example:
-	// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
-	// Switched to locale: de_CH
-	// In that case, only check for de_CH, de_DE, es_ES.
+	/*
+	 * If locale has been switched to a specific locale, ignore the ones before it.
+	 * Example:
+	 * Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+	 * Switched to locale: de_CH
+	 * In that case, only check for de_CH, de_DE, es_ES.
+	 */
 	if ( preferred_languages_is_locale_switched() ) {
 		$preferred_locales = array_slice(
 			$preferred_locales,
@@ -781,8 +793,8 @@ function preferred_languages_load_script_translation_file( $file ) {
 
 	$current_locale = determine_locale();
 
-	// Locale has been filtered by something else.
-	if ( $preferred_locales[0] !== $current_locale ) {
+	// Locale has been filtered by something else, but not because of locale switching.
+	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 		return $file;
 	}
 
@@ -1106,7 +1118,7 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 	}
 
 	if ( $translations instanceof NOOP_Translations ) {
-		$locale = determine_locale();
+		$current_locale = determine_locale();
 
 		$preferred_locales = preferred_languages_get_list();
 
@@ -1114,20 +1126,22 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 			return $translation;
 		}
 
-		// Locale has been filtered by something else.
-		if ( $preferred_locales[0] !== $locale ) {
+		// Locale has been filtered by something else, but not because of locale switching.
+		if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
 			return $translation;
 		}
 
-		// If locale has been switched to a specific locale, ignore the ones before it.
-		// Example:
-		// Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
-		// Switched to locale: de_CH
-		// In that case, only check for de_CH, de_DE, es_ES.
+		/*
+		 * If locale has been switched to a specific locale, ignore the ones before it.
+		 * Example:
+		 * Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+		 * Switched to locale: de_CH
+		 * In that case, only check for de_CH, de_DE, es_ES.
+		 */
 		if ( preferred_languages_is_locale_switched() ) {
 			$preferred_locales = array_slice(
 				$preferred_locales,
-				array_search( $locale, $preferred_locales, true )
+				array_search( $current_locale, $preferred_locales, true )
 			);
 		}
 
