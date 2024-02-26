@@ -10,5 +10,3 @@ parameters:
 		- message: '/has no return type specified\.$/'
 	scanFiles:
 		- build-cs/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php
-	bootstrapFiles:
-		- tests/phpstan/bootstrap.php
