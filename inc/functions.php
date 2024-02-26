@@ -580,8 +580,8 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		return $override;
 	}
 
-	// Locale has been filtered by something else, but not because of locale switching.
-	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
+	// Locale has been filtered by something else.
+	if ( $preferred_locales[0] !== $current_locale ) {
 		return $override;
 	}
 
@@ -593,9 +593,15 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 	 * In that case, only check for de_CH, de_DE, es_ES.
 	 */
 	if ( preferred_languages_is_locale_switched() ) {
+		$offset = array_search( $current_locale, $preferred_locales, true );
+
+		if ( false === $offset ) {
+			return $override;
+		}
+
 		$preferred_locales = array_slice(
 			$preferred_locales,
-			array_search( $current_locale, $preferred_locales, true )
+			$offset
 		);
 	}
 
@@ -648,13 +654,15 @@ function preferred_languages_load_textdomain_mofile( $mofile ) {
 
 	$current_locale = determine_locale();
 
-	// Locale has been filtered by something else, but not because of locale switching.
-	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
+	// Locale has been filtered by something else.
+	if ( $preferred_locales[0] !== $current_locale ) {
 		return $mofile;
 	}
 
-	// If locale has been switched to a specific locale,
-	// the right MO file has already been chosen. Bail early.
+	/*
+	 * If locale has been switched to a specific locale,
+	 * the right MO file has already been chosen. Bail early.
+	 */
 	if ( preferred_languages_is_locale_switched() ) {
 		return $mofile;
 	}
@@ -701,8 +709,8 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 		return $translations;
 	}
 
-	// Locale has been filtered by something else, but not because of locale switching.
-	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
+	// Locale has been filtered by something else.
+	if ( $preferred_locales[0] !== $current_locale ) {
 		return $translations;
 	}
 
@@ -714,9 +722,15 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 	 * In that case, only check for de_CH, de_DE, es_ES.
 	 */
 	if ( preferred_languages_is_locale_switched() ) {
+		$offset = array_search( $current_locale, $preferred_locales, true );
+
+		if ( false === $offset ) {
+			return $translations;
+		}
+
 		$preferred_locales = array_slice(
 			$preferred_locales,
-			array_search( $current_locale, $preferred_locales, true )
+			$offset
 		);
 	}
 
@@ -793,8 +807,8 @@ function preferred_languages_load_script_translation_file( $file ) {
 
 	$current_locale = determine_locale();
 
-	// Locale has been filtered by something else, but not because of locale switching.
-	if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
+	// Locale has been filtered by something else.
+	if ( $preferred_locales[0] !== $current_locale ) {
 		return $file;
 	}
 
@@ -818,8 +832,8 @@ function preferred_languages_register_scripts() {
 	$asset_file = dirname( __DIR__ ) . '/build/preferred-languages.asset.php';
 	$asset      = is_readable( $asset_file ) ? require $asset_file : array();
 
-	$asset['dependencies'] = isset( $asset['dependencies'] ) ? $asset['dependencies'] : array();
-	$asset['version']      = isset( $asset['version'] ) ? $asset['version'] : '';
+	$asset['dependencies'] = $asset['dependencies'] ?? array();
+	$asset['version']      = $asset['version'] ?? '';
 
 	wp_register_script(
 		'preferred-languages',
@@ -902,7 +916,7 @@ function preferred_languages_update_network_settings() {
 		return;
 	}
 
-	$nonce = isset( $_POST['preferred_languages_network_settings_nonce'] ) ? wp_unslash( $_POST['preferred_languages_network_settings_nonce'] ) : null;
+	$nonce = isset( $_POST['preferred_languages_network_settings_nonce'] ) ? wp_unslash( $_POST['preferred_languages_network_settings_nonce'] ) : '';
 
 	if ( ! wp_verify_nonce( $nonce, 'preferred_languages_network_settings' ) ) {
 		return;
@@ -1126,8 +1140,8 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 			return $translation;
 		}
 
-		// Locale has been filtered by something else, but not because of locale switching.
-		if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
+		// Locale has been filtered by something else.
+		if ( $preferred_locales[0] !== $current_locale ) {
 			return $translation;
 		}
 
@@ -1139,9 +1153,15 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 		 * In that case, only check for de_CH, de_DE, es_ES.
 		 */
 		if ( preferred_languages_is_locale_switched() ) {
+			$offset = array_search( $current_locale, $preferred_locales, true );
+
+			if ( false === $offset ) {
+				return $translation;
+			}
+
 			$preferred_locales = array_slice(
 				$preferred_locales,
-				array_search( $current_locale, $preferred_locales, true )
+				$offset
 			);
 		}
 
