@@ -29,6 +29,41 @@ jobs:
             - name: Lint CSS
               run: npm run lint:css
 
+    syntax-errors:
+        name: Syntax errors
+        strategy:
+            fail-fast: false
+            matrix:
+                php-version:
+                    - '7.0'
+                    - '7.1'
+                    - '7.2'
+                    - '7.3'
+                    - '7.4'
+                    - '8.0'
+                    - '8.1'
+                    - '8.2'
+                    - '8.3'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                php-version: ${{ matrix.php-version }}
+                coverage: none
+                tools: parallel-lint
+
+            - name: Search for invalid complex curly syntax
+              run: |
+                ! git grep -e '\${[A-Z_a-z]' -- '*.php'
+
+            - name: Check source code for syntax errors
+              run: |
+                composer exec --no-interaction -- parallel-lint *.php inc/
+
     lint-php:
         name: PHP Lints
         runs-on: ubuntu-latest
