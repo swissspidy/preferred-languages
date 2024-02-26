@@ -1,7 +1,7 @@
 includes:
 	- build-cs/vendor/phpstan/phpstan/conf/bleedingEdge.neon
 parameters:
-	level: 8
+	level: 9
 	paths:
 		- inc/
 		- tests/phpunit
@@ -11,5 +11,8 @@ parameters:
 		# See https://github.com/swissspidy/preferred-languages/issues/962.
 		- message: '/^Call to function method_exists\(\) with WP_Locale_Switcher and .get_switched_user_id. will always evaluate to true\.$/'
 		- message: '/^Call to method PHPUnit\\Framework\\Assert::assertFalse\(\) with false will always evaluate to true\.$/'
+		- message: '/^Cannot access offset 1 on mixed\.$/'
+		- message: '/^Cannot access offset .messages. on mixed\.$/'
+		- message: '/^Parameter #2 \$haystack of method Yoast\\PHPUnitPolyfills\\TestCases\\TestCase::assertStringContainsString\(\) expects string, mixed given\.$/'
 	scanFiles:
 		- build-cs/vendor/php-stubs/wordpress-tests-stubs/wordpress-tests-stubs.php

@@ -137,6 +137,10 @@ function preferred_languages_update_user_option( $user_id ) {
 		return;
 	}
 
+	if ( ! is_string( $_POST['_wpnonce'] ) ) {
+		return;
+	}
+
 	if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'update-user_' . $user_id ) ) {
 		return;
 	}
@@ -172,6 +176,11 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
 	}
 
 	$preferred_languages = get_user_meta( $user->ID, 'preferred_languages', true );
+
+	if ( ! is_string( $preferred_languages ) ) {
+		return false;
+	}
+
 	$preferred_languages = array_filter( explode( ',', $preferred_languages ) );
 
 	if ( ! empty( $preferred_languages ) ) {
@@ -182,7 +191,11 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
 	$locale = get_user_meta( $user->ID, 'locale', true );
 	add_filter( 'get_user_metadata', 'preferred_languages_filter_user_locale', 10, 3 );
 
-	return empty( $locale ) ? false : array( $locale );
+	if ( empty( $locale ) || ! is_string( $locale ) ) {
+		return false;
+	}
+
+	return array( $locale );
 }
 
 /**
@@ -194,6 +207,11 @@ function preferred_languages_get_user_list( $user_id = 0 ) {
  */
 function preferred_languages_get_site_list() {
 	$preferred_languages = get_option( 'preferred_languages', '' );
+
+	if ( ! is_string( $preferred_languages ) ) {
+		return array();
+	}
+
 	return array_filter( explode( ',', $preferred_languages ) );
 }
 
@@ -206,6 +224,11 @@ function preferred_languages_get_site_list() {
  */
 function preferred_languages_get_network_list() {
 	$preferred_languages = get_site_option( 'preferred_languages', '' );
+
+	if ( ! is_string( $preferred_languages ) ) {
+		return array();
+	}
+
 	return array_filter( explode( ',', $preferred_languages ) );
 }
 
@@ -269,6 +292,10 @@ function preferred_languages_add_user_meta( $object_id, $meta_key, $meta_value )
 		update_user_meta( $object_id, 'locale', '' );
 	}
 
+	if ( ! is_string( $meta_value ) ) {
+		return;
+	}
+
 	$locales = array_filter( explode( ',', $meta_value ) );
 	preferred_languages_download_language_packs( $locales );
 
@@ -305,6 +332,10 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
 		update_user_meta( $object_id, 'locale', '' );
 	}
 
+	if ( ! is_string( $meta_value ) ) {
+		return;
+	}
+
 	$locales = array_filter( explode( ',', $meta_value ) );
 	preferred_languages_download_language_packs( $locales );
 
@@ -326,6 +357,10 @@ function preferred_languages_update_user_meta( $meta_id, $object_id, $meta_key, 
  * @return mixed
  */
 function preferred_languages_pre_update_option( $value, $old_value ) {
+	if ( ! is_string( $value ) ) {
+		return $value;
+	}
+
 	if ( $value === $old_value ) {
 		$locales = array_filter( explode( ',', $value ) );
 		preferred_languages_download_language_packs( $locales );
@@ -349,6 +384,10 @@ function preferred_languages_add_option( $option, $value ) {
 	 */
 	if ( empty( $value ) ) {
 		update_option( 'WPLANG', '' );
+	}
+
+	if ( ! is_string( $value ) ) {
+		return;
 	}
 
 	$locales = array_filter( explode( ',', $value ) );
@@ -765,6 +804,15 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 		$all_translations_json = json_decode( $all_translations, true );
 		$translations_json     = json_decode( $translations, true );
 
+		if (
+				! is_array( $all_translations_json ) ||
+				! is_array( $translations_json ) ||
+				! isset( $translations_json['locale_data']['messages'] ) ||
+				! is_array( $translations_json['locale_data']['messages'] )
+		) {
+			return $translations;
+		}
+
 		foreach ( $translations_json['locale_data']['messages'] as $key => $translation ) {
 			if (
 				isset( $all_translations_json['locale_data']['messages'][ $key ] ) &&
@@ -920,7 +968,15 @@ function preferred_languages_update_network_settings() {
 		return;
 	}
 
-	$nonce = isset( $_POST['preferred_languages_network_settings_nonce'] ) ? wp_unslash( $_POST['preferred_languages_network_settings_nonce'] ) : '';
+	if ( ! isset( $_POST['preferred_languages_network_settings_nonce'] ) ) {
+		return;
+	}
+
+	if ( ! is_string( $_POST['preferred_languages_network_settings_nonce'] ) ) {
+		return;
+	}
+
+	$nonce = wp_unslash( $_POST['preferred_languages_network_settings_nonce'] );
 
 	if ( ! wp_verify_nonce( $nonce, 'preferred_languages_network_settings' ) ) {
 		return;

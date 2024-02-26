@@ -430,7 +430,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_get_locale_returns_first_preferred_locale() {
 		update_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
 		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
-		$first = explode( ',', get_option( 'preferred_languages' ) )[0];
+		$option = get_option( 'preferred_languages' );
+		$this->assertIsString( $option );
+		$first = explode( ',', $option )[0];
 		$this->assertSame( $first, get_locale() );
 	}
 
@@ -441,7 +443,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_get_locale_returns_first_preferred_locale_from_network() {
 		update_site_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
 		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
-		$first = explode( ',', get_site_option( 'preferred_languages' ) )[0];
+		$option = get_site_option( 'preferred_languages' );
+		$this->assertIsString( $option );
+		$first = explode( ',', $option )[0];
 		$this->assertSame( $first, get_locale() );
 	}
 
@@ -450,7 +454,11 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_get_option_returns_locale_unchanged() {
 		update_option( 'WPLANG', '' );
-		$this->assertSame( '', get_option( 'WPLANG' ) );
+
+		$option = get_option( 'WPLANG' );
+
+		$this->assertIsString( $option );
+		$this->assertSame( '', $option );
 	}
 
 	/**
@@ -459,7 +467,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_get_option_returns_first_preferred_locale() {
 		update_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
 		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
-		$first = explode( ',', get_option( 'preferred_languages' ) )[0];
+		$option = get_option( 'preferred_languages' );
+		$this->assertIsString( $option );
+		$first = explode( ',', $option )[0];
 		$this->assertSame( $first, get_option( 'WPLANG' ) );
 	}
 
@@ -470,7 +480,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_get_option_returns_first_preferred_locale_from_network() {
 		update_site_option( 'preferred_languages', 'de_CH,fr_FR,es_ES' );
 		// Not necessarily de_CH as it depends on preferred_languages_download_language_packs() and get_available_languages().
-		$first = explode( ',', get_site_option( 'preferred_languages' ) )[0];
+		$option = get_site_option( 'preferred_languages' );
+		$this->assertIsString( $option );
+		$first = explode( ',', $option )[0];
 		$this->assertSame( $first, get_site_option( 'WPLANG' ) );
 	}
 
