@@ -1,6 +1,6 @@
 === Preferred Languages ===
 Contributors: swissspidy
-Tags: internationalization, i18n, localization, l10n, language, locale, translation
+Tags: internationalization, i18n, localization, language, translation
 Tested up to: 6.5
 Stable tag: 2.2.2
 License: GPLv2 or later
