@@ -2,7 +2,7 @@
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, l10n, language, locale, translation
 Tested up to: 6.5
-Stable tag: 2.2.1
+Stable tag: 2.2.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 2.2.1 =
+= 2.2.2 =
 
-This release fixes the language selection on the login page as well as a minor incompatibility with WPML on the profile page.
+This release fixes a minor regression in the previous release with translation merging.
