@@ -170,10 +170,6 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_get_locale_switcher_user_id
 	 */
 	public function test_get_locale_switcher_user_id_switched() {
-		if ( ! function_exists( 'switch_to_user_locale' ) ) {
-			$this->markTestSkipped( 'This test requires WordPress 6.2 and switch_to_user_locale() to be available' );
-		}
-
 		update_user_meta( self::$administrator, 'locale', 'de_DE' );
 
 		switch_to_user_locale( self::$administrator );
@@ -401,10 +397,6 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_get_list
 	 */
 	public function test_get_list_user_locale_switching() {
-		if ( ! function_exists( 'switch_to_user_locale' ) ) {
-			$this->markTestSkipped( 'This test requires WordPress 6.2 and switch_to_user_locale() to be available' );
-		}
-
 		update_user_meta( self::$administrator, 'preferred_languages', 'de_DE,es_ES' );
 
 		switch_to_user_locale( self::$administrator );

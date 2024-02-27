@@ -120,8 +120,7 @@ function preferred_languages_get_locale_switcher_user_id() {
 	/* @var WP_Locale_Switcher $wp_locale_switcher */
 	global $wp_locale_switcher;
 
-	return $wp_locale_switcher instanceof WP_Locale_Switcher &&
-				method_exists( $wp_locale_switcher, 'get_switched_user_id' ) ?
+	return $wp_locale_switcher instanceof WP_Locale_Switcher ?
 		$wp_locale_switcher->get_switched_user_id() : false;
 }
 
