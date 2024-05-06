@@ -16,7 +16,7 @@
 		"@wordpress/a11y": "^3.55.0",
 		"@wordpress/components": "^27.4.0",
 		"@wordpress/data": "^9.25.0",
-		"@wordpress/dom-ready": "^3.55.0",
+		"@wordpress/dom-ready": "^3.57.0",
 		"@wordpress/e2e-test-utils": "^10.28.0",
 		"@wordpress/element": "^5.33.0",
 		"@wordpress/i18n": "^4.53.0",
