@@ -40,8 +40,8 @@
 		</properties>
 	</rule>
 
-	<!-- Test for PHP 7.0+ compatibility. -->
-	<config name="testVersion" value="7.0-"/>
+	<!-- Test for PHP 7.2+ compatibility. -->
+	<config name="testVersion" value="7.2-"/>
 
 	<exclude-pattern>*/build/*</exclude-pattern>
 	<exclude-pattern>*/node_modules/*</exclude-pattern>
