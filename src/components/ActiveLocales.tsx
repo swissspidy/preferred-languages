@@ -246,7 +246,7 @@ function ActiveControls( {
 			<ul>
 				<li>
 					<Button
-						isSecondary
+						variant="secondary"
 						showTooltip
 						aria-keyshortcuts="ArrowUp"
 						aria-label={ sprintf(
@@ -267,7 +267,7 @@ function ActiveControls( {
 				</li>
 				<li>
 					<Button
-						isSecondary
+						variant="secondary"
 						showTooltip
 						aria-keyshortcuts="ArrowDown"
 						aria-label={ sprintf(
@@ -288,7 +288,7 @@ function ActiveControls( {
 				</li>
 				<li>
 					<Button
-						isSecondary
+						variant="secondary"
 						showTooltip
 						aria-keyshortcuts="Delete"
 						aria-label={ sprintf(

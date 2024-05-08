@@ -179,7 +179,7 @@ function InactiveControls( { disabled, onClick }: InactiveControlsProps ) {
 	return (
 		<div className="inactive-locales-controls">
 			<Button
-				isSecondary
+				variant="secondary"
 				showTooltip
 				aria-keyshortcuts="Alt+A"
 				aria-label={ sprintf(
