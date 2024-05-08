@@ -2,7 +2,7 @@
 <ruleset name="WordPress Coding Standards for Preferred Languages Plugin">
 	<description>A custom set of code standard rules for Preferred Languages.</description>
 
-	<config name="minimum_supported_wp_version" value="6.1" />
+	<config name="minimum_supported_wp_version" value="6.2" />
 
 	<rule ref="WordPress-Core" />
 
