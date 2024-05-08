@@ -1,5 +1,5 @@
 import { useEffect, useState } from '@wordpress/element';
-import { useDispatch, useSelect } from '@wordpress/data';
+import { useDispatch } from '@wordpress/data';
 import { __, _x } from '@wordpress/i18n';
 import { Notice } from '@wordpress/components';
 import {
