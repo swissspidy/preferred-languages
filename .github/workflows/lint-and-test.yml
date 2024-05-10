@@ -35,8 +35,6 @@ jobs:
             fail-fast: false
             matrix:
                 php-version:
-                    - '7.0'
-                    - '7.1'
                     - '7.2'
                     - '7.3'
                     - '7.4'
@@ -148,7 +146,7 @@ jobs:
         continue-on-error: ${{ matrix.experimental }}
         strategy:
             matrix:
-                php: ['8.1', '8.0', '7.0', '7.4']
+                php: ['8.1', '8.0', '7.2', '7.4']
                 wp: ['latest']
                 coverage: [false]
                 experimental: [false]
@@ -203,7 +201,7 @@ jobs:
             #
             # | WP  / PHP | PHPUnit |
             # |-----------|---------|
-            # | *   / 7.0 | 6       |
+            # | *   / 7.2 | 8       |
             # | *   / 7.4 | 9       |
             # | *   / 8   | 9       |
             #
