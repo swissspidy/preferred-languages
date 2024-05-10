@@ -54,7 +54,7 @@ add_action(
 		}
 
 		?>
-		<div class="notice notice-success notice-custom-i18n-plugin-locale-current">
+		<div class="notice notice-success" data-testid="notice-custom-i18n-plugin-locale-current">
 			<ul>
 				<li>Current Locale: <?php echo determine_locale(); ?></li>
 				<?php if ( function_exists( 'preferred_languages_get_list' ) ) : ?>
@@ -68,7 +68,7 @@ add_action(
 				</li>
 			</ul>
 		</div>
-		<div class="notice notice-success notice-custom-i18n-plugin-locale-switching">
+		<div class="notice notice-success" data-testid="notice-custom-i18n-plugin-locale-switching">
 			<ul>
 				<li>Current Locale: <?php echo determine_locale(); ?></li>
 				<?php if ( function_exists( 'preferred_languages_get_list' ) ) : ?>

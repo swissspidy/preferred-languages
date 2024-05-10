@@ -1267,6 +1267,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
+		$this->assertIsString( $script_data[1] );
 		$this->assertStringContainsString( '"hasMissingTranslations":false', $script_data[1] );
 	}
 
@@ -1286,6 +1287,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
+		$this->assertIsString( $script_data[1] );
 		$this->assertStringContainsString( '"hasMissingTranslations":true', $script_data[1] );
 	}
 
@@ -1306,6 +1308,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
+		$this->assertIsString( $script_data[1] );
 		$this->assertStringContainsString( '"hasMissingTranslations":true', $script_data[1] );
 	}
 
@@ -1322,6 +1325,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
+		$this->assertIsString( $script_data[1] );
 		$this->assertStringContainsString( 'English (United States)', $script_data[1] );
 	}
 
@@ -1338,6 +1342,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
+		$this->assertIsString( $script_data[1] );
 		$this->assertStringContainsString( '"showOptionSiteDefault":true', $script_data[1] );
 	}
 
@@ -1355,6 +1360,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
+		$this->assertIsString( $script_data[1] );
 		$this->assertStringContainsString( '"lang":"de","installed":true', $script_data[1] );
 		$this->assertStringContainsString( '"lang":"fr","installed":false', $script_data[1] );
 		$this->assertStringContainsString( '"lang":"es","installed":true', $script_data[1] );

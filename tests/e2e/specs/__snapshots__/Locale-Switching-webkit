@@ -1,0 +1,57 @@
+
+			
+				Current Locale: fr_FR
+									Preferred Languages: fr_FR,it_IT,de_CH,de_DE,es_ES
+								Output:
+					
+						Das ist ein Dummy Plugin
+						This is another dummy plugin
+					
+				
+
+								Switched to it_IT: True
+				Current Locale: it_IT
+				Output:
+					
+						Das ist ein Dummy Plugin
+						This is another dummy plugin
+					
+				
+				
+								Switched to de_DE: True
+				Current Locale: de_DE
+				Output:
+					
+						Das ist ein Dummy Plugin
+						This is another dummy plugin
+					
+				
+				
+								Switched to en_US: True
+				Current Locale: en_US
+				Output:
+					
+						This is a dummy plugin
+						This is another dummy plugin
+					
+				
+				
+								Switched to de_CH: True
+				Current Locale: de_CH
+				Output:
+					
+						Das ist ein Dummy Plugin
+						This is another dummy plugin
+					
+				
+				
+								Switched to es_ES: True
+				Current Locale: es_ES
+				Output:
+					
+						Este es un plugin dummy
+						Este es otro plugin dummy
+					
+				
+							
+		

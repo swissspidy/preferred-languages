@@ -12,31 +12,37 @@
 		}
 	],
 	"require": {
-		"php": ">=7.0",
+		"php": ">=7.2",
 		"ext-json": "*"
 	},
 	"require-dev": {
 		"dealerdirect/phpcodesniffer-composer-installer": "^1.0.0",
+		"php-stubs/wordpress-tests-stubs": "^6.3.0",
 		"phpcompatibility/phpcompatibility-wp": "^2.0",
+		"phpstan/extension-installer": "^1.3.1",
+		"phpstan/phpstan": "^1.10",
+		"phpstan/phpstan-deprecation-rules": "^1.1",
+		"phpstan/phpstan-phpunit": "^1.3",
 		"roave/security-advisories": "dev-latest",
+		"swissspidy/phpstan-no-private": "^0.2.0",
+		"szepeviktor/phpstan-wordpress": "^1.3.0",
 		"wp-coding-standards/wpcs": "dev-develop",
 		"yoast/phpunit-polyfills": "^1.0.1"
 	},
 	"minimum-stability": "dev",
 	"config": {
 		"allow-plugins": {
-			"dealerdirect/phpcodesniffer-composer-installer": true
+			"dealerdirect/phpcodesniffer-composer-installer": true,
+			"phpstan/extension-installer": true
 		},
 		"platform": {
-			"php": "7.0"
+			"php": "7.2"
 		}
 	},
 	"scripts": {
-		"post-install-cmd": "if php -r 'exit( version_compare( phpversion(), \"7.2\", \">=\" ) ? 0 : 1 );'; then composer --working-dir=build-cs install --no-interaction; else echo 'Skipping composer install for build-cs since not on PHP 7.2+. You are running: '; php -v;  fi",
-		"post-update-cmd": "if php -r 'exit( version_compare( phpversion(), \"7.2\", \">=\" ) ? 0 : 1 );'; then composer --working-dir=build-cs update --no-interaction; else echo 'Skipping composer update for build-cs since not on PHP 7.2+. You are running: '; php -v; fi",
 		"format": "vendor/bin/phpcbf --report-summary --report-source .",
 		"lint": "vendor/bin/phpcs --report-summary --report-source .",
-		"phpstan": "build-cs/vendor/bin/phpstan analyse --memory-limit=2048M",
+		"phpstan": "vendor/bin/phpstan analyse --memory-limit=2048M",
 		"test": "vendor/bin/phpunit",
 		"test:multisite": "vendor/bin/phpunit -c phpunit-multisite.xml.dist"
 	}

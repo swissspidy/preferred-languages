@@ -3,7 +3,7 @@
 .idea
 artifacts
 bin
-build-cs
+blueprints
 node_modules
 src
 tests

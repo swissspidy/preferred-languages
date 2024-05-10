@@ -1,8 +1,8 @@
 document.addEventListener( 'DOMContentLoaded', () => {
 	const widgetsWrap = document.getElementById( 'dashboard-widgets-wrap' );
 	const adminNotice = document.createElement( 'div' );
-	adminNotice.className =
-		'notice notice-success notice-custom-i18n-plugin-js';
+	adminNotice.className = 'notice notice-success';
+	adminNotice.setAttribute( 'data-testid', 'notice-custom-i18n-plugin-js' );
 
 	const p1 = document.createElement( 'div' );
 	p1.innerHTML = wp.i18n.__(
