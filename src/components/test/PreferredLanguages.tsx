@@ -8,7 +8,7 @@ import {
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 
-import { Language } from '../../types';
+import type { Language } from '../../types';
 import PreferredLanguages from '../PreferredLanguages';
 import { BACKSPACE, DOWN, END, HOME, UP } from '@wordpress/keycodes';
 

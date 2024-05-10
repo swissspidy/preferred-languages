@@ -5,7 +5,7 @@ import { speak } from '@wordpress/a11y';
 import { useShortcut } from '@wordpress/keyboard-shortcuts';
 import { shortcutAriaLabel, displayShortcut } from '@wordpress/keycodes';
 
-import { Language, Locale } from '../types';
+import type { Language, Locale } from '../types';
 
 interface InactiveLocalesProps {
 	languages: Language[];

@@ -5,7 +5,7 @@ import { speak } from '@wordpress/a11y';
 import { useShortcut } from '@wordpress/keyboard-shortcuts';
 
 import { reorder } from '../utils';
-import { Language } from '../types';
+import type { Language } from '../types';
 
 interface ActiveLocalesProps {
 	languages: Language[];

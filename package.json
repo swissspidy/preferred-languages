@@ -24,6 +24,7 @@
 		"@wordpress/keycodes": "^3.54.0"
 	},
 	"devDependencies": {
+		"@playwright/test": "^1.44.0",
 		"@testing-library/jest-dom": "^6.4.5",
 		"@testing-library/react": "^15.0.6",
 		"@testing-library/user-event": "^14.5.2",
@@ -31,6 +32,7 @@
 		"@types/jest-environment-puppeteer": "^5.0.6",
 		"@wordpress/env": "^9.9.0",
 		"@wordpress/scripts": "^27.8.0",
+		"@wp-now/wp-now": "^0.1.70",
 		"jest-environment-jsdom": "^29.7.0",
 		"mini-css-extract-plugin": "^2.9.0",
 		"prettier": "npm:wp-prettier@^3.0.3",
@@ -50,13 +52,12 @@
 		"lint:md:js": "wp-scripts lint-md-js",
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
 		"start": "wp-scripts start src/preferred-languages.tsx",
-		"test:e2e": "wp-scripts test-e2e",
-		"test:e2e:help": "wp-scripts test-e2e --help",
-		"test:e2e:debug": "wp-scripts --inspect-brk test-e2e --puppeteer-devtools",
+		"test:e2e": "wp-scripts test-playwright --config tests/e2e/playwright.config.ts",
 		"test:unit": "wp-scripts test-unit-js",
 		"test:unit:help": "wp-scripts test-unit-js --help",
 		"test:unit:watch": "wp-scripts test-unit-js --watch",
 		"test:unit:debug": "wp-scripts --inspect-brk test-unit-js --runInBand --no-cache",
-		"wp-env": "wp-env"
+		"wp-env": "wp-env",
+		"wp-now": "wp-now start --port=8889 --php=8.2 --wp=6.5 --blueprint=blueprints/wp-now.json"
 	}
 }

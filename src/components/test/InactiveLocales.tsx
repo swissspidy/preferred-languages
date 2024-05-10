@@ -6,7 +6,7 @@ import { speak } from '@wordpress/a11y';
 import { ShortcutProvider } from '@wordpress/keyboard-shortcuts';
 
 import InactiveLocales from '../InactiveLocales';
-import { Language } from '../../types';
+import type { Language } from '../../types';
 
 jest.mock( 'uuid', () => ( {} ) );
 

@@ -9,7 +9,7 @@ import {
 
 import ActiveLocales from './ActiveLocales';
 import InactiveLocales from './InactiveLocales';
-import { Language } from '../types';
+import type { Language } from '../types';
 
 function MissingTranslationsNotice() {
 	return (
