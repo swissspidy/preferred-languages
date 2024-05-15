@@ -1186,6 +1186,12 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 		return $translation;
 	}
 
+	$preferred_locales = preferred_languages_get_list();
+
+	if ( empty( $preferred_locales ) ) {
+		return $translation;
+	}
+
 	$translations = get_translations_for_domain( $domain );
 
 	if ( $translations instanceof Preferred_Languages_Noop_Translations ) {
@@ -1194,12 +1200,6 @@ function preferred_languages_load_just_in_time( $translation, $single, $plural =
 
 	if ( $translations instanceof NOOP_Translations ) {
 		$current_locale = determine_locale();
-
-		$preferred_locales = preferred_languages_get_list();
-
-		if ( empty( $preferred_locales ) ) {
-			return $translation;
-		}
 
 		// Locale has been filtered by something else.
 		if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
