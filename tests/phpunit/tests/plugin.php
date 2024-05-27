@@ -1438,57 +1438,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 * @covers ::preferred_languages_load_just_in_time
+	 * @covers ::preferred_languages_filter_lang_dir_for_domain
 	 */
-	public function test_filter_gettext_default() {
-		$actual = preferred_languages_filter_gettext( 'Hello World', 'Hello World', 'default' );
-		$this->assertSame( 'Hello World', $actual );
-	}
-
-	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 * @covers ::preferred_languages_load_just_in_time
-	 */
-	public function test_filter_gettext_plugin_no_preferred_languages() {
-		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
-		$this->assertSame( 'This is a dummy plugin', $actual );
-	}
-
-	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 * @covers ::preferred_languages_load_just_in_time
-	 */
-	public function test_filter_gettext_plugin_already_filtered() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
-
-		$filter = static function () {
-			return 'es_ES';
-		};
-
-		add_filter( 'determine_locale', $filter );
-
-		$actual = preferred_languages_filter_gettext( 'This is a dummy plugin', 'This is a dummy plugin', 'internationalized-plugin' );
-
-		$this->assertSame( 'This is a dummy plugin', $actual );
-	}
-
-	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 * @covers ::preferred_languages_load_just_in_time
-	 */
-	public function test_filter_gettext_plugin_already_translated() {
-		update_option( 'preferred_languages', 'de_DE,fr_FR' );
-
-		$actual = preferred_languages_filter_gettext( 'Das ist ein Dummy Plugin', 'This is a dummy plugin', 'internationalized-plugin' );
-
-		$this->assertSame( 'Das ist ein Dummy Plugin', $actual );
-	}
-
-	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 */
-	public function test_filter_gettext_plugin_filter() {
+	public function test_filter_lang_dir_plugin_filter() {
 		update_option( 'preferred_languages', 'de_DE,fr_FR' );
 
 		$this->assertSame( 'Das ist ein Dummy Plugin', __( 'This is a dummy plugin', 'internationalized-plugin' ) );
@@ -1497,20 +1449,18 @@ class Plugin_Test extends WP_UnitTestCase {
 	/**
 	 * @link https://github.com/swissspidy/preferred-languages/issues/881
 	 *
-	 * @covers ::preferred_languages_filter_gettext
-	 * @covers ::preferred_languages_load_just_in_time
+	 * @covers ::preferred_languages_filter_lang_dir_for_domain
 	 */
-	public function test_filter_gettext_plugin_filter_registry_lookup() {
+	public function test_filter_lang_dir_plugin_filter_registry_lookup() {
 		update_option( 'preferred_languages', 'it_IT,de_DE,es_ES' );
 
 		$this->assertSame( 'Das ist ein Dummy Plugin', __( 'This is a dummy plugin', 'internationalized-plugin' ) );
 	}
 
 	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 * @covers ::preferred_languages_load_just_in_time
+	 * @covers ::preferred_languages_filter_lang_dir_for_domain
 	 */
-	public function test_filter_gettext_plugin_custom_path() {
+	public function test_filter_lang_dir_plugin_custom_path() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE' );
 
 		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
@@ -1521,10 +1471,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 * @covers ::preferred_languages_load_just_in_time
+	 * @covers ::preferred_languages_filter_lang_dir_for_domain
 	 */
-	public function test_filter_gettext_plugin_custom_path_locale_switching() {
+	public function test_filter_lang_dir_plugin_custom_path_locale_switching() {
 		add_filter( 'preferred_languages_merge_translations', '__return_false' );
 		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
 
@@ -1541,10 +1490,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 * @covers ::preferred_languages_load_just_in_time
+	 * @covers ::preferred_languages_filter_lang_dir_for_domain
 	 */
-	public function test_filter_gettext_plugin_custom_path_locale_switching_merge_translations() {
+	public function test_filter_lang_dir_plugin_custom_path_locale_switching_merge_translations() {
 		add_filter( 'preferred_languages_merge_translations', '__return_true' );
 		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
 
@@ -1561,10 +1509,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::preferred_languages_filter_gettext_with_context
-	 * @covers ::preferred_languages_load_just_in_time
+	 * @covers ::preferred_languages_filter_lang_dir_for_domain
 	 */
-	public function test_filter_gettext_context_plugin_custom_path() {
+	public function test_filter_lang_dir_context_plugin_custom_path() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE' );
 
 		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
@@ -1575,37 +1522,9 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @covers ::preferred_languages_filter_ngettext
-	 * @covers ::preferred_languages_load_just_in_time
+	 * @covers ::preferred_languages_filter_lang_dir_for_domain
 	 */
-	public function test_filter_gettext_plural_plugin_custom_path() {
-		update_option( 'preferred_languages', 'fr_FR,de_DE' );
-
-		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
-
-		$this->assertSame( '%s Dummy Plugin', custom_i18n_plugin_test_plural( 1 ) );
-		$this->assertSame( '%s Dummy Plugins', custom_i18n_plugin_test_plural( 2 ) );
-	}
-
-	/**
-	 * @covers ::preferred_languages_filter_ngettext_with_context
-	 * @covers ::preferred_languages_load_just_in_time
-	 */
-	public function test_filter_gettext_plural_context_plugin_custom_path() {
-		update_option( 'preferred_languages', 'fr_FR,de_DE' );
-
-		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
-
-		$this->assertSame( '%s Dummy Plugin mit Kontext', custom_i18n_plugin_test_plural_context( 1 ) );
-		$this->assertSame( '%s Dummy Plugins mit Kontext', custom_i18n_plugin_test_plural_context( 2 ) );
-	}
-
-
-	/**
-	 * @covers ::preferred_languages_filter_gettext
-	 * @covers ::preferred_languages_load_just_in_time
-	 */
-	public function test_filter_gettext_plugin_cache_list_retrieval() {
+	public function test_filter_lang_dir_plugin_cache_list_retrieval() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
 
 		$filter = new MockAction();
