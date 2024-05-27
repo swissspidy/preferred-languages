@@ -1212,8 +1212,6 @@ function preferred_languages_filter_lang_dir_for_domain( $path, $domain, $locale
 		$new_path = $wp_textdomain_registry->get( $domain, $locale );
 		add_filter( 'lang_dir_for_domain', 'preferred_languages_filter_lang_dir_for_domain', 10, 3 );
 
-		var_dump($domain, $locale, $new_path);
-
 		if ( $new_path ) {
 			return $new_path;
 		}
