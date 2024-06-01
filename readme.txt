@@ -2,7 +2,7 @@
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, language, translation
 Tested up to: 6.5
-Stable tag: 2.2.2
+Stable tag: 2.2.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -64,6 +64,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 2.2.2 =
+= 2.2.3 =
 
-This release fixes a minor regression in the previous release with translation merging.
+Improved input sanitization using `sanitize_locale_name` instead of `sanitize_text_field`.
