@@ -844,12 +844,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "e55a83fdcd903dd95b35c2ebc66df98cf0c15b4c"
+                "reference": "3b5bae06d3c2cf40c8f104b7ca8d1b45373f2f6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/e55a83fdcd903dd95b35c2ebc66df98cf0c15b4c",
-                "reference": "e55a83fdcd903dd95b35c2ebc66df98cf0c15b4c",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/3b5bae06d3c2cf40c8f104b7ca8d1b45373f2f6d",
+                "reference": "3b5bae06d3c2cf40c8f104b7ca8d1b45373f2f6d",
                 "shasum": ""
             },
             "require": {
@@ -895,7 +895,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-05-07T12:20:35+00:00"
+            "time": "2024-06-09T14:22:39+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
@@ -2996,16 +2996,16 @@
         },
         {
             "name": "swissspidy/phpstan-no-private",
-            "version": "v0.2.0",
+            "version": "v0.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swissspidy/phpstan-no-private.git",
-                "reference": "cc945c5154f2e7786da17ee0cfe6e772133c98aa"
+                "reference": "f7a1890e350c8d8bf26370426a971d7490ae4245"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swissspidy/phpstan-no-private/zipball/cc945c5154f2e7786da17ee0cfe6e772133c98aa",
-                "reference": "cc945c5154f2e7786da17ee0cfe6e772133c98aa",
+                "url": "https://api.github.com/repos/swissspidy/phpstan-no-private/zipball/f7a1890e350c8d8bf26370426a971d7490ae4245",
+                "reference": "f7a1890e350c8d8bf26370426a971d7490ae4245",
                 "shasum": ""
             },
             "require": {
@@ -3041,9 +3041,9 @@
             "description": "PHPStan rules for detecting usage of pseudo-private functions, classes, and methods.",
             "support": {
                 "issues": "https://github.com/swissspidy/phpstan-no-private/issues",
-                "source": "https://github.com/swissspidy/phpstan-no-private/tree/v0.2.0"
+                "source": "https://github.com/swissspidy/phpstan-no-private/tree/v0.2.1"
             },
-            "time": "2023-05-22T09:48:41+00:00"
+            "time": "2024-06-05T10:03:17+00:00"
         },
         {
             "name": "symfony/polyfill-php73",
