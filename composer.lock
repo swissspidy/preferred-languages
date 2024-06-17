@@ -796,20 +796,20 @@
         },
         {
             "name": "phpstan/extension-installer",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/extension-installer.git",
-                "reference": "5b19a72c93e79bb0d410ac2cd55f02c4a6e0cfbe"
+                "reference": "f6b87faf9fc7978eab2f7919a8760bc9f58f9203"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/5b19a72c93e79bb0d410ac2cd55f02c4a6e0cfbe",
-                "reference": "5b19a72c93e79bb0d410ac2cd55f02c4a6e0cfbe",
+                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/f6b87faf9fc7978eab2f7919a8760bc9f58f9203",
+                "reference": "f6b87faf9fc7978eab2f7919a8760bc9f58f9203",
                 "shasum": ""
             },
             "require": {
-                "composer-plugin-api": "^2.6.0",
+                "composer-plugin-api": "^2.0",
                 "php": "^7.2 || ^8.0",
                 "phpstan/phpstan": "^1.9.0"
             },
@@ -834,9 +834,9 @@
             "description": "Composer plugin for automatic installation of PHPStan extensions",
             "support": {
                 "issues": "https://github.com/phpstan/extension-installer/issues",
-                "source": "https://github.com/phpstan/extension-installer/tree/1.4.0"
+                "source": "https://github.com/phpstan/extension-installer/tree/1.4.1"
             },
-            "time": "2024-06-06T11:26:29+00:00"
+            "time": "2024-06-10T08:20:49+00:00"
         },
         {
             "name": "phpstan/phpstan",
@@ -844,12 +844,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "3b5bae06d3c2cf40c8f104b7ca8d1b45373f2f6d"
+                "reference": "396629982a8020fe6d6a8524437f4bd0b5658835"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/3b5bae06d3c2cf40c8f104b7ca8d1b45373f2f6d",
-                "reference": "3b5bae06d3c2cf40c8f104b7ca8d1b45373f2f6d",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/396629982a8020fe6d6a8524437f4bd0b5658835",
+                "reference": "396629982a8020fe6d6a8524437f4bd0b5658835",
                 "shasum": ""
             },
             "require": {
@@ -895,7 +895,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-06-09T14:22:39+00:00"
+            "time": "2024-06-16T20:25:51+00:00"
         },
         {
             "name": "phpstan/phpstan-deprecation-rules",
