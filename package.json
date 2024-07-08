@@ -31,7 +31,7 @@
 		"@types/jest-environment-puppeteer": "^5.0.6",
 		"@wordpress/env": "^10.0.0",
 		"@wordpress/scripts": "^27.9.0",
-		"@wp-now/wp-now": "^0.1.72",
+		"@wp-now/wp-now": "^0.1.73",
 		"jest-environment-jsdom": "^29.7.0",
 		"mini-css-extract-plugin": "^2.9.0",
 		"prettier": "npm:wp-prettier@^3.0.3",
