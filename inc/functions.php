@@ -1166,7 +1166,7 @@ function preferred_languages_display_form( $args = array() ) {
  *
  * Used for hooking into just-in-time translation loading.
  *
- * @since 2.3.0
+ * @since 2.4.0
  *
  * @param string|false $path   Languages directory path for the given domain and locale.
  * @param string       $domain Text domain.
