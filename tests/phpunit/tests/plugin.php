@@ -1453,6 +1453,8 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_filter_lang_dir_for_domain
 	 */
 	public function test_filter_lang_dir_plugin_filter_registry_lookup() {
+		$this->markTestSkipped( 'Only works on WordPress 6.6+' );
+
 		update_option( 'preferred_languages', 'it_IT,de_DE,es_ES' );
 
 		$this->assertSame( 'Das ist ein Dummy Plugin', __( 'This is a dummy plugin', 'internationalized-plugin' ) );
