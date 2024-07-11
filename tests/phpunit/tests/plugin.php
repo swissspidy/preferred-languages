@@ -794,6 +794,7 @@ class Plugin_Test extends WP_UnitTestCase {
 			array( 'de_DE,fr_FR', 'de_DE,fr_FR' ),
 			array( ' de_DE , fr_FR ', 'de_DE,fr_FR' ),
 			array( '<b>de_DE</b>,fr_FR ', 'de_DE,fr_FR' ),
+			array( "');alert('XSS');console.log('", 'alertXSSconsolelog' ),
 		);
 	}
 

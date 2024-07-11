@@ -16,15 +16,13 @@ updates:
       schedule:
           interval: weekly
       open-pull-requests-limit: 10
+      groups:
+        wp-packages:
+          patterns:
+            - '@wordpress/*'
 
     - package-ecosystem: composer
       directory: '/'
-      schedule:
-          interval: weekly
-      open-pull-requests-limit: 10
-
-    - package-ecosystem: composer
-      directory: '/build-cs'
       schedule:
           interval: weekly
       open-pull-requests-limit: 10

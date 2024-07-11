@@ -515,7 +515,12 @@ function preferred_languages_download_language_packs( $locales ) {
  * @return string Sanitized list.
  */
 function preferred_languages_sanitize_list( $preferred_languages ) {
-	$locales = array_unique( array_map( 'sanitize_text_field', wp_parse_list( $preferred_languages ) ) );
+	$locales = array_unique(
+		array_map(
+			'sanitize_locale_name',
+			array_map( 'sanitize_text_field', wp_parse_list( $preferred_languages ) )
+		)
+	);
 
 	return implode( ',', $locales );
 }
