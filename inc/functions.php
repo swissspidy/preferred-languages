@@ -597,21 +597,6 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		$current_locale = determine_locale();
 	}
 
-	/**
-	 * Filters whether translations should be merged with existing ones.
-	 *
-	 * @since 1.7.0
-	 *
-	 * @param bool   $merge          Whether translations should be merged. Defaults to true on WordPress 6.5 and newer.
-	 * @param string $domain         The text domain
-	 * @param string $current_locale The current locale.
-	 */
-	$merge_translations = apply_filters( 'preferred_languages_merge_translations', true, $domain, $current_locale );
-
-	if ( ! $merge_translations ) {
-		return $override;
-	}
-
 	$preferred_locales = preferred_languages_get_list();
 
 	if ( empty( $preferred_locales ) ) {
@@ -643,6 +628,17 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		);
 	}
 
+	/**
+	 * Filters whether translations should be merged with existing ones.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param bool   $merge          Whether translations should be merged. Defaults to true.
+	 * @param string $domain         The text domain
+	 * @param string $current_locale The current locale.
+	 */
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', true, $domain, $current_locale );
+
 	$first_mofile = null;
 
 	remove_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain' );
@@ -660,6 +656,10 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 
 			if ( null === $first_mofile ) {
 				$first_mofile = $preferred_mofile;
+			}
+
+			if ( ! $merge_translations ) {
+				break;
 			}
 		}
 	}
@@ -1208,9 +1208,9 @@ function preferred_languages_filter_lang_dir_for_domain( $path, $domain, $locale
 		);
 	}
 
-	foreach ( $preferred_locales as $locale ) {
+	foreach ( $preferred_locales as $preferred_locale ) {
 		remove_filter( 'lang_dir_for_domain', 'preferred_languages_filter_lang_dir_for_domain' );
-		$new_path = $wp_textdomain_registry->get( $domain, $locale );
+		$new_path = $wp_textdomain_registry->get( $domain, $preferred_locale );
 		add_filter( 'lang_dir_for_domain', 'preferred_languages_filter_lang_dir_for_domain', 10, 3 );
 
 		if ( $new_path ) {
