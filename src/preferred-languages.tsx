@@ -1,4 +1,4 @@
-import { createRoot } from '@wordpress/element';
+import {createRoot, StrictMode} from '@wordpress/element';
 import domReady from '@wordpress/dom-ready';
 
 import './preferred-languages.css';
@@ -51,5 +51,5 @@ domReady( () => {
 
 	const root = createRoot( container );
 
-	root.render( <PreferredLanguages { ...props } /> );
+	root.render( <StrictMode><PreferredLanguages { ...props } /></StrictMode> );
 } );
