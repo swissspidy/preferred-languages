@@ -2,7 +2,7 @@
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, language, translation
 Tested up to: 6.6
-Stable tag: 2.3.0
+Stable tag: 2.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -32,20 +32,18 @@ Please help us test this plugin and let us know if something is not working as y
 
 **Merging Translations**
 
-By default, only the first available translation for a given locale and domain will be loaded.
+Previously, only the first available translation for a given locale and domain will be loaded.
 However, when translations are incomplete, some strings might still be displayed in English.
 That's a poor user experience as well.
 
-To prevent this, the `preferred_languages_merge_translations` filter can be used to opt into merging incomplete translations.
+To prevent this, Preferred Languages now automatically merges all incomplete translations in the list.
+ 
+ the `preferred_languages_merge_translations` filter can be used to opt out of this behavior.
 It provides three parameters:
 
-1. `$merge` - Whether translations should be merged.
+1. `$merge` - Whether translations should be merged. Defaults to `true`.
 2. `$domain` - The text domain
 3. `$current_locale` - The current locale.
-
-**Note:** On WordPress 6.5 and newer, this functionality is enabled by default.
-On older versions of WordPress, this is a potentially slow/expensive process,
-so it's recommended to use it sparingly and only for specific domains.
 
 = Get Involved =
 
@@ -64,6 +62,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 2.3.0 =
+= 2.4.0 =
 
-This release adds security hardening for an issue in core and bumps minimum version requirements.
+This release improves WordPress compatibility and bumps minimum version requirements.

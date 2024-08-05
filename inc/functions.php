@@ -13,10 +13,7 @@
  * @since 2.0.1
  */
 function preferred_languages_boot() {
-	add_filter( 'gettext', 'preferred_languages_filter_gettext', 10, 3 );
-	add_filter( 'gettext_with_context', 'preferred_languages_filter_gettext_with_context', 10, 4 );
-	add_filter( 'ngettext', 'preferred_languages_filter_ngettext', 10, 5 );
-	add_filter( 'ngettext_with_context', 'preferred_languages_filter_ngettext_with_context', 10, 6 );
+	add_filter( 'lang_dir_for_domain', 'preferred_languages_filter_lang_dir_for_domain', 10, 3 );
 
 	add_action( 'init', 'preferred_languages_register_setting' );
 	add_action( 'init', 'preferred_languages_register_meta' );
@@ -600,23 +597,6 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		$current_locale = determine_locale();
 	}
 
-	$merge_translations = class_exists( 'WP_Translations' );
-
-	/**
-	 * Filters whether translations should be merged with existing ones.
-	 *
-	 * @since 1.7.0
-	 *
-	 * @param bool   $merge          Whether translations should be merged. Defaults to true on WordPress 6.5 and newer.
-	 * @param string $domain         The text domain
-	 * @param string $current_locale The current locale.
-	 */
-	$merge_translations = apply_filters( 'preferred_languages_merge_translations', $merge_translations, $domain, $current_locale );
-
-	if ( ! $merge_translations ) {
-		return $override;
-	}
-
 	$preferred_locales = preferred_languages_get_list();
 
 	if ( empty( $preferred_locales ) ) {
@@ -648,6 +628,17 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 		);
 	}
 
+	/**
+	 * Filters whether translations should be merged with existing ones.
+	 *
+	 * @since 1.7.0
+	 *
+	 * @param bool   $merge          Whether translations should be merged. Defaults to true.
+	 * @param string $domain         The text domain
+	 * @param string $current_locale The current locale.
+	 */
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', true, $domain, $current_locale );
+
 	$first_mofile = null;
 
 	remove_filter( 'override_load_textdomain', 'preferred_languages_override_load_textdomain' );
@@ -665,6 +656,10 @@ function preferred_languages_override_load_textdomain( $override, $domain, $mofi
 
 			if ( null === $first_mofile ) {
 				$first_mofile = $preferred_mofile;
+			}
+
+			if ( ! $merge_translations ) {
+				break;
 			}
 		}
 	}
@@ -741,10 +736,8 @@ function preferred_languages_pre_load_script_translations( $translations, $file,
 
 	$current_locale = determine_locale();
 
-	$merge_translations = class_exists( 'WP_Translations' );
-
 	/** This filter is documented in inc/functions.php */
-	$merge_translations = apply_filters( 'preferred_languages_merge_translations', $merge_translations, $domain, $current_locale );
+	$merge_translations = apply_filters( 'preferred_languages_merge_translations', true, $domain, $current_locale );
 
 	if ( ! $merge_translations ) {
 		return $translations;
@@ -1165,161 +1158,67 @@ function preferred_languages_display_form( $args = array() ) {
 
 
 /**
- * Helper function used for just-in-time loading of translations.
+ * Filters the language directory path for a specific domain and locale.
  *
- * @since 2.1.2
- * @access private
+ * Used for hooking into just-in-time translation loading.
  *
- * @param string $translation Translated text.
- * @param string $single      The text to be used if the number is singular.
- * @param string $plural      The text to be used if the number is plural.
- * @param int    $number      The number to compare against to use either the singular or plural form.
- * @param string $context     Context information for the translators.
- * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
+ * @since 2.4.0
  *
- * @return string Translated text.
+ * @param string|false $path   Languages directory path for the given domain and locale.
+ * @param string       $domain Text domain.
+ * @param string       $locale Locale.
+ *
+ * @return string|false Filtered directory path.
  */
-function preferred_languages_load_just_in_time( $translation, $single, $plural = null, $number = null, $context = null, $domain = 'default' ) {
-	global $wp_textdomain_registry, $l10n;
+function preferred_languages_filter_lang_dir_for_domain( $path, $domain, $locale ) {
+	global $wp_textdomain_registry;
 
-	static $noop_translations = null;
-	if ( null === $noop_translations ) {
-		$noop_translations = new Preferred_Languages_Noop_Translations();
+	if ( $path ) {
+		return $path;
 	}
 
-	if ( 'default' === $domain ) {
-		return $translation;
+	$preferred_locales = preferred_languages_get_list();
+
+	if ( empty( $preferred_locales ) ) {
+		return $path;
 	}
 
-	$translations = get_translations_for_domain( $domain );
-
-	if ( $translations instanceof Preferred_Languages_Noop_Translations ) {
-		return $translation;
+	// Locale has been filtered by something else.
+	if ( $preferred_locales[0] !== $locale && ! preferred_languages_is_locale_switched() ) {
+		return $path;
 	}
 
-	if ( $translations instanceof NOOP_Translations ) {
-		$current_locale = determine_locale();
+	/*
+	 * If locale has been switched to a specific locale, ignore the ones before it.
+	 * Example:
+	 * Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
+	 * Switched to locale: de_CH
+	 * In that case, only check for de_CH, de_DE, es_ES.
+	 */
+	if ( preferred_languages_is_locale_switched() ) {
+		$offset = array_search( $locale, $preferred_locales, true );
 
-		$preferred_locales = preferred_languages_get_list();
-
-		if ( empty( $preferred_locales ) ) {
-			return $translation;
+		if ( ! is_int( $offset ) ) {
+			return $path;
 		}
 
-		// Locale has been filtered by something else.
-		if ( $preferred_locales[0] !== $current_locale && ! preferred_languages_is_locale_switched() ) {
-			return $translation;
-		}
-
-		/*
-		 * If locale has been switched to a specific locale, ignore the ones before it.
-		 * Example:
-		 * Preferred Languages: fr_FR, de_CH, de_DE, es_ES.
-		 * Switched to locale: de_CH
-		 * In that case, only check for de_CH, de_DE, es_ES.
-		 */
-		if ( preferred_languages_is_locale_switched() ) {
-			$offset = array_search( $current_locale, $preferred_locales, true );
-
-			if ( ! is_int( $offset ) ) {
-				return $translation;
-			}
-
-			$preferred_locales = array_slice(
-				$preferred_locales,
-				$offset
-			);
-		}
-
-		foreach ( $preferred_locales as $locale ) {
-			$path = $wp_textdomain_registry->get( $domain, $locale );
-
-			if ( ! $path ) {
-				continue;
-			}
-
-			$mofile = "{$path}/{$domain}-{$locale}.mo";
-
-			if ( load_textdomain( $domain, $mofile ) ) {
-				$translations = get_translations_for_domain( $domain );
-
-				if ( null !== $plural && null !== $number ) {
-					return $translations->translate_plural( $single, $plural, $number, $context );
-				}
-
-				return $translations->translate( $single, $context );
-			}
-		}
-
-		$l10n[ $domain ] = &$noop_translations;
+		$preferred_locales = array_slice(
+			$preferred_locales,
+			$offset
+		);
 	}
 
-	return $translation;
-}
+	foreach ( $preferred_locales as $preferred_locale ) {
+		remove_filter( 'lang_dir_for_domain', 'preferred_languages_filter_lang_dir_for_domain' );
+		$new_path = $wp_textdomain_registry->get( $domain, $preferred_locale );
+		add_filter( 'lang_dir_for_domain', 'preferred_languages_filter_lang_dir_for_domain', 10, 3 );
 
-/**
- * Filters gettext calls to work around limitations in just-in-time loading of translations.
- *
- * @since 1.1.0
- *
- * @param string $translation  Translated text.
- * @param string $text         Text to translate.
- * @param string $domain       Text domain. Unique identifier for retrieving translated strings.
- *
- * @return string Translated text.
- */
-function preferred_languages_filter_gettext( $translation, $text, $domain ) {
-	return preferred_languages_load_just_in_time( $translation, $text, null, null, null, $domain );
-}
+		if ( $new_path ) {
+			return $new_path;
+		}
+	}
 
-/**
- * Filters gettext calls to work around limitations in just-in-time loading of translations.
- *
- * @since 2.1.2
- *
- * @param string $translation Translated text.
- * @param string $text        Text to translate.
- * @param string $context     Context information for the translators.
- * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
- *
- * @return string Translated text.
- */
-function preferred_languages_filter_gettext_with_context( $translation, $text, $context, $domain ) {
-	return preferred_languages_load_just_in_time( $translation, $text, null, null, $context, $domain );
-}
-
-/**
- * Filters gettext calls to work around limitations in just-in-time loading of translations.
- *
- * @since 2.1.2
- *
- * @param string $translation Translated text.
- * @param string $single      The text to be used if the number is singular.
- * @param string $plural      The text to be used if the number is plural.
- * @param int    $number      The number to compare against to use either the singular or plural form.
- * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
- *
- * @return string Translated text.
- */
-function preferred_languages_filter_ngettext( $translation, $single, $plural, $number, $domain ) {
-	return preferred_languages_load_just_in_time( $translation, $single, $plural, $number, null, $domain );
-}
-/**
- * Filters gettext calls to work around limitations in just-in-time loading of translations.
- *
- * @since 2.1.2
- *
- * @param string $translation Translated text.
- * @param string $single      The text to be used if the number is singular.
- * @param string $plural      The text to be used if the number is plural.
- * @param int    $number      The number to compare against to use either the singular or plural form.
- * @param string $context     Context information for the translators.
- * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
- *
- * @return string Translated text.
- */
-function preferred_languages_filter_ngettext_with_context( $translation, $single, $plural, $number, $context, $domain ) {
-	return preferred_languages_load_just_in_time( $translation, $single, $plural, $number, $context, $domain );
+	return $path;
 }
 
 /**
