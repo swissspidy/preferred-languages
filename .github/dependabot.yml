@@ -17,9 +17,9 @@ updates:
           interval: weekly
       open-pull-requests-limit: 10
       groups:
-        wp-packages:
-          patterns:
-            - '@wordpress/*'
+          wp-packages:
+              patterns:
+                  - '@wordpress/*'
 
     - package-ecosystem: composer
       directory: '/'
