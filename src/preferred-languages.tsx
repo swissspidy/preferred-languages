@@ -1,4 +1,4 @@
-import { render } from '@wordpress/element';
+import { createRoot, StrictMode } from '@wordpress/element';
 import domReady from '@wordpress/dom-ready';
 
 import './preferred-languages.css';
@@ -26,28 +26,34 @@ domReady( () => {
 		return;
 	}
 
-	const root = document.querySelector( '#preferred-languages-root' );
+	const container = document.querySelector( '#preferred-languages-root' );
 
 	// Replace original language settings with the Preferred Languages UI.
 
 	// User Profile.
 	document
 		.querySelector( '.user-language-wrap' )
-		?.replaceWith( root.parentElement.parentElement );
+		?.replaceWith( container.parentElement.parentElement );
 
 	// Settings -> General.
 	document
 		.querySelector( '.options-general-php #WPLANG' )
 		?.parentElement?.parentElement?.replaceWith(
-			root.parentElement.parentElement
+			container.parentElement.parentElement
 		);
 
 	// Network Settings.
 	document
 		.querySelector( '.network-admin.settings-php #WPLANG' )
 		?.parentElement?.parentElement?.replaceWith(
-			root.parentElement.parentElement
+			container.parentElement.parentElement
 		);
 
-	render( <PreferredLanguages { ...props } />, root );
+	const root = createRoot( container );
+
+	root.render(
+		<StrictMode>
+			<PreferredLanguages { ...props } />
+		</StrictMode>
+	);
 } );
