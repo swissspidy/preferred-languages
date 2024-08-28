@@ -389,6 +389,16 @@ function preferred_languages_add_option( $option, $value ) {
 	$locales = array_filter( explode( ',', $value ) );
 	preferred_languages_download_language_packs( $locales );
 
+	/*
+	 * In addition to filtering the WPLANG option, also update it in the database,
+	 * in case any plugin accesses it before this plugin is loaded.
+	 */
+	if ( ! empty( $locales ) ) {
+		remove_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+		update_option( 'WPLANG', reset( $locales ) );
+		add_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+	}
+
 	// Reload translations after save.
 	load_default_textdomain( determine_locale() );
 }
@@ -413,12 +423,22 @@ function preferred_languages_update_option( $old_value, $value ) {
 	$locales = array_filter( explode( ',', $value ) );
 	preferred_languages_download_language_packs( $locales );
 
+	/*
+	 * In addition to filtering the WPLANG option, also update it in the database,
+	 * in case any plugin accesses it before this plugin is loaded.
+	 */
+	if ( ! empty( $locales ) ) {
+		remove_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+		update_option( 'WPLANG', reset( $locales ) );
+		add_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+	}
+
 	// Reload translations after save.
 	load_default_textdomain( determine_locale() );
 }
 
 /**
- * Downloads language packs upon updating the network option.
+ * Downloads language packs upon adding or updating the network option.
  *
  * @since 1.7.0
  *
@@ -432,6 +452,16 @@ function preferred_languages_update_site_option( $option, $value ) {
 
 	$locales = array_filter( explode( ',', $value ) );
 	preferred_languages_download_language_packs( $locales );
+
+	/*
+	 * In addition to filtering the WPLANG site option, also update it in the database,
+	 * in case any plugin accesses it before this plugin is loaded.
+	 */
+	if ( ! empty( $locales ) ) {
+		remove_filter( 'pre_site_option_WPLANG', 'preferred_languages_filter_option' );
+		update_site_option( 'WPLANG', reset( $locales ) );
+		add_filter( 'pre_site_option_WPLANG', 'preferred_languages_filter_option' );
+	}
 
 	// Reload translations after save.
 	load_default_textdomain( determine_locale() );
