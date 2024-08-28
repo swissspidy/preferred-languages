@@ -707,6 +707,19 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_add_option
+	 */
+	public function test_add_option_updates_wplang_option() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		remove_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+		$raw_locale = get_option( 'WPLANG' );
+		add_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+
+		$this->assertSame( 'de_DE', $raw_locale );
+	}
+
+	/**
+	 * @covers ::preferred_languages_add_option
 	 * @covers ::preferred_languages_update_option
 	 */
 	public function test_update_option_downloads_language_packs_again() {
@@ -740,6 +753,21 @@ class Plugin_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @covers ::preferred_languages_update_option
+	 */
+	public function test_update_option_updates_wplang_option() {
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_option( 'preferred_languages', '' );
+		update_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		remove_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+		$raw_locale = get_option( 'WPLANG' );
+		add_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+
+		$this->assertSame( 'de_DE', $raw_locale );
+	}
+
+	/**
 	 * @covers ::preferred_languages_add_option
 	 */
 	public function test_add_option_empty_list() {
@@ -770,6 +798,19 @@ class Plugin_Test extends WP_UnitTestCase {
 
 	/**
 	 * @covers ::preferred_languages_update_site_option
+	 */
+	public function test_add_site_option_updates_wplang_site_option() {
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		remove_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+		$raw_locale = get_site_option( 'WPLANG' );
+		add_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+
+		$this->assertSame( 'de_DE', $raw_locale );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_site_option
 	 * @group ms-required
 	 */
 	public function test_update_site_option_downloads_language_packs_again() {
@@ -787,6 +828,21 @@ class Plugin_Test extends WP_UnitTestCase {
 		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
 		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
 		$this->assertSame( 2, $this->download_language_packs_action->get_call_count() );
+	}
+
+	/**
+	 * @covers ::preferred_languages_update_site_option
+	 */
+	public function test_update_site_option_updates_wplang_site_option() {
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+		update_site_option( 'preferred_languages', '' );
+		update_site_option( 'preferred_languages', 'de_DE,fr_FR' );
+
+		remove_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+		$raw_locale = get_site_option( 'WPLANG' );
+		add_filter( 'pre_option_WPLANG', 'preferred_languages_filter_option' );
+
+		$this->assertSame( 'de_DE', $raw_locale );
 	}
 
 	public function data_test_sanitize_list() {
