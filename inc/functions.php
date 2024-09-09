@@ -498,7 +498,6 @@ function preferred_languages_filter_option( $locale ) {
  * @return string[] The installed and available languages.
  */
 function preferred_languages_download_language_packs( $locales ) {
-	// Handle translation install.
 	// @phpstan-ignore requireOnce.fileNotFound
 	require_once ABSPATH . 'wp-admin/includes/translation-install.php';
 
