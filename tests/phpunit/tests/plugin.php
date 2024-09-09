@@ -1520,6 +1520,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_filter_lang_dir_plugin_custom_path() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE' );
 
+		// @phpstan-ignore requireOnce.fileNotFound
 		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
 
 		$actual = custom_i18n_plugin_test();
@@ -1534,6 +1535,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'preferred_languages_merge_translations', '__return_false' );
 		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
 
+		// @phpstan-ignore requireOnce.fileNotFound
 		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
 
 		switch_to_locale( 'de_DE' );
@@ -1553,6 +1555,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		add_filter( 'preferred_languages_merge_translations', '__return_true' );
 		update_option( 'preferred_languages', 'fr_FR,de_DE,es_ES' );
 
+		// @phpstan-ignore requireOnce.fileNotFound
 		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
 
 		switch_to_locale( 'de_DE' );
@@ -1571,6 +1574,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_filter_lang_dir_context_plugin_custom_path() {
 		update_option( 'preferred_languages', 'fr_FR,de_DE' );
 
+		// @phpstan-ignore requireOnce.fileNotFound
 		require_once WP_PLUGIN_DIR . '/custom-internationalized-plugin/custom-internationalized-plugin.php';
 
 		$actual = custom_i18n_plugin_test_context();
@@ -1609,6 +1613,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_filter_debug_information() {
 		if ( ! class_exists( 'WP_Debug_Data' ) ) {
+			// @phpstan-ignore requireOnce.fileNotFound
 			require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
 		}
 
