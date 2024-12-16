@@ -52,11 +52,33 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 	const { registerShortcut } = useDispatch( keyboardShortcutsStore );
 	useEffect( () => {
 		registerShortcut( {
+			name: 'preferred-languages/select-previous',
+			category: 'global',
+			description: __(
+				'Select previous language',
+				'preferred-languages'
+			),
+			keyCombination: {
+				character: 'ArrowUp',
+			},
+		} );
+
+		registerShortcut( {
+			name: 'preferred-languages/select-next',
+			category: 'global',
+			description: __( 'Select next language', 'preferred-languages' ),
+			keyCombination: {
+				character: 'ArrowDown',
+			},
+		} );
+
+		registerShortcut( {
 			name: 'preferred-languages/move-up',
 			category: 'global',
 			description: __( 'Move language up', 'preferred-languages' ),
 			keyCombination: {
 				character: 'ArrowUp',
+				modifier: 'alt',
 			},
 		} );
 
@@ -66,6 +88,7 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 			description: __( 'Move language down', 'preferred-languages' ),
 			keyCombination: {
 				character: 'ArrowDown',
+				modifier: 'alt',
 			},
 		} );
 

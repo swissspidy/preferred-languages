@@ -131,7 +131,7 @@ test.describe( 'Settings Page', () => {
 		).toBeEnabled();
 
 		// After moving one position up, none of the buttons should be disabled anymore.
-		await page.keyboard.press( 'ArrowUp' );
+		await page.keyboard.press( 'Alt+ArrowUp' );
 
 		await expect(
 			page.getByRole( 'button', { name: /Move up/ } )
@@ -144,8 +144,8 @@ test.describe( 'Settings Page', () => {
 		).toBeEnabled();
 
 		// After moving two up again, the "Move Up" button should be disabled because we reached the top.
-		await page.keyboard.press( 'ArrowUp' );
-		await page.keyboard.press( 'ArrowUp' );
+		await page.keyboard.press( 'Alt+ArrowUp' );
+		await page.keyboard.press( 'Alt+ArrowUp' );
 
 		await expect(
 			page.getByRole( 'button', { name: /Move up/ } )
