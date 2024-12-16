@@ -54,7 +54,10 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 		registerShortcut( {
 			name: 'preferred-languages/select-previous',
 			category: 'global',
-			description: __( 'Select previous language', 'preferred-languages' ),
+			description: __(
+				'Select previous language',
+				'preferred-languages'
+			),
 			keyCombination: {
 				character: 'ArrowUp',
 			},

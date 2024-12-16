@@ -73,9 +73,7 @@ export function ActiveLocales( {
 		);
 
 		if ( languages[ foundIndex - 1 ] ) {
-			setSelectedLanguage(
-				languages[foundIndex - 1]
-			);
+			setSelectedLanguage( languages[ foundIndex - 1 ] );
 		}
 	} );
 
@@ -91,9 +89,7 @@ export function ActiveLocales( {
 		);
 
 		if ( languages[ foundIndex + 1 ] ) {
-			setSelectedLanguage(
-				languages[foundIndex + 1]
-			);
+			setSelectedLanguage( languages[ foundIndex + 1 ] );
 		}
 	} );
 
