@@ -61,6 +61,42 @@ export function ActiveLocales( {
 		setSelectedLanguage( languages.at( -1 ) );
 	} );
 
+	useShortcut( 'preferred-languages/select-previous', ( event ) => {
+		event.preventDefault();
+
+		if ( isEmpty ) {
+			return;
+		}
+
+		const foundIndex = languages.findIndex(
+			( { locale } ) => locale === selectedLanguage.locale
+		);
+
+		if ( languages[ foundIndex - 1 ] ) {
+			setSelectedLanguage(
+				languages[foundIndex - 1]
+			);
+		}
+	} );
+
+	useShortcut( 'preferred-languages/select-next', ( event ) => {
+		event.preventDefault();
+
+		if ( isEmpty ) {
+			return;
+		}
+
+		const foundIndex = languages.findIndex(
+			( { locale } ) => locale === selectedLanguage.locale
+		);
+
+		if ( languages[ foundIndex + 1 ] ) {
+			setSelectedLanguage(
+				languages[foundIndex + 1]
+			);
+		}
+	} );
+
 	const onRemove = () => {
 		const foundIndex = languages.findIndex(
 			( { locale } ) => locale === selectedLanguage.locale
@@ -248,7 +284,7 @@ function ActiveControls( {
 					<Button
 						variant="secondary"
 						showTooltip
-						aria-keyshortcuts="ArrowUp"
+						aria-keyshortcuts="Alt+ArrowUp"
 						aria-label={ sprintf(
 							/* translators: accessibility text */
 							__( 'Move up (%s)', 'preferred-languages' ),
@@ -269,7 +305,7 @@ function ActiveControls( {
 					<Button
 						variant="secondary"
 						showTooltip
-						aria-keyshortcuts="ArrowDown"
+						aria-keyshortcuts="Alt+ArrowDown"
 						aria-label={ sprintf(
 							/* translators: accessibility text */
 							__( 'Move down (%s)', 'preferred-languages' ),
