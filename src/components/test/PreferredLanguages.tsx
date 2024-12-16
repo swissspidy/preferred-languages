@@ -64,6 +64,7 @@ function moveUp() {
 	fireEvent.keyDown( screen.getByRole( 'listbox' ), {
 		key: 'ArrowUp',
 		keyCode: UP,
+		altKey: true,
 	} );
 }
 
@@ -71,6 +72,7 @@ function moveDown() {
 	fireEvent.keyDown( screen.getByRole( 'listbox' ), {
 		key: 'ArrowDown',
 		keyCode: DOWN,
+		altKey: true,
 	} );
 }
 
