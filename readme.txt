@@ -1,7 +1,7 @@
 === Preferred Languages ===
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, language, translation
-Tested up to: 6.6
+Tested up to: 6.7
 Stable tag: 2.4.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -37,7 +37,7 @@ However, when translations are incomplete, some strings might still be displayed
 That's a poor user experience as well.
 
 To prevent this, Preferred Languages now automatically merges all incomplete translations in the list.
- 
+
  the `preferred_languages_merge_translations` filter can be used to opt out of this behavior.
 It provides three parameters:
 
