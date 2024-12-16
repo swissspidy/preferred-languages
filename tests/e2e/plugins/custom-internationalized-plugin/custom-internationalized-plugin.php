@@ -5,7 +5,7 @@ Plugin URI: https://wordpress.org/
 Description: For testing purposes only.
 Version: 1.0.0
 Text Domain: custom-internationalized-plugin
-Domain Path: languages/
+Domain Path: /languages
 */
 
 function custom_i18n_plugin_test() {
