@@ -26,7 +26,7 @@
 		"@playwright/test": "^1.50.0",
 		"@testing-library/jest-dom": "^6.6.3",
 		"@testing-library/react": "^16.2.0",
-		"@testing-library/user-event": "^14.6.0",
+		"@testing-library/user-event": "^14.6.1",
 		"@types/expect-puppeteer": "^5.0.6",
 		"@types/jest-environment-puppeteer": "^5.0.6",
 		"@wordpress/env": "^10.16.0",
