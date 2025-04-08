@@ -1612,6 +1612,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_filter_debug_information
 	 */
 	public function test_filter_debug_information() {
+		// Note: this test causes "sh: 1: gs: not found" output on CI
+		// because of this line:
+		// https://github.com/WordPress/wordpress-develop/blob/8cd8594f439bc11e8d490166caa8b35384c18182/src/wp-admin/includes/class-wp-debug-data.php#L727C10-L727C14
+
 		if ( ! class_exists( 'WP_Debug_Data' ) ) {
 			// @phpstan-ignore requireOnce.fileNotFound
 			require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
