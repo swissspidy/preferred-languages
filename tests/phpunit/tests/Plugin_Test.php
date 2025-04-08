@@ -861,6 +861,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @param string $input
 	 * @param string $expected
 	 */
+	#[DataProvider('data_test_sanitize_list')]
 	public function test_sanitize_list( $input, $expected ) {
 		$actual = preferred_languages_sanitize_list( $input );
 		$this->assertSame( $expected, $actual );
