@@ -845,7 +845,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertSame( 'de_DE', $raw_locale );
 	}
 
-	public function data_test_sanitize_list() {
+	public static function data_test_sanitize_list() {
 		return array(
 			array( 'de_DE,fr_FR', 'de_DE,fr_FR' ),
 			array( ' de_DE , fr_FR ', 'de_DE,fr_FR' ),
@@ -861,6 +861,7 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @param string $input
 	 * @param string $expected
 	 */
+	#[DataProvider( 'data_test_sanitize_list' )]
 	public function test_sanitize_list( $input, $expected ) {
 		$actual = preferred_languages_sanitize_list( $input );
 		$this->assertSame( $expected, $actual );
@@ -1612,6 +1613,10 @@ class Plugin_Test extends WP_UnitTestCase {
 	 * @covers ::preferred_languages_filter_debug_information
 	 */
 	public function test_filter_debug_information() {
+		// Note: this test causes "sh: 1: gs: not found" output on CI
+		// because of this line:
+		// https://github.com/WordPress/wordpress-develop/blob/8cd8594f439bc11e8d490166caa8b35384c18182/src/wp-admin/includes/class-wp-debug-data.php#L727C10-L727C14
+
 		if ( ! class_exists( 'WP_Debug_Data' ) ) {
 			// @phpstan-ignore requireOnce.fileNotFound
 			require_once ABSPATH . 'wp-admin/includes/class-wp-debug-data.php';
@@ -1631,4 +1636,11 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertSame( implode( ', ', $site_list ), $data['wp-core']['fields']['site_language']['value'] );
 		$this->assertSame( implode( ', ', $user_list ), $data['wp-core']['fields']['user_language']['value'] );
 	}
+
+	/**
+	 * Temporary workaround to allow the tests to run on PHPUnit 10.
+	 *
+	 * @link https://core.trac.wordpress.org/ticket/59486
+	 */
+	public function expectDeprecated(): void {}
 }
