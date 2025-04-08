@@ -845,7 +845,7 @@ class Plugin_Test extends WP_UnitTestCase {
 		$this->assertSame( 'de_DE', $raw_locale );
 	}
 
-	public function data_test_sanitize_list() {
+	public static function data_test_sanitize_list() {
 		return array(
 			array( 'de_DE,fr_FR', 'de_DE,fr_FR' ),
 			array( ' de_DE , fr_FR ', 'de_DE,fr_FR' ),
