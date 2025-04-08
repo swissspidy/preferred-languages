@@ -216,7 +216,7 @@ jobs:
 
             - name: Run tests
               run: |
-                  composer test -- --debug
+                  composer test
                   composer test:multisite
               if: ${{ ! matrix.coverage }}
 
