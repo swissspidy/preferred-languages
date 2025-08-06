@@ -282,7 +282,7 @@ function ActiveControls( {
 						showTooltip
 						aria-keyshortcuts="Alt+ArrowUp"
 						aria-label={ sprintf(
-							/* translators: accessibility text */
+							/* translators: accessibility text. %s: keyboard shortcut. */
 							__( 'Move up (%s)', 'preferred-languages' ),
 							/* translators: keyboard shortcut (Arrow Up) */
 							__( 'Up', 'preferred-languages' )
@@ -303,7 +303,7 @@ function ActiveControls( {
 						showTooltip
 						aria-keyshortcuts="Alt+ArrowDown"
 						aria-label={ sprintf(
-							/* translators: accessibility text */
+							/* translators: accessibility text. %s: keyboard shortcut. */
 							__( 'Move down (%s)', 'preferred-languages' ),
 							/* translators: keyboard shortcut (Arrow Down) */
 							__( 'Down', 'preferred-languages' )
@@ -324,7 +324,7 @@ function ActiveControls( {
 						showTooltip
 						aria-keyshortcuts="Delete"
 						aria-label={ sprintf(
-							/* translators: accessibility text */
+							/* translators: accessibility text. %s: keyboard shortcut. */
 							__(
 								'Remove from list (%s)',
 								'preferred-languages'
