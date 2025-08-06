@@ -1204,10 +1204,6 @@ function preferred_languages_display_form( $args = array() ) {
 function preferred_languages_filter_lang_dir_for_domain( $path, $domain, $locale ) {
 	global $wp_textdomain_registry;
 
-	if ( $path ) {
-		return $path;
-	}
-
 	$preferred_locales = preferred_languages_get_list();
 
 	if ( empty( $preferred_locales ) ) {
@@ -1244,7 +1240,7 @@ function preferred_languages_filter_lang_dir_for_domain( $path, $domain, $locale
 		$new_path = $wp_textdomain_registry->get( $domain, $preferred_locale );
 		add_filter( 'lang_dir_for_domain', 'preferred_languages_filter_lang_dir_for_domain', 10, 3 );
 
-		if ( $new_path ) {
+		if ( $new_path && $new_path !== $path ) {
 			return $new_path;
 		}
 	}
