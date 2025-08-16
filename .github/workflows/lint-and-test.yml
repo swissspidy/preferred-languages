@@ -195,6 +195,21 @@ jobs:
               with:
                   composer-options: '--prefer-dist --no-scripts'
 
+            # Installs a different PHPUnit version depending on the WP/PHP version combo we're testing against.
+            #
+            # | WP  / PHP | PHPUnit |
+            # |-----------|---------|
+            # | *   / 5.6 | 5       |
+            # | *   / 7.4 | 9       |
+            # | *   / 8   | 9       |
+            #
+            # See https://make.wordpress.org/core/handbook/references/phpunit-compatibility-and-wordpress-versions/
+            - name: Update PHPUnit
+              run: |
+                  echo "Installing latest version of PHPUnit"
+                  composer update --ignore-platform-reqs --no-interaction --no-scripts yoast/phpunit-polyfills --with-dependencies --with "phpunit/phpunit:^9.6"
+              if: ${{ startsWith( matrix.php, '8.' ) }}
+
             - name: Run tests
               run: |
                   composer test
