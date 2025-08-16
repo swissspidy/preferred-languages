@@ -187,6 +187,13 @@ jobs:
                 sudo apt-get update
                 sudo apt-get install -y subversion
 
+            # Not needed by the plugin, but prevents "gs: not found" errors during tests,
+            # triggered by https://github.com/WordPress/wordpress-develop/blob/8c374a5adb9bee9333a013a575b3aa0e828085be/src/wp-admin/includes/class-wp-debug-data.php#L746
+            - name: Install Ghostscript
+              run: |
+                sudo apt-get update
+                sudo apt-get install ghostscript -y
+
             - name: Set up tests
               run: bash bin/install-wp-tests.sh wordpress_test root '' 127.0.0.1:${{ job.services.mysql.ports['3306'] }} ${{ matrix.wp }} true
 
