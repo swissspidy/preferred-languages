@@ -23,7 +23,7 @@
 		"@wordpress/keycodes": "^4.14.0"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.54.1",
+		"@playwright/test": "^1.55.0",
 		"@testing-library/jest-dom": "^6.6.4",
 		"@testing-library/react": "^16.3.0",
 		"@testing-library/user-event": "^14.6.1",
