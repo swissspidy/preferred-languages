@@ -33,7 +33,7 @@
 		"@wordpress/scripts": "^30.20.0",
 		"@wp-now/wp-now": "^0.1.74",
 		"jest-environment-jsdom": "^30.0.5",
-		"mini-css-extract-plugin": "^2.9.2",
+		"mini-css-extract-plugin": "^2.9.4",
 		"prettier": "npm:wp-prettier@^3.0.3",
 		"rtlcss-webpack-plugin": "^4.0.7"
 	},
