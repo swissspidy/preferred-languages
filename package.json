@@ -13,13 +13,13 @@
 	},
 	"homepage": "https://github.com/swissspidy/preferred-languages#readme",
 	"dependencies": {
-		"@wordpress/a11y": "^4.27.0",
-		"@wordpress/components": "^30.0.0",
+		"@wordpress/a11y": "^4.29.0",
+		"@wordpress/components": "^30.2.0",
 		"@wordpress/data": "^10.14.0",
 		"@wordpress/dom-ready": "^4.14.0",
 		"@wordpress/element": "^6.14.0",
 		"@wordpress/i18n": "^6.0.0",
-		"@wordpress/keyboard-shortcuts": "^5.27.0",
+		"@wordpress/keyboard-shortcuts": "^5.29.0",
 		"@wordpress/keycodes": "^4.14.0"
 	},
 	"devDependencies": {
@@ -29,8 +29,8 @@
 		"@testing-library/user-event": "^14.6.1",
 		"@types/expect-puppeteer": "^5.0.6",
 		"@types/jest-environment-puppeteer": "^5.0.6",
-		"@wordpress/env": "^10.27.0",
-		"@wordpress/scripts": "^30.20.0",
+		"@wordpress/env": "^10.29.0",
+		"@wordpress/scripts": "^30.22.0",
 		"@wp-now/wp-now": "^0.1.74",
 		"jest-environment-jsdom": "^30.0.5",
 		"mini-css-extract-plugin": "^2.9.2",
