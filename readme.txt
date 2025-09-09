@@ -1,8 +1,8 @@
 === Preferred Languages ===
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, language, translation
-Tested up to: 6.8
-Stable tag: 2.4.0
+Tested up to: 6.9
+Stable tag: 2.4.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -62,6 +62,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 2.4.0 =
+= 2.4.1 =
 
-This release improves WordPress compatibility and bumps minimum version requirements.
+This release fixes a regression with the fallback functionality in WordPress 6.8+.
