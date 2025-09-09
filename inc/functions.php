@@ -1235,12 +1235,29 @@ function preferred_languages_filter_lang_dir_for_domain( $path, $domain, $locale
 		);
 	}
 
+	// From WP_Textdomain_Registry::get_path_from_lang_dir().
+	$has_translation_in_folder = static function ( $location, $domain, $locale ) use ( $wp_textdomain_registry ) {
+		$location = rtrim( $location, '/' );
+		$files    = $wp_textdomain_registry->get_language_files_from_path( $location );
+
+		$mo_path  = "$location/$domain-$locale.mo";
+		$php_path = "$location/$domain-$locale.l10n.php";
+
+		foreach ( $files as $file_path ) {
+			if ( $file_path === $mo_path || $file_path === $php_path ) {
+				return true;
+			}
+		}
+
+		return false;
+	};
+
 	foreach ( $preferred_locales as $preferred_locale ) {
 		remove_filter( 'lang_dir_for_domain', 'preferred_languages_filter_lang_dir_for_domain' );
 		$new_path = $wp_textdomain_registry->get( $domain, $preferred_locale );
 		add_filter( 'lang_dir_for_domain', 'preferred_languages_filter_lang_dir_for_domain', 10, 3 );
 
-		if ( $new_path && $new_path !== $path ) {
+		if ( $new_path && $has_translation_in_folder( $new_path, $domain, $preferred_locale ) ) {
 			return $new_path;
 		}
 	}
