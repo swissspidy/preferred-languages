@@ -9,7 +9,7 @@ test.describe( 'No Languages Available', () => {
 		await requestUtils.deactivatePlugin( 'no-languages' );
 	} );
 
-	test( 'should still display the preferred languages UI with no selectable languages', async ( {
+	test( 'should show the original language dropdown without a JavaScript error', async ( {
 		admin,
 		page,
 	} ) => {
@@ -22,25 +22,15 @@ test.describe( 'No Languages Available', () => {
 
 		await admin.visitAdminPage( 'options-general.php' );
 
-		// The native WordPress language dropdown should be replaced.
-		await expect( page.locator( '#WPLANG' ) ).toBeHidden();
+		// The original WordPress language dropdown should be visible.
+		await expect( page.locator( '#WPLANG' ) ).toBeVisible();
 
-		// The plugin's preferred-languages UI should still be visible.
+		// The plugin's preferred-languages UI should not be present.
 		await expect(
 			page.getByRole( 'listbox', { name: 'Language' } )
-		).toBeVisible();
+		).toBeHidden();
 
-		// The inactive locales dropdown should be disabled since there are no languages.
-		await expect(
-			page.getByRole( 'combobox', { name: 'Inactive Locales' } )
-		).toBeDisabled();
-
-		// The "Add to list" button should also be disabled.
-		await expect(
-			page.getByRole( 'button', { name: /Add to list/ } )
-		).toBeDisabled();
-
-		// No JavaScript errors should have been thrown.
+		// No JavaScript TypeError should have been thrown.
 		const typeErrors = errors.filter( ( e ) =>
 			e.includes( 'Cannot read properties of null' )
 		);

@@ -15,6 +15,17 @@ declare global {
 domReady( () => {
 	const props = window.PreferredLanguages;
 
+	// If there are no installed languages and no available translations.
+	if ( ! props.allLanguages.length ) {
+		// Settings -> General.
+		document.querySelector( '.site-preferred-languages-wrap' )?.remove();
+
+		// Network Settings.
+		document.querySelector( '.network-preferred-languages-wrap' )?.remove();
+
+		return;
+	}
+
 	const container = document.querySelector( '#preferred-languages-root' );
 
 	// Replace original language settings with the Preferred Languages UI.
