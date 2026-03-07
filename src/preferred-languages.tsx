@@ -18,10 +18,10 @@ domReady( () => {
 	// If there are no installed languages and no available translations.
 	if ( ! props.allLanguages.length ) {
 		// Settings -> General.
-		document.querySelector( '.site-preferred-languages-wrap' ).remove();
+		document.querySelector( '.site-preferred-languages-wrap' )?.remove();
 
 		// Network Settings.
-		document.querySelector( '.network-preferred-languages-wrap' ).remove();
+		document.querySelector( '.network-preferred-languages-wrap' )?.remove();
 
 		return;
 	}

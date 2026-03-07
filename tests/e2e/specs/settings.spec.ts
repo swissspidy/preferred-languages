@@ -1,5 +1,43 @@
 import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 
+test.describe( 'No Languages Available', () => {
+	test.beforeEach( async ( { requestUtils } ) => {
+		await requestUtils.activatePlugin( 'no-languages' );
+	} );
+
+	test.afterEach( async ( { requestUtils } ) => {
+		await requestUtils.deactivatePlugin( 'no-languages' );
+	} );
+
+	test( 'should show the original language dropdown without a JavaScript error', async ( {
+		admin,
+		page,
+	} ) => {
+		const errors: string[] = [];
+		page.on( 'console', ( msg ) => {
+			if ( msg.type() === 'error' ) {
+				errors.push( msg.text() );
+			}
+		} );
+
+		await admin.visitAdminPage( 'options-general.php' );
+
+		// The original WordPress language dropdown should be visible.
+		await expect( page.locator( '#WPLANG' ) ).toBeVisible();
+
+		// The plugin's preferred-languages UI should not be present.
+		await expect(
+			page.getByRole( 'listbox', { name: 'Language' } )
+		).toBeHidden();
+
+		// No JavaScript TypeError should have been thrown.
+		const typeErrors = errors.filter( ( e ) =>
+			e.includes( 'Cannot read properties of null' )
+		);
+		expect( typeErrors ).toHaveLength( 0 );
+	} );
+} );
+
 test.describe( 'Settings Page', () => {
 	test( 'should display the preferred languages form', async ( {
 		admin,
