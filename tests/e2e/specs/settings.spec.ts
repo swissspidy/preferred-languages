@@ -43,7 +43,7 @@ test.describe( 'No Languages Available', () => {
 		const introText = page.getByText(
 			'Choose languages for displaying WordPress in, in order of preference.'
 		);
-		const fallbackText = page.getByText( 'No languages available.' );
+		const fallbackText = page.locator( '.active-locales-empty-message' );
 
 		await expect( introText ).toBeVisible();
 		await expect( fallbackText ).toBeVisible();
