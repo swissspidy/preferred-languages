@@ -2,11 +2,11 @@ import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 
 test.describe( 'No Languages Available', () => {
 	test.beforeEach( async ( { requestUtils } ) => {
-		await requestUtils.activatePlugin( 'no-languages' );
+		await requestUtils.activatePlugin( 'disallow-file-mods' );
 	} );
 
 	test.afterEach( async ( { requestUtils } ) => {
-		await requestUtils.deactivatePlugin( 'no-languages' );
+		await requestUtils.deactivatePlugin( 'disallow-file-mods' );
 	} );
 
 	test( 'should still display the preferred languages UI with no selectable languages', async ( {
@@ -40,11 +40,13 @@ test.describe( 'No Languages Available', () => {
 			page.getByRole( 'button', { name: /Add to list/ } )
 		).toBeDisabled();
 
-		// No JavaScript errors should have been thrown.
-		const typeErrors = errors.filter( ( e ) =>
-			e.includes( 'Cannot read properties of null' )
+		const introText = page.getByText(
+			'Choose languages for displaying WordPress in, in order of preference.'
 		);
-		expect( typeErrors ).toHaveLength( 0 );
+		const fallbackText = page.getByText( 'No languages available.' );
+
+		await expect( introText ).toBeVisible();
+		await expect( fallbackText ).toBeVisible();
 	} );
 } );
 

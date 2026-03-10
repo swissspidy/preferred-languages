@@ -13,6 +13,7 @@ interface ActiveLocalesProps {
 	showOptionSiteDefault?: boolean;
 	setLanguages: ( cb: ( languages: Language[] ) => Language[] ) => void;
 	setSelectedLanguage: ( language: Language ) => void;
+	hasAnyLanguages: boolean;
 }
 
 export function ActiveLocales( {
@@ -21,6 +22,7 @@ export function ActiveLocales( {
 	showOptionSiteDefault = false,
 	selectedLanguage,
 	setSelectedLanguage,
+	hasAnyLanguages,
 }: ActiveLocalesProps ) {
 	const listRef = useRef< HTMLUListElement >();
 
@@ -184,7 +186,12 @@ export function ActiveLocales( {
 		<div className="active-locales wp-clearfix">
 			{ isEmpty && (
 				<div className="active-locales-empty-message">
-					{ __( 'Nothing set.', 'preferred-languages' ) }
+					{ hasAnyLanguages
+						? __( 'Nothing set.', 'preferred-languages' )
+						: __(
+								'No languages available.',
+								'preferred-languages'
+						  ) }
 					<br />
 					{ emptyMessage }
 				</div>
