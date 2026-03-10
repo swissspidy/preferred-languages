@@ -2,11 +2,11 @@ import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 
 test.describe( 'No Languages Available', () => {
 	test.beforeEach( async ( { requestUtils } ) => {
-		await requestUtils.activatePlugin( 'disallow-file-mods' );
+		await requestUtils.activatePlugin( 'no-languages' );
 	} );
 
 	test.afterEach( async ( { requestUtils } ) => {
-		await requestUtils.deactivatePlugin( 'disallow-file-mods' );
+		await requestUtils.deactivatePlugin( 'no-languages' );
 	} );
 
 	test( 'should still display the preferred languages UI with no selectable languages', async ( {
