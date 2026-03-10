@@ -157,6 +157,15 @@ function InactiveLocalesSelect( {
 					) }
 				</optgroup>
 			) }
+			{ ! hasItems && (
+				<option
+					key="unavailable"
+					value="unavailable"
+					lang="unavailable"
+				>
+					{ __( 'No languages available.', 'preferred-languages' ) }
+				</option>
+			) }
 		</SelectControl>
 	);
 }
