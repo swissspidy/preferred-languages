@@ -33,7 +33,7 @@ test.describe( 'No Languages Available', () => {
 		// The inactive locales dropdown should be disabled since there are no languages.
 		await expect(
 			page.getByRole( 'combobox', { name: 'Inactive Locales' } )
-		).toBeDisabled();
+		).toHaveValue( 'unavailable' );
 
 		// The "Add to list" button should also be disabled.
 		await expect(
