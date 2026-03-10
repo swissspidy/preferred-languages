@@ -8,5 +8,6 @@ Text Domain: no-languages
 Domain Path: languages/
 */
 
+add_filter( 'file_mod_allowed', '__return_false' );
 add_filter( 'get_available_languages', '__return_empty_array' );
 add_filter( 'wp_get_available_translations', '__return_empty_array' );
