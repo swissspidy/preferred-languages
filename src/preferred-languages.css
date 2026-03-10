@@ -36,7 +36,7 @@
 }
 
 .active-locales-list {
-	height: 120px;
+	height: 134px;
 	overflow-y: scroll;
 	margin: 0 1em 0 0;
 	background: #fff;
@@ -61,8 +61,8 @@
 .active-locales-list li {
 	box-sizing: border-box;
 	width: 100%;
-	height: 30px;
-	line-height: 30px;
+	height: 40px;
+	line-height: 40px;
 	margin: 0;
 	padding: 0 0 0 8px;
 	cursor: pointer;
@@ -107,8 +107,8 @@
 	position: relative;
 	text-align: center;
 	width: 25em;
-	height: 120px;
-	margin-bottom: -120px;
+	height: 134px;
+	margin-bottom: -134px;
 	box-sizing: border-box;
 	color: rgba(51, 51, 51, 0.5);
 }
@@ -126,7 +126,7 @@
 }
 
 .preferred-languages .components-button {
-	height: 30px;
+	height: 40px;
 }
 
 .preferred-languages .components-notice {
