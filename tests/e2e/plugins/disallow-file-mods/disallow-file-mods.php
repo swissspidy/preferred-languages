@@ -1,6 +1,6 @@
 <?php
 /*
-Plugin Name: Disallow file mods
+Plugin Name: Disallow File Mods
 Plugin URI: https://wordpress.org/
 Description: For testing purposes only.
 Version: 1.0.0
