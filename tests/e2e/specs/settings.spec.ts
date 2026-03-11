@@ -1,5 +1,55 @@
 import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 
+test.describe( 'No Languages Available', () => {
+	test.beforeEach( async ( { requestUtils } ) => {
+		await requestUtils.activatePlugin( 'no-languages' );
+	} );
+
+	test.afterEach( async ( { requestUtils } ) => {
+		await requestUtils.deactivatePlugin( 'no-languages' );
+	} );
+
+	test( 'should still display the preferred languages UI with no selectable languages', async ( {
+		admin,
+		page,
+	} ) => {
+		const errors: string[] = [];
+		page.on( 'console', ( msg ) => {
+			if ( msg.type() === 'error' ) {
+				errors.push( msg.text() );
+			}
+		} );
+
+		await admin.visitAdminPage( 'options-general.php' );
+
+		// The native WordPress language dropdown should be replaced.
+		await expect( page.locator( '#WPLANG' ) ).toBeHidden();
+
+		// The plugin's preferred-languages UI should still be visible.
+		await expect(
+			page.getByRole( 'listbox', { name: 'Language' } )
+		).toBeVisible();
+
+		// The inactive locales dropdown should be disabled since there are no languages.
+		await expect(
+			page.getByRole( 'combobox', { name: 'Inactive Locales' } )
+		).toHaveValue( 'unavailable' );
+
+		// The "Add to list" button should also be disabled.
+		await expect(
+			page.getByRole( 'button', { name: /Add to list/ } )
+		).toBeDisabled();
+
+		const introText = page.getByText(
+			'Choose languages for displaying WordPress in, in order of preference.'
+		);
+		const fallbackText = page.locator( '.active-locales-empty-message' );
+
+		await expect( introText ).toBeVisible();
+		await expect( fallbackText ).toBeVisible();
+	} );
+} );
+
 test.describe( 'Settings Page', () => {
 	test( 'should display the preferred languages form', async ( {
 		admin,

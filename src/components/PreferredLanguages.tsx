@@ -138,6 +138,8 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 		props.preferredLanguages[ 0 ]
 	);
 
+	const hasAnyLanguages = allLanguages.length > 0;
+
 	const inactiveLocales = allLanguages.filter(
 		( language ) =>
 			! preferredLanguages.find(
@@ -202,6 +204,7 @@ function PreferredLanguages( props: PreferredLanguagesProps ) {
 					showOptionSiteDefault={ showOptionSiteDefault }
 					selectedLanguage={ selectedLanguage }
 					setSelectedLanguage={ setSelectedLanguage }
+					hasAnyLanguages={ hasAnyLanguages }
 				/>
 				<InactiveLocales
 					languages={ inactiveLocales }

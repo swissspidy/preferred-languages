@@ -171,7 +171,7 @@ describe( 'PreferredLanguages', () => {
 				screen.getByRole( 'option', { name: /Español/ } )
 			).toHaveAttribute( 'aria-selected', 'true' );
 
-			expect( dropdown ).not.toHaveValue();
+			expect( dropdown ).toHaveValue( 'unavailable' );
 			expect( dropdown ).toBeDisabled();
 			expect(
 				screen.getByRole( 'button', { name: /Add/ } )

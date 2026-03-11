@@ -1,6 +1,10 @@
 import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 
 test.describe( 'User Profile', () => {
+	test.beforeAll( async ( { requestUtils } ) => {
+		await requestUtils.deactivatePlugin( 'no-languages' );
+	} );
+
 	test( 'should display the preferred languages form', async ( {
 		admin,
 		page,
