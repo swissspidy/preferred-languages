@@ -155,6 +155,7 @@ jobs:
                 include:
                     - php: '7.2'
                       wp: '6.9'
+                      experimental: false
 
                     - php: '8.5'
                       wp: 'latest'
