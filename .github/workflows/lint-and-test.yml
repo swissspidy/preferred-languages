@@ -148,11 +148,14 @@ jobs:
         continue-on-error: ${{ matrix.experimental }}
         strategy:
             matrix:
-                php: ['8.4', '8.3', '8.2', '8.1', '8.0', '7.4', '7.2']
+                php: ['8.4', '8.3', '8.2', '8.1', '8.0', '7.4']
                 wp: ['latest']
                 coverage: [false]
                 experimental: [false]
                 include:
+                    - php: '7.2'
+                      wp: '6.9'
+
                     - php: '8.5'
                       wp: 'latest'
                       coverage: true
