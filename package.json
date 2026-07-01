@@ -37,7 +37,7 @@
 		"@wordpress/e2e-test-utils-playwright": "^1.46.0",
 		"@wordpress/env": "^11.6.0",
 		"@wordpress/scripts": "^32.2.0",
-		"@wp-now/wp-now": "^0.1.74",
+		"@wp-now/wp-now": "^0.1.75",
 		"jest-environment-jsdom": "^30.4.1",
 		"mini-css-extract-plugin": "^2.10.2",
 		"prettier": "npm:wp-prettier@^3.0.3",
