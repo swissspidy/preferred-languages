@@ -35,7 +35,6 @@
 		"@wordpress/e2e-test-utils-playwright": "^1.53.0",
 		"@wordpress/env": "^11.13.0",
 		"@wordpress/scripts": "^34.1.0",
-		"@wp-now/wp-now": "^0.1.75",
 		"jest-environment-jsdom": "^30.4.1",
 		"mini-css-extract-plugin": "^2.10.2",
 		"prettier": "npm:wp-prettier@^3.0.3",
@@ -54,13 +53,13 @@
 		"lint:md:docs": "wp-scripts lint-md-docs",
 		"lint:md:js": "wp-scripts lint-md-js",
 		"lint:pkg-json": "wp-scripts lint-pkg-json",
+		"playground": "wp-env start --runtime=playground",
 		"start": "wp-scripts start src/preferred-languages.tsx",
 		"test:e2e": "wp-scripts test-playwright --config tests/e2e/playwright.config.ts",
 		"test:unit": "wp-scripts test-unit-js",
 		"test:unit:help": "wp-scripts test-unit-js --help",
 		"test:unit:watch": "wp-scripts test-unit-js --watch",
 		"test:unit:debug": "wp-scripts --inspect-brk test-unit-js --runInBand --no-cache",
-		"wp-env": "wp-env",
-		"wp-now": "wp-now start --port=8889 --php=8.3 --blueprint=blueprints/wp-now.json"
+		"wp-env": "wp-env"
 	}
 }

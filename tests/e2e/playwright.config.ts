@@ -4,6 +4,10 @@ import baseConfig from '@wordpress/scripts/config/playwright.config';
 
 const config = defineConfig( {
 	...baseConfig,
+	webServer: {
+		...baseConfig.webServer,
+		command: 'npm run wp-env -- start --config=.wp-env.test.json',
+	},
 	projects: [
 		{
 			name: 'chromium',

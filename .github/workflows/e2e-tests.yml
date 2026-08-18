@@ -42,7 +42,7 @@ jobs:
               run: |
                   if [[ $WP_VERSION == 'trunk' ]]; then
                     echo "Using WordPress trunk"
-                    echo "{\"core\":\"WordPress/WordPress#master\"}" >> .wp-env.override.json
+                    echo "{\"core\":\"WordPress/WordPress#master\"}" >> .wp-env.test.override.json
                   fi
               env:
                   WP_VERSION: ${{ matrix.wp }}
@@ -50,11 +50,11 @@ jobs:
             - name: Install WordPress
               run: |
                   chmod -R 767 ./ # TODO: Possibly integrate in wp-env
-                  npm run wp-env start
+                  npm run wp-env -- start --config=.wp-env.test.json
 
             - name: Prepare tests
               run: |
-                  npm run wp-env run tests-cli wp language core install de_CH de_DE es_ES fr_FR it_IT
+                  npm run wp-env -- run cli --config=.wp-env.test.json wp language core install de_CH de_DE es_ES fr_FR it_IT
 
             - name: Run tests
               run: npm run test:e2e

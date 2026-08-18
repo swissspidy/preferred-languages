@@ -2,7 +2,7 @@ vendor/
 node_modules/
 build/
 artifacts/
-.wp-env.override.json
+.wp-env*.override.json
 phpcs.xml
 phpstan.neon
 phpunit.xml

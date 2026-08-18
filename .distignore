@@ -3,7 +3,6 @@
 .idea
 artifacts
 bin
-blueprints
 node_modules
 src
 tests
@@ -18,6 +17,8 @@ vendor
 .phpunit.result.cache
 .wp-env.json
 .wp-env.override.json
+.wp-env.test.json
+.wp-env.test.override.json
 codecov.yml
 composer.json
 composer.lock
