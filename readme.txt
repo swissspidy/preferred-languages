@@ -62,6 +62,6 @@ For the plugin's changelog, please head over to [the GitHub repository](https://
 
 == Upgrade Notice ==
 
-= 2.4.3 =
+= 2.4.2 =
 
-This release adds compatibility with WordPress 7.1.
+This release fixes a JavaScript error when no languages are available due to `DISALLOW_FILE_MODS`.
