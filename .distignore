@@ -11,7 +11,6 @@ vendor
 .distignore
 .DS_Store
 .editorconfig
-.eslintrc
 .git-blame-ignore-revs
 .gitattributes
 .gitignore
@@ -22,6 +21,8 @@ vendor
 codecov.yml
 composer.json
 composer.lock
+eslint.config.js
+jest.config.js
 package.json
 package-lock.json
 phpcs.xml.dist

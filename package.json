@@ -18,25 +18,23 @@
 		"url": "https://github.com/swissspidy/preferred-languages/issues"
 	},
 	"dependencies": {
-		"@wordpress/a11y": "^4.46.0",
-		"@wordpress/components": "^33.1.0",
-		"@wordpress/data": "^10.14.0",
-		"@wordpress/dom-ready": "^4.14.0",
-		"@wordpress/element": "^6.14.0",
-		"@wordpress/i18n": "^6.0.0",
-		"@wordpress/keyboard-shortcuts": "^5.46.0",
-		"@wordpress/keycodes": "^4.14.0"
+		"@wordpress/a11y": "^4.53.0",
+		"@wordpress/components": "^39.0.0",
+		"@wordpress/data": "^10.53.0",
+		"@wordpress/dom-ready": "^4.53.0",
+		"@wordpress/element": "^8.5.0",
+		"@wordpress/i18n": "^6.26.0",
+		"@wordpress/keyboard-shortcuts": "^5.53.0",
+		"@wordpress/keycodes": "^4.53.0"
 	},
 	"devDependencies": {
-		"@playwright/test": "^1.62.0",
-		"@testing-library/jest-dom": "^7.0.0",
+		"@playwright/test": "^1.62.1",
+		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.2",
-		"@testing-library/user-event": "^14.6.1",
-		"@types/expect-puppeteer": "^5.0.6",
-		"@types/jest-environment-puppeteer": "^5.0.6",
-		"@wordpress/e2e-test-utils-playwright": "^1.46.0",
-		"@wordpress/env": "^11.6.0",
-		"@wordpress/scripts": "^32.2.0",
+		"@testing-library/user-event": "^14.6.5",
+		"@wordpress/e2e-test-utils-playwright": "^1.53.0",
+		"@wordpress/env": "^11.13.0",
+		"@wordpress/scripts": "^34.1.0",
 		"@wp-now/wp-now": "^0.1.75",
 		"jest-environment-jsdom": "^30.4.1",
 		"mini-css-extract-plugin": "^2.10.2",
@@ -45,7 +43,6 @@
 	},
 	"overrides": {
 		"@wordpress/env": "$@wordpress/env",
-		"jest": "28.1.2",
 		"react": "^18.2.0",
 		"react-dom": "^18.2.0"
 	},
@@ -64,6 +61,6 @@
 		"test:unit:watch": "wp-scripts test-unit-js --watch",
 		"test:unit:debug": "wp-scripts --inspect-brk test-unit-js --runInBand --no-cache",
 		"wp-env": "wp-env",
-		"wp-now": "wp-now start --port=8889 --php=8.2 --wp=6.5 --blueprint=blueprints/wp-now.json"
+		"wp-now": "wp-now start --port=8889 --php=8.3 --blueprint=blueprints/wp-now.json"
 	}
 }
