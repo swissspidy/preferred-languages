@@ -56,7 +56,7 @@ test.describe( 'Translation Loading', () => {
 			// @ts-ignore
 			( await requestUtils.getSiteSettings() ).preferred_languages;
 
-		await expect( installedLocales ).toStrictEqual(
+		expect( installedLocales ).toStrictEqual(
 			'fr_FR,it_IT,de_CH,de_DE,es_ES'
 		);
 

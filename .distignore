@@ -3,7 +3,6 @@
 .idea
 artifacts
 bin
-blueprints
 node_modules
 src
 tests
@@ -11,7 +10,6 @@ vendor
 .distignore
 .DS_Store
 .editorconfig
-.eslintrc
 .git-blame-ignore-revs
 .gitattributes
 .gitignore
@@ -19,9 +17,13 @@ vendor
 .phpunit.result.cache
 .wp-env.json
 .wp-env.override.json
+.wp-env.test.json
+.wp-env.test.override.json
 codecov.yml
 composer.json
 composer.lock
+eslint.config.js
+jest.config.js
 package.json
 package-lock.json
 phpcs.xml.dist

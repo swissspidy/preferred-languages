@@ -1,7 +1,7 @@
 === Preferred Languages ===
 Contributors: swissspidy
 Tags: internationalization, i18n, localization, language, translation
-Tested up to: 7.0
+Tested up to: 7.1
 Stable tag: 2.4.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
