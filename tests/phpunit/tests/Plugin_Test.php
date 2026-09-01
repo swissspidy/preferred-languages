@@ -1435,7 +1435,12 @@ class Plugin_Test extends WP_UnitTestCase {
 	public function test_update_network_settings_single_site() {
 		$mock_action = new MockAction();
 
-		add_action( 'wp_verify_nonce_failed', array( $mock_action, 'action' ) );
+		add_action(
+			'wp_verify_nonce_failed',
+			static function ( ...$args ) use ( $mock_action ) {
+				$mock_action->action( ...$args );
+			}
+		);
 
 		$_POST['preferred_languages_network_settings_nonce'] = 'foo';
 		preferred_languages_update_network_settings();
