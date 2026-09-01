@@ -37,7 +37,7 @@
 		"@wordpress/eslint-plugin": "^25.9.0",
 		"@wordpress/env": "^11.13.0",
 		"@wordpress/scripts": "^34.1.0",
-		"jest-environment-jsdom": "^30.4.1",
+		"jest-environment-jsdom": "^30.5.0",
 		"mini-css-extract-plugin": "^2.10.2",
 		"prettier": "npm:wp-prettier@^3.0.3",
 		"rtlcss-webpack-plugin": "^4.0.7"
