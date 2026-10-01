@@ -1321,12 +1321,11 @@ class Plugin_Test extends WP_UnitTestCase {
 	 */
 	public function test_display_form_empty() {
 		get_echo( 'preferred_languages_display_form' );
-		$script_data = wp_scripts()->get_data( 'preferred-languages', 'before' );
+		$script_data = wp_scripts()->get_inline_script_data( 'preferred-languages', 'before' );
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
-		$this->assertIsString( $script_data[1] );
-		$this->assertStringContainsString( '"hasMissingTranslations":false', $script_data[1] );
+		$this->assertStringContainsString( '"hasMissingTranslations":false', $script_data );
 	}
 
 	/**
@@ -1341,12 +1340,11 @@ class Plugin_Test extends WP_UnitTestCase {
 				preferred_languages_display_form( array( 'selected' => array( 'roh' ) ) );
 			}
 		);
-		$script_data = wp_scripts()->get_data( 'preferred-languages', 'before' );
+		$script_data = wp_scripts()->get_inline_script_data( 'preferred-languages', 'before' );
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
-		$this->assertIsString( $script_data[1] );
-		$this->assertStringContainsString( '"hasMissingTranslations":true', $script_data[1] );
+		$this->assertStringContainsString( '"hasMissingTranslations":true', $script_data );
 	}
 
 	/**
@@ -1362,12 +1360,11 @@ class Plugin_Test extends WP_UnitTestCase {
 				preferred_languages_display_form( array( 'selected' => array( 'roh' ) ) );
 			}
 		);
-		$script_data = wp_scripts()->get_data( 'preferred-languages', 'before' );
+		$script_data = wp_scripts()->get_inline_script_data( 'preferred-languages', 'before' );
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
-		$this->assertIsString( $script_data[1] );
-		$this->assertStringContainsString( '"hasMissingTranslations":true', $script_data[1] );
+		$this->assertStringContainsString( '"hasMissingTranslations":true', $script_data );
 	}
 
 	/**
@@ -1379,12 +1376,11 @@ class Plugin_Test extends WP_UnitTestCase {
 				preferred_languages_display_form( array( 'show_option_en_us' => true ) );
 			}
 		);
-		$script_data = wp_scripts()->get_data( 'preferred-languages', 'before' );
+		$script_data = wp_scripts()->get_inline_script_data( 'preferred-languages', 'before' );
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
-		$this->assertIsString( $script_data[1] );
-		$this->assertStringContainsString( 'English (United States)', $script_data[1] );
+		$this->assertStringContainsString( 'English (United States)', $script_data );
 	}
 
 	/**
@@ -1396,12 +1392,11 @@ class Plugin_Test extends WP_UnitTestCase {
 				preferred_languages_display_form( array( 'show_option_site_default' => true ) );
 			}
 		);
-		$script_data = wp_scripts()->get_data( 'preferred-languages', 'before' );
+		$script_data = wp_scripts()->get_inline_script_data( 'preferred-languages', 'before' );
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
-		$this->assertIsString( $script_data[1] );
-		$this->assertStringContainsString( '"showOptionSiteDefault":true', $script_data[1] );
+		$this->assertStringContainsString( '"showOptionSiteDefault":true', $script_data );
 	}
 
 	/**
@@ -1414,16 +1409,15 @@ class Plugin_Test extends WP_UnitTestCase {
 				preferred_languages_display_form( array( 'selected' => array( 'de_DE', 'en_US', 'fr_FR', 'es_ES', 'foo' ) ) );
 			}
 		);
-		$script_data = wp_scripts()->get_data( 'preferred-languages', 'before' );
+		$script_data = wp_scripts()->get_inline_script_data( 'preferred-languages', 'before' );
 		$this->assertTrue( wp_script_is( 'preferred-languages' ) );
 		$this->assertTrue( wp_style_is( 'preferred-languages' ) );
 		$this->assertNotEmpty( $script_data );
-		$this->assertIsString( $script_data[1] );
-		$this->assertStringContainsString( '"lang":"de","installed":true', $script_data[1] );
-		$this->assertStringContainsString( '"lang":"fr","installed":false', $script_data[1] );
-		$this->assertStringContainsString( '"lang":"es","installed":true', $script_data[1] );
-		$this->assertStringContainsString( '{"locale":"foo","nativeName":"foo","lang":"","installed":false}', $script_data[1] );
-		$this->assertStringContainsString( '{"locale":"en_US","nativeName":"English (United States)","lang":"en","installed":true}', $script_data[1] );
+		$this->assertStringContainsString( '"lang":"de","installed":true', $script_data );
+		$this->assertStringContainsString( '"lang":"fr","installed":false', $script_data );
+		$this->assertStringContainsString( '"lang":"es","installed":true', $script_data );
+		$this->assertStringContainsString( '{"locale":"foo","nativeName":"foo","lang":"","installed":false}', $script_data );
+		$this->assertStringContainsString( '{"locale":"en_US","nativeName":"English (United States)","lang":"en","installed":true}', $script_data );
 	}
 
 

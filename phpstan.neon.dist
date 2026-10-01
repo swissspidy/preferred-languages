@@ -8,7 +8,6 @@ parameters:
 	ignoreErrors:
 		- message: '/has no return type specified\.$/'
 		- message: '/^Call to method PHPUnit\\Framework\\Assert::assertFalse\(\) with false will always evaluate to true\.$/'
-		- message: '/^Cannot access offset 1 on mixed\.$/'
 		- message: '/^Cannot access offset .messages. on mixed\.$/'
 		- message: '/^Attribute class DataProvider does not exist\.$/'
 	scanFiles:
