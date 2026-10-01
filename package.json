@@ -18,13 +18,13 @@
 		"url": "https://github.com/swissspidy/preferred-languages/issues"
 	},
 	"dependencies": {
-		"@wordpress/a11y": "^4.54.0",
-		"@wordpress/components": "^40.0.0",
+		"@wordpress/a11y": "^4.56.0",
+		"@wordpress/components": "^41.0.0",
 		"@wordpress/data": "^10.53.0",
 		"@wordpress/dom-ready": "^4.53.0",
 		"@wordpress/element": "^8.5.0",
 		"@wordpress/i18n": "^6.26.0",
-		"@wordpress/keyboard-shortcuts": "^5.54.0",
+		"@wordpress/keyboard-shortcuts": "^5.56.0",
 		"@wordpress/keycodes": "^4.53.0"
 	},
 	"devDependencies": {
@@ -32,11 +32,11 @@
 		"@testing-library/jest-dom": "^7.0.1",
 		"@testing-library/react": "^16.3.3",
 		"@testing-library/user-event": "^14.6.6",
-		"@wordpress/babel-preset-default": "^8.54.0",
-		"@wordpress/e2e-test-utils-playwright": "^1.54.0",
-		"@wordpress/eslint-plugin": "^25.10.0",
-		"@wordpress/env": "^11.14.0",
-		"@wordpress/scripts": "^34.2.0",
+		"@wordpress/babel-preset-default": "^8.56.0",
+		"@wordpress/e2e-test-utils-playwright": "^2.1.0",
+		"@wordpress/eslint-plugin": "^27.0.0",
+		"@wordpress/env": "^11.16.0",
+		"@wordpress/scripts": "^36.0.0",
 		"jest-environment-jsdom": "^30.5.0",
 		"mini-css-extract-plugin": "^2.10.2",
 		"prettier": "npm:wp-prettier@^3.0.3",
